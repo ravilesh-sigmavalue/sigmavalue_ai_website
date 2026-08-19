@@ -30,7 +30,7 @@ const SERVICES = [
     bullets: ["Opportunity identification", "Agentic solution design", "Enterprise-scale deployment"]
   },
   {
-    title: "REAL ESTATE\nTECHNOLOGY",
+    title: "Real Estate Technology &\nDigital Transformation Services",
     cat: "Real Estate",
     loc: "Digital Transformation Services",
     desc: "Technology-led transformation of real estate operations using AI, automation, GIS, data intelligence, and digital workflows.",
@@ -38,16 +38,6 @@ const SERVICES = [
     accent: [0.2471, 0.7922, 0.5647],
     specs: [["AI", "Enabled"], ["GIS", "Intelligence"], ["Digital", "Workflows"]],
     bullets: ["AI and process automation", "GIS-powered operations", "Connected digital workflows"]
-  },
-  {
-    title: "REAL ESTATE\nTRANSFORMATION",
-    cat: "Real Estate",
-    loc: "Technology & Digital Services",
-    desc: "Technology-led transformation of real estate operations using AI, automation, GIS, data intelligence, and digital workflows.",
-    icon: "land",
-    accent: [0.3333, 0.5804, 0.5059],
-    specs: [["Data", "Intelligence"], ["Process", "Automation"], ["Modern", "Operations"]],
-    bullets: ["Technology-led transformation", "Real estate data intelligence", "Digitized business operations"]
   },
   {
     title: "DEAL STRUCTURING &\nCAPITAL ADVISORY",

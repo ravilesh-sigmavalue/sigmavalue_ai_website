@@ -160,68 +160,55 @@ function WebGLBackground({ chapters, active, theme }) {
     roof.position.y = 4.96;
     building.add(roof);
 
-    // 3. Spire Mast (Height = 0.72)
-    const mastMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x5cb8b2 : 0xd4a520, // warm gold mast in light
-      transparent: true,
-      opacity: dark ? 0.95 : 0.92,
-      blending: THREE.AdditiveBlending
-    });
-    const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.024, 0.72, 8), mastMat);
-    mast.position.y = 5.35;
-    building.add(mast);
-
-    // 4. Circular SigmaValue Logo Disc & Glowing Ring (Above Mast)
+    // Floating SigmaValue logo above the roof. It has no supporting mast,
+    // surrounding disc or ring—only the transparent brand mark rotates.
     const logoTexture = new THREE.TextureLoader().load('/logo.png');
     logoTexture.colorSpace = THREE.SRGBColorSpace;
-    const logoRadius = 0.38;
-    const logoGeo = new THREE.CircleGeometry(logoRadius, 48);
+    const logoGeo = new THREE.PlaneGeometry(0.58, 0.58);
     const logoMat = new THREE.MeshBasicMaterial({
       map: logoTexture,
       transparent: true,
-      side: THREE.DoubleSide
+      side: THREE.FrontSide
     });
     const logoGroup = new THREE.Group();
     logoGroup.position.set(0, 6.05, 0);
+    logoGroup.scale.setScalar(1.5);
 
-    // Give the emblem a real edge so its depth is visible while it turns.
-    const logoEdgeMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x173d48 : 0xb78b25,
-      transparent: true,
-      opacity: 0.96
-    });
-    const logoBody = new THREE.Mesh(
-      new THREE.CylinderGeometry(logoRadius, logoRadius, 0.10, 48),
-      logoEdgeMat
+    const glassDisc = new THREE.Mesh(
+      new THREE.CircleGeometry(0.40, 48),
+      new THREE.MeshBasicMaterial({
+        color: dark ? 0x5cb8b2 : 0xd9f2f4,
+        transparent: true,
+        opacity: dark ? 0.16 : 0.22,
+        side: THREE.DoubleSide,
+        depthWrite: false
+      })
     );
-    logoBody.rotation.x = Math.PI / 2;
-    logoGroup.add(logoBody);
+    logoGroup.add(glassDisc);
+
+    const glassOutline = new THREE.Mesh(
+      new THREE.RingGeometry(0.388, 0.40, 48),
+      new THREE.MeshBasicMaterial({
+        color: dark ? 0x5cb8b2 : 0x43a09b,
+        transparent: true,
+        opacity: dark ? 0.42 : 0.30,
+        side: THREE.DoubleSide,
+        depthWrite: false
+      })
+    );
+    glassOutline.position.z = 0.003;
+    logoGroup.add(glassOutline);
 
     const logoMesh = new THREE.Mesh(logoGeo, logoMat);
-    logoMesh.position.z = 0.055;
+    logoMesh.position.z = 0.006;
     logoGroup.add(logoMesh);
 
+    // A separate front-facing reverse face prevents the texture from looking
+    // mirrored when the rotating emblem turns away from the camera.
     const logoBack = new THREE.Mesh(logoGeo, logoMat);
-    logoBack.position.z = -0.055;
+    logoBack.position.z = -0.006;
     logoBack.rotation.y = Math.PI;
     logoGroup.add(logoBack);
-
-    const logoRingGeo = new THREE.RingGeometry(logoRadius * 0.98, logoRadius * 1.05, 48);
-    const logoRingMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x5cb8b2 : 0xd4a520, // warm gold ring in light
-      transparent: true,
-      opacity: dark ? 0.92 : 0.90,
-      blending: THREE.AdditiveBlending,
-      side: THREE.DoubleSide
-    });
-    const logoRing = new THREE.Mesh(logoRingGeo, logoRingMat);
-    logoRing.position.z = 0.061;
-    logoGroup.add(logoRing);
-
-    const logoRingBack = logoRing.clone();
-    logoRingBack.position.z = -0.061;
-    logoRingBack.rotation.y = Math.PI;
-    logoGroup.add(logoRingBack);
     scene.add(logoGroup);
 
     // Emerald & Gold palette for light theme: emerald, gold, deep forest, mint
@@ -492,7 +479,12 @@ function WebGLBackground({ chapters, active, theme }) {
     /* ── Smooth Orbit Animation Loop ── */
     const ANGLE_STEP = 0.72;
     const ORBIT_RADIUS = 6.6;
+    const lastServiceIndex = Math.max(
+      1,
+      chapters.reduce((last, chapter, index) => chapter.key === "ch" ? index : last, 0)
+    );
     let scrollRawSmooth = 0;
+    let sceneOpacity = 1;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const curA = new THREE.Color(...initAccent);
@@ -532,20 +524,20 @@ function WebGLBackground({ chapters, active, theme }) {
         points.rotation.y += 0.0004;
       }
 
-      const pulse = 1.0 + 0.05 * Math.sin(elapsed * 1.8);
-      logoRing.scale.set(pulse, pulse, pulse);
-      logoRingBack.scale.set(pulse, pulse, pulse);
-
-      // Face the emblem toward the viewer, then rotate it around its own
-      // vertical axis so the front, edge and back are all visible.
+      // Face the logo toward the viewer, then rotate it around its own axis.
       logoGroup.quaternion.copy(camera.quaternion);
       logoGroup.rotateY(elapsed * 0.72);
 
       const scrollRawTarget = window.scrollY / window.innerHeight;
       scrollRawSmooth += (scrollRawTarget - scrollRawSmooth) * 0.055;
 
-      const totalChapters = Math.max(1, chapters.length - 1);
-      const scrollProgress = Math.min(Math.max(scrollRawSmooth / totalChapters, 0), 1);
+      // The building journey ends with the final service card. The separate
+      // contact/demo chapter no longer consumes another building level.
+      const scrollProgress = Math.min(Math.max(scrollRawSmooth / lastServiceIndex, 0), 1);
+
+      const contactStageActive = chapters[activeRef.current]?.key === "contact";
+      sceneOpacity += ((contactStageActive ? 0.08 : 1) - sceneOpacity) * 0.08;
+      canvas.style.opacity = String(sceneOpacity);
 
       const orbitAngle = scrollRawSmooth * ANGLE_STEP;
       const orbitRadius = ORBIT_RADIUS + Math.sin(scrollRawSmooth * 0.4) * 0.25;

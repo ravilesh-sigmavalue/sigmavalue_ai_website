@@ -51,7 +51,7 @@
 }
 
 html[data-theme="light"] body[data-design="design4"] {
-  --bg-primary: #daeef5;
+  --bg-primary:  #9ECDC3;
   --bg-secondary: #f1f5f9;
   --bg-card: rgba(255, 255, 255, 0.94);
   --bg-card-hover: rgba(255, 255, 255, 0.98);
@@ -194,7 +194,7 @@ html[data-theme="light"] body[data-design="design4"] .vignette {
   justify-content: space-between;
 }
 html[data-theme="light"] body[data-design="design4"] .nav-container {
-  background: #9ECDC3;
+  background: #C2C9CC;
 }
 
 html[data-theme="dark"] body[data-design="design4"] .nav-container {
@@ -1789,6 +1789,16 @@ html[data-theme="light"] body[data-design="design4"] .check-icon {
 .drawer-accordion {
   display: flex;
   flex-direction: column;
+}
+
+/* The final demo stage sits after the building journey, so its content is
+   fully readable without the WebGL tower showing through the panel. */
+html[data-theme="light"] body[data-design="design4"] .contact-card {
+  background: #ffffff;
+}
+
+html[data-theme="dark"] body[data-design="design4"] .contact-card {
+  background: #080e1a;
 }
 
 .accordion-trigger {
