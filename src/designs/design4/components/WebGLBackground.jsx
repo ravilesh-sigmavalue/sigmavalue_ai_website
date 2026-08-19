@@ -363,6 +363,46 @@ function WebGLBackground({ chapters, active, theme }) {
     addBaseOutline(3.05, 2.26, -4.615, dark ? 0x5cb8b2 : 0x1a7a50, 0.58); // rich emerald
     addBaseOutline(3.35, 2.50, -4.64,  dark ? 0xe87042 : 0xd4a520, 0.50); // warm gold
 
+    // Match the light-theme base treatment in dark mode.
+    if (dark) {
+      const darkGround = new THREE.Mesh(
+        new THREE.PlaneGeometry(18, 18, 1, 1),
+        new THREE.MeshBasicMaterial({
+          color: 0x17343d,
+          transparent: true,
+          opacity: 0.13,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false
+        })
+      );
+      darkGround.rotation.x = -Math.PI / 2;
+      darkGround.position.y = -5.10;
+      scene.add(darkGround);
+
+      [
+        [5.5, 0x17343d, 0.10],
+        [4.0, 0x245e63, 0.12],
+        [2.8, 0x43a09b, 0.14],
+        [1.8, 0x5cb8b2, 0.16],
+        [1.0, 0xe87042, 0.18]
+      ].forEach(([r, color, opacity]) => {
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(r - 0.6, r, 64),
+          new THREE.MeshBasicMaterial({
+            color,
+            transparent: true,
+            opacity,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+            side: THREE.DoubleSide
+          })
+        );
+        ring.rotation.x = -Math.PI / 2;
+        ring.position.y = -5.08;
+        scene.add(ring);
+      });
+    }
+
     /* ── Light-Theme Extras ── */
     if (!dark) {
       // Reflective neon ground plane
@@ -389,20 +429,6 @@ function WebGLBackground({ chapters, active, theme }) {
         scene.add(ring);
       });
 
-      // Floating diamond accents mid-tower — Emerald & Gold
-      [[0, 0, 0.78], [0, 0, -0.78], [1.15, 0, 0], [-1.15, 0, 0]].forEach(([x, y, z], i) => {
-        const diamondGeo = new THREE.OctahedronGeometry(0.085, 0);
-        const diamondMat = new THREE.MeshBasicMaterial({
-          color: [0xd4a520, 0x2daa72, 0xf0c840, 0x1a7a50][i], // gold, emerald, bright gold, rich emerald
-          transparent: true,
-          opacity: 0.85,
-          blending: THREE.AdditiveBlending,
-          wireframe: true
-        });
-        const diamond = new THREE.Mesh(diamondGeo, diamondMat);
-        diamond.position.set(x, y, z);
-        building.add(diamond);
-      });
     }
 
     /* ── Ambient Particle Field ── */

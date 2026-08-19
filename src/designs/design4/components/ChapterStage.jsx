@@ -143,7 +143,7 @@ function ChapterStage({ chapters, active }) {
           const index = cardPosition + 1;
           const distance = Math.abs(index - smooth);
           const focus = Math.max(0, 1 - Math.min(distance, 1));
-          card.style.opacity = String(0.18 + focus * 0.82);
+          card.style.opacity = String(0.06 + focus * 0.90);
           card.style.filter = `brightness(${0.4 + focus * 0.6}) saturate(${0.5 + focus * 0.5})`;
           card.style.zIndex = String(Math.round(focus * 10));
           if (focus > 0.6) {

@@ -145,7 +145,9 @@ function ChapterStage({ chapters, active }) {
           const focus = Math.max(0, 1 - Math.min(distance, 1));
           card.style.opacity = String(0.18 + focus * 0.82);
           card.style.filter = `brightness(${0.4 + focus * 0.6}) saturate(${0.5 + focus * 0.5})`;
-          card.style.zIndex = String(Math.round(focus * 10));
+          // Active card always wins z-stacking — gap between front (100) and rest (0–4)
+          card.style.zIndex = focus > 0.85 ? "100" : String(Math.round(focus * 4));
+          card.style.pointerEvents = focus > 0.85 ? "auto" : "none";
           if (focus > 0.6) {
             card.classList.add("front");
           } else {
