@@ -79,32 +79,32 @@ function WebGLBackground({ chapters, active, theme }) {
         float bayLine   = 1.0 - smoothstep(0.0, 0.07,  abs(fract((facadeCoord + 2.5) * 2.45) - 0.02));
         float grid = clamp(floorLine * 0.92 + bayLine * 0.35, 0.0, 1.0);
 
-        // Soft user-friendly light-theme palette:
-        // Sky Blue   #6EC6D8  warmly lit glass facade
-        // Sky Pale   #A8D8E8  upper tower catches sky
-        // Warm White #F5F0E8  neutral mid-glass
-        // Sage Mint  #7DC8B5  cool lower accent
-        // Warm Coral #F0876A  warm sunrise base accent
-        vec3 lightCoral  = vec3(0.941, 0.529, 0.416);  // #F0876A warm coral
-        vec3 lightPeach  = vec3(0.957, 0.690, 0.494);  // #F4B07E warm peach
-        vec3 lightSand   = vec3(0.961, 0.851, 0.659);  // #F5D9A8 soft sand
-        vec3 lightSky    = vec3(0.431, 0.776, 0.847);  // #6EC6D8 sky blue
-        vec3 lightPale   = vec3(0.659, 0.847, 0.910);  // #A8D8E8 pale sky
+        // Emerald & Gold luxury palette for light theme:
+        // Deep Forest  #0d4f2e  dark emerald base
+        // Rich Emerald #1a7a50  mid-tower jewel green
+        // Vivid Emerald #2daa72 bright sun-lit face
+        // Mint Gold    #a8d4a0  upper pale green
+        // Warm Gold    #d4a520  accent / highlights
+        vec3 deepForest  = vec3(0.051, 0.310, 0.180);  // #0d4f2e
+        vec3 richEmerald = vec3(0.102, 0.478, 0.314);  // #1a7a50
+        vec3 vividGreen  = vec3(0.176, 0.667, 0.447);  // #2daa72
+        vec3 mintGold    = vec3(0.659, 0.831, 0.627);  // #a8d4a0
+        vec3 warmGold    = vec3(0.831, 0.647, 0.125);  // #d4a520
 
-        // Diagonal gradient: warm coral (bottom-right) → pale sky (top-left)
+        // Gradient: deep forest (bottom) → warm gold highlight (top)
         float normX = clamp((facadeCoord + 1.2) / 2.4, 0.0, 1.0);
         float normY = clamp((vWorldPos.y + 4.5) / 9.15, 0.0, 1.0);
-        float gradT = clamp(normY * 0.55 + (1.0 - normX) * 0.45, 0.0, 1.0);
+        float gradT = clamp(normY * 0.65 + normX * 0.35, 0.0, 1.0);
 
         vec3 lightNeon;
-        if (gradT < 0.30) {
-          lightNeon = mix(lightCoral, lightPeach, gradT / 0.30);
+        if (gradT < 0.25) {
+          lightNeon = mix(deepForest, richEmerald, gradT / 0.25);
         } else if (gradT < 0.55) {
-          lightNeon = mix(lightPeach, lightSand, (gradT - 0.30) / 0.25);
-        } else if (gradT < 0.75) {
-          lightNeon = mix(lightSand, lightSky, (gradT - 0.55) / 0.20);
+          lightNeon = mix(richEmerald, vividGreen, (gradT - 0.25) / 0.30);
+        } else if (gradT < 0.80) {
+          lightNeon = mix(vividGreen, mintGold, (gradT - 0.55) / 0.25);
         } else {
-          lightNeon = mix(lightSky, lightPale, (gradT - 0.75) / 0.25);
+          lightNeon = mix(mintGold, warmGold, (gradT - 0.80) / 0.20);
         }
 
         vec3 teal = vec3(0.26, 0.63, 0.61);
@@ -113,14 +113,14 @@ function WebGLBackground({ chapters, active, theme }) {
         vec3 neon = mix(lightNeon, darkNeon, uDark);
 
         vec3 darkGlass = vec3(0.010, 0.014, 0.025) + uColorA * 0.025;
-        // Light glass: bright, airy, slightly warm white with gentle color tint
-        vec3 lightGlass = mix(vec3(0.96, 0.97, 0.98), lightNeon, 0.28);
+        // Light glass: warm ivory-white base with emerald-gold tint — premium jewel look
+        vec3 lightGlass = mix(vec3(0.96, 0.97, 0.94), lightNeon, 0.32);
         vec3 glass = mix(lightGlass, darkGlass, uDark);
 
         vec3 color = glass;
-        color += neon * grid * (uDark > 0.5 ? 0.25 : 0.30);
-        color += neon * fresnel * (uDark > 0.5 ? 0.55 : 0.45);
-        color += (uDark > 0.5 ? vec3(0.16, 0.20, 0.28) : vec3(0.55, 0.68, 0.75)) * lightTerm * 0.18;
+        color += neon * grid * (uDark > 0.5 ? 0.25 : 0.32);
+        color += neon * fresnel * (uDark > 0.5 ? 0.55 : 0.52);
+        color += (uDark > 0.5 ? vec3(0.16, 0.20, 0.28) : vec3(0.20, 0.50, 0.30)) * lightTerm * 0.22;
         color += uColorB * (0.018 + 0.014 * sin(uTime * 0.35 + vWorldPos.y));
         gl_FragColor = vec4(color, 1.0);
       }
@@ -146,11 +146,11 @@ function WebGLBackground({ chapters, active, theme }) {
 
     // 2. Skyscraper Inset Crown & Rooftop Slab
     const crownMat = new THREE.MeshPhongMaterial({
-      color: dark ? 0x070b12 : 0xe8f4f8,  // airy pale sky in light
-      specular: dark ? 0x17313d : 0x6ec6d8, // sky blue specular
-      shininess: 95,
+      color: dark ? 0x070b12 : 0xd4f0e0,  // pale mint crown in light
+      specular: dark ? 0x17313d : 0xd4a520, // warm gold specular
+      shininess: 140,
       transparent: true,
-      opacity: dark ? 0.98 : 0.90
+      opacity: dark ? 0.98 : 0.92
     });
     const crown = new THREE.Mesh(new THREE.BoxGeometry(1.90, 0.42, 1.28), crownMat);
     crown.position.y = 4.68;
@@ -162,9 +162,9 @@ function WebGLBackground({ chapters, active, theme }) {
 
     // 3. Spire Mast (Height = 0.72)
     const mastMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x5cb8b2 : 0x6ec6d8, // soft sky blue in light
+      color: dark ? 0x5cb8b2 : 0xd4a520, // warm gold mast in light
       transparent: true,
-      opacity: dark ? 0.95 : 0.80,
+      opacity: dark ? 0.95 : 0.92,
       blending: THREE.AdditiveBlending
     });
     const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.024, 0.72, 8), mastMat);
@@ -181,69 +181,94 @@ function WebGLBackground({ chapters, active, theme }) {
       transparent: true,
       side: THREE.DoubleSide
     });
+    const logoGroup = new THREE.Group();
+    logoGroup.position.set(0, 6.05, 0);
+
+    // Give the emblem a real edge so its depth is visible while it turns.
+    const logoEdgeMat = new THREE.MeshBasicMaterial({
+      color: dark ? 0x173d48 : 0xb78b25,
+      transparent: true,
+      opacity: 0.96
+    });
+    const logoBody = new THREE.Mesh(
+      new THREE.CylinderGeometry(logoRadius, logoRadius, 0.10, 48),
+      logoEdgeMat
+    );
+    logoBody.rotation.x = Math.PI / 2;
+    logoGroup.add(logoBody);
+
     const logoMesh = new THREE.Mesh(logoGeo, logoMat);
-    logoMesh.position.set(0, 6.05, 0);
-    scene.add(logoMesh);
+    logoMesh.position.z = 0.055;
+    logoGroup.add(logoMesh);
+
+    const logoBack = new THREE.Mesh(logoGeo, logoMat);
+    logoBack.position.z = -0.055;
+    logoBack.rotation.y = Math.PI;
+    logoGroup.add(logoBack);
 
     const logoRingGeo = new THREE.RingGeometry(logoRadius * 0.98, logoRadius * 1.05, 48);
     const logoRingMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x5cb8b2 : 0x6ec6d8, // sky blue ring in light
+      color: dark ? 0x5cb8b2 : 0xd4a520, // warm gold ring in light
       transparent: true,
-      opacity: dark ? 0.92 : 0.75,
+      opacity: dark ? 0.92 : 0.90,
       blending: THREE.AdditiveBlending,
       side: THREE.DoubleSide
     });
     const logoRing = new THREE.Mesh(logoRingGeo, logoRingMat);
-    logoRing.position.copy(logoMesh.position);
-    scene.add(logoRing);
+    logoRing.position.z = 0.061;
+    logoGroup.add(logoRing);
 
-    // 5. Soft friendly palette for light, neon for dark
-    // Light:  sky blue #6EC6D8, sage #7DC8B5, coral #F0876A, peach #F4B07E, lavender #A8C4E0
-    // Dark:   original neon coral/teal palette
+    const logoRingBack = logoRing.clone();
+    logoRingBack.position.z = -0.061;
+    logoRingBack.rotation.y = Math.PI;
+    logoGroup.add(logoRingBack);
+    scene.add(logoGroup);
+
+    // Emerald & Gold palette for light theme: emerald, gold, deep forest, mint
     const neonCoralMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0xe87042 : 0xf0876a, // warm coral (friendlier than neon)
+      color: dark ? 0xe87042 : 0xd4a520, // warm gold in light
       transparent: true,
-      opacity: dark ? 0.78 : 0.72,
+      opacity: dark ? 0.78 : 0.82,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
     const neonPeachMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0xf0865e : 0xf4b07e, // warm peach
+      color: dark ? 0xf0865e : 0xf0c840, // bright gold in light
       transparent: true,
-      opacity: dark ? 0.75 : 0.68,
+      opacity: dark ? 0.75 : 0.76,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
     const neonSandMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0xd0a27d : 0xf5d9a8, // soft sand
+      color: dark ? 0xd0a27d : 0xa8d4a0, // mint pale green in light
       transparent: true,
-      opacity: dark ? 0.70 : 0.62,
+      opacity: dark ? 0.70 : 0.68,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
     const neonMintMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x5cb8b2 : 0x7dc8b5, // sage mint (muted, friendly)
+      color: dark ? 0x5cb8b2 : 0x1a7a50, // rich emerald in light
       transparent: true,
-      opacity: dark ? 0.78 : 0.70,
+      opacity: dark ? 0.78 : 0.80,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
     const neonTealMat = new THREE.MeshBasicMaterial({
-      color: dark ? 0x43a09b : 0x6ec6d8, // sky blue (replaces harsh teal)
+      color: dark ? 0x43a09b : 0x2daa72, // vivid emerald in light
       transparent: true,
-      opacity: dark ? 0.82 : 0.72,
+      opacity: dark ? 0.82 : 0.78,
       blending: THREE.AdditiveBlending,
       depthWrite: false
     });
 
     const dimCoralMat = neonCoralMat.clone();
-    dimCoralMat.opacity = dark ? 0.30 : 0.30;
+    dimCoralMat.opacity = dark ? 0.30 : 0.34;
     const dimPeachMat = neonPeachMat.clone();
-    dimPeachMat.opacity = dark ? 0.30 : 0.28;
+    dimPeachMat.opacity = dark ? 0.30 : 0.30;
     const dimSandMat = neonSandMat.clone();
     dimSandMat.opacity = dark ? 0.28 : 0.26;
     const dimMintMat = neonMintMat.clone();
-    dimMintMat.opacity = dark ? 0.30 : 0.30;
+    dimMintMat.opacity = dark ? 0.30 : 0.32;
     const dimTealMat = neonTealMat.clone();
     dimTealMat.opacity = dark ? 0.32 : 0.32;
 
@@ -311,13 +336,13 @@ function WebGLBackground({ chapters, active, theme }) {
       building.add(right);
     });
 
-    // Luminous Crown Roof Outline
+    // Luminous Crown Roof Outline — gold in light
     const roofEdges = new THREE.LineSegments(
       new THREE.EdgesGeometry(new THREE.BoxGeometry(1.92, 0.44, 1.30)),
       new THREE.LineBasicMaterial({
-        color: dark ? 0x5cb8b2 : 0x6ec6d8, // soft sky blue outline in light
+        color: dark ? 0x5cb8b2 : 0xd4a520, // warm gold crown outline in light
         transparent: true,
-        opacity: dark ? 0.65 : 0.55,
+        opacity: dark ? 0.65 : 0.80,
         blending: THREE.AdditiveBlending
       })
     );
@@ -334,9 +359,9 @@ function WebGLBackground({ chapters, active, theme }) {
       l.position.y = y;
       building.add(l);
     }
-    addBaseOutline(2.75, 2.02, -4.59, dark ? 0x43a09b : 0x6ec6d8, 0.65); // sky blue
-    addBaseOutline(3.05, 2.26, -4.615, dark ? 0x5cb8b2 : 0x7dc8b5, 0.50); // sage
-    addBaseOutline(3.35, 2.50, -4.64, dark ? 0xe87042 : 0xf4b07e, 0.42); // warm peach
+    addBaseOutline(2.75, 2.02, -4.59,  dark ? 0x43a09b : 0x2daa72, 0.72); // vivid emerald
+    addBaseOutline(3.05, 2.26, -4.615, dark ? 0x5cb8b2 : 0x1a7a50, 0.58); // rich emerald
+    addBaseOutline(3.35, 2.50, -4.64,  dark ? 0xe87042 : 0xd4a520, 0.50); // warm gold
 
     /* ── Light-Theme Extras ── */
     if (!dark) {
@@ -354,52 +379,23 @@ function WebGLBackground({ chapters, active, theme }) {
       ground.position.y = -5.10;
       scene.add(ground);
 
-      // Ground glow disc — soft friendly rings
-      [[5.5, 0xa8d8e8, 0.10], [4.0, 0x7dc8b5, 0.12], [2.8, 0xf5d9a8, 0.14], [1.8, 0xf4b07e, 0.16], [1.0, 0xf0876a, 0.18]].forEach(([r, color, op]) => {
+      // Ground glow disc — emerald & gold rings
+      [[5.5, 0xa8d4a0, 0.10], [4.0, 0x2daa72, 0.12], [2.8, 0x1a7a50, 0.14], [1.8, 0xd4a520, 0.16], [1.0, 0xf0c840, 0.18]].forEach(([r, color, op]) => {
         const rg = new THREE.RingGeometry(r - 0.6, r, 64);
         const rm = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: op, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
-        
-        // ── STRUCTURAL BEAM SYSTEM — soft friendly palette ──
-        // Sky blue, sage, warm coral, peach, lavender
-        const beamCoralMat  = new THREE.MeshBasicMaterial({ color: 0xf0876a, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false });
-        const beamPeachMat  = new THREE.MeshBasicMaterial({ color: 0xf4b07e, transparent: true, opacity: 0.52, blending: THREE.AdditiveBlending, depthWrite: false });
-        const beamSandMat   = new THREE.MeshBasicMaterial({ color: 0xf5d9a8, transparent: true, opacity: 0.48, blending: THREE.AdditiveBlending, depthWrite: false });
-        const beamMintMat   = new THREE.MeshBasicMaterial({ color: 0x7dc8b5, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false });
-        const beamTealMat   = new THREE.MeshBasicMaterial({ color: 0x6ec6d8, transparent: true, opacity: 0.58, blending: THREE.AdditiveBlending, depthWrite: false });
-        
         const ring = new THREE.Mesh(rg, rm);
         ring.rotation.x = -Math.PI / 2;
         ring.position.y = -5.08;
         scene.add(ring);
       });
 
-      // ── 4. Corner Column Node Caps — soft friendly colours ──
-      // Octahedrons at major beam–column intersections
-      const nodeColors = [0x6ec6d8, 0xf0876a, 0x7dc8b5, 0xf4b07e]; // sky, coral, sage, peach
-      const orbPositions = [[-1.145, 0.755], [1.145, 0.755], [-1.145, -0.755], [1.145, -0.755]];
-      orbPositions.forEach(([x, z], i) => {
-        const orbGeo = new THREE.SphereGeometry(0.07, 12, 12);
-        const orbMat = new THREE.MeshBasicMaterial({
-          color: nodeColors[i],
-          transparent: true,
-          opacity: 0.85,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
-        });
-        [-4.2, -2.8, -1.4, 0, 1.4, 2.8, 4.2].forEach(y => {
-          const orb = new THREE.Mesh(orbGeo, orbMat);
-          orb.position.set(x, y, z);
-          building.add(orb);
-        });
-      });
-
-      // Floating neon diamond accents mid-tower
+      // Floating diamond accents mid-tower — Emerald & Gold
       [[0, 0, 0.78], [0, 0, -0.78], [1.15, 0, 0], [-1.15, 0, 0]].forEach(([x, y, z], i) => {
         const diamondGeo = new THREE.OctahedronGeometry(0.085, 0);
         const diamondMat = new THREE.MeshBasicMaterial({
-          color: [0xf0876a, 0x6ec6d8, 0xf5d9a8, 0x7dc8b5][i],
+          color: [0xd4a520, 0x2daa72, 0xf0c840, 0x1a7a50][i], // gold, emerald, bright gold, rich emerald
           transparent: true,
-          opacity: 0.75,
+          opacity: 0.85,
           blending: THREE.AdditiveBlending,
           wireframe: true
         });
@@ -414,7 +410,7 @@ function WebGLBackground({ chapters, active, theme }) {
     const pGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(PCOUNT * 3);
     const colors = new Float32Array(PCOUNT * 3);
-    // Light: exact 5-stop neon brand colors; Dark: classic coral/teal palette
+    // Light: Emerald & Gold palette; Dark: classic coral/teal palette
     const palette = dark ? [
       [0.91, 0.44, 0.26], // Coral #E87042
       [0.94, 0.64, 0.49], // Peach #F0865E
@@ -422,12 +418,12 @@ function WebGLBackground({ chapters, active, theme }) {
       [0.36, 0.72, 0.70], // Seafoam #5CB8B2
       [0.95, 0.96, 0.98]  // White
     ] : [
-      [0.431, 0.776, 0.847], // #6EC6D8 Sky Blue
-      [0.490, 0.784, 0.709], // #7DC8B5 Sage Mint
-      [0.941, 0.529, 0.415], // #F0876A Warm Coral
-      [0.956, 0.690, 0.494], // #F4B07E Warm Peach
-      [0.960, 0.850, 0.658], // #F5D9A8 Sand
-      [0.658, 0.768, 0.878]  // #A8C4E0 Lavender Tint
+      [0.051, 0.310, 0.180], // #0d4f2e Deep Forest
+      [0.102, 0.478, 0.314], // #1a7a50 Rich Emerald
+      [0.176, 0.667, 0.447], // #2daa72 Vivid Emerald
+      [0.831, 0.647, 0.125], // #d4a520 Warm Gold
+      [0.941, 0.784, 0.251], // #f0c840 Bright Gold
+      [0.659, 0.831, 0.627]  // #a8d4a0 Mint pale green
     ];
     for (let i = 0; i < PCOUNT; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 14;
@@ -510,15 +506,14 @@ function WebGLBackground({ chapters, active, theme }) {
         points.rotation.y += 0.0004;
       }
 
-      // Pulse the logo ring scale in light theme
-      if (!dark) {
-        const pulse = 1.0 + 0.08 * Math.sin(elapsed * 1.8);
-        logoRing.scale.set(pulse, pulse, pulse);
-      }
+      const pulse = 1.0 + 0.05 * Math.sin(elapsed * 1.8);
+      logoRing.scale.set(pulse, pulse, pulse);
+      logoRingBack.scale.set(pulse, pulse, pulse);
 
-      // Keep circular logo billboard facing camera smoothly
-      logoMesh.quaternion.copy(camera.quaternion);
-      logoRing.quaternion.copy(camera.quaternion);
+      // Face the emblem toward the viewer, then rotate it around its own
+      // vertical axis so the front, edge and back are all visible.
+      logoGroup.quaternion.copy(camera.quaternion);
+      logoGroup.rotateY(elapsed * 0.72);
 
       const scrollRawTarget = window.scrollY / window.innerHeight;
       scrollRawSmooth += (scrollRawTarget - scrollRawSmooth) * 0.055;
@@ -540,7 +535,12 @@ function WebGLBackground({ chapters, active, theme }) {
       camera.position.x = Math.sin(orbitAngle) * orbitRadius + camPX;
       camera.position.z = Math.cos(orbitAngle) * orbitRadius;
       camera.position.y = camTopY - scrollProgress * totalDescent + camPY;
-      camera.lookAt(0, camera.position.y - 0.7, 0);
+
+      // On entry, aim higher so the crown, mast and logo sit safely below
+      // the navigation instead of being cropped above the viewport. Blend
+      // back to the original lower focus as the visitor scrolls down.
+      const entryFocusOffset = 0.75 - scrollProgress * 1.45;
+      camera.lookAt(0, camera.position.y + entryFocusOffset, 0);
 
       renderer.render(scene, camera);
     };
