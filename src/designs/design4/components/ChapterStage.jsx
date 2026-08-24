@@ -135,23 +135,43 @@ function ChapterStage({ chapters, active }) {
       raf = requestAnimationFrame(tick);
       smooth += (raw - smooth) * 0.065;
       if (carousel.current) {
-        const mobile = innerWidth < 960;
-        const drop = mobile ? 60 : 120;
-        const angle = smooth * 0.72;
-        carousel.current.style.transform = `translate(-50%,-50%) rotateY(${-angle * 180 / Math.PI}deg) translateY(${Math.max(0, smooth - 1) * drop}px)`;
-        carousel.current.querySelectorAll(".bcard").forEach((card, cardPosition) => {
-          const index = cardPosition + 1;
-          const distance = Math.abs(index - smooth);
-          const focus = Math.max(0, 1 - Math.min(distance, 1));
-          card.style.opacity = String(0.06 + focus * 0.90);
-          card.style.filter = `brightness(${0.4 + focus * 0.6}) saturate(${0.5 + focus * 0.5})`;
-          card.style.zIndex = String(Math.round(focus * 10));
-          if (focus > 0.6) {
-            card.classList.add("front");
-          } else {
-            card.classList.remove("front");
-          }
-        });
+        const isMobile = innerWidth < 768;
+        if (isMobile) {
+          carousel.current.style.transform = "none";
+          carousel.current.querySelectorAll(".bcard").forEach((card, cardPosition) => {
+            const index = cardPosition + 1;
+            const distance = Math.abs(index - smooth);
+            const focus = Math.max(0, 1 - Math.min(distance, 1));
+            card.style.transform = "none";
+            card.style.opacity = focus > 0.45 ? "1" : "0";
+            card.style.pointerEvents = focus > 0.45 ? "auto" : "none";
+            card.style.zIndex = focus > 0.45 ? "20" : "0";
+            if (focus > 0.45) {
+              card.classList.add("front");
+            } else {
+              card.classList.remove("front");
+            }
+          });
+        } else {
+          const mobile = innerWidth < 960;
+          const drop = mobile ? 60 : 120;
+          const angle = smooth * 0.72;
+          carousel.current.style.transform = `translate(-50%,-50%) rotateY(${-angle * 180 / Math.PI}deg) translateY(${Math.max(0, smooth - 1) * drop}px)`;
+          carousel.current.querySelectorAll(".bcard").forEach((card, cardPosition) => {
+            const index = cardPosition + 1;
+            const distance = Math.abs(index - smooth);
+            const focus = Math.max(0, 1 - Math.min(distance, 1));
+            card.style.opacity = String(0.06 + focus * 0.90);
+            card.style.filter = `brightness(${0.4 + focus * 0.6}) saturate(${0.5 + focus * 0.5})`;
+            card.style.zIndex = String(Math.round(focus * 10));
+            card.style.pointerEvents = focus > 0.6 ? "auto" : "none";
+            if (focus > 0.6) {
+              card.classList.add("front");
+            } else {
+              card.classList.remove("front");
+            }
+          });
+        }
       }
     };
     addEventListener("scroll", update, { passive: true });
