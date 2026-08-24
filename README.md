@@ -1,14 +1,12 @@
-# SigmaValue — Two Design Concepts
+# SigmaValue — Design 4
 
-The app contains two fully separated UI concepts. Use the floating **Design 1 / Design 2** control to switch between them.
+This Vite/React app contains the finalized Design 4 experience.
+
+## Development
 
 ```bash
 npm install
 npm run dev
 ```
 
-Run `npm run build` for a production bundle.
-
-- `src/designs/design1/` — original cinematic, chapter-based experience
-- `src/designs/design2/` — independent copy of the same cinematic UI/UX and color system
-- `src/App.jsx` — design selector only
+Create a production build with `npm run build`.
