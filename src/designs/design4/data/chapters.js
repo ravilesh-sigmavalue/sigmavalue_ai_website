@@ -30,7 +30,7 @@ const SERVICES = [
     bullets: ["Opportunity identification", "Agentic solution design", "Enterprise-scale deployment"]
   },
   {
-    title: "Real Estate Technology &\nDigital Transformation Services",
+    title: "REAL ESTATE\nTECHNOLOGY",
     cat: "Real Estate",
     loc: "Digital Transformation Services",
     desc: "Technology-led transformation of real estate operations using AI, automation, GIS, data intelligence, and digital workflows.",
@@ -81,7 +81,7 @@ const cards = SERVICES.map((service, index) => ({
   href: "#contact"
 }));
 
-const contact = { key: "contact", num: "10", cat: "Contact", title: "LET'S BUILD\nWHAT'S NEXT", loc: "Talk to SigmaValue", desc: "Connect with our team to explore the right AI, technology, or advisory solution for your organization.", icon: null, accent: [0.92, 0.44, 0.26], specs: null, bullets: [], action: "", href: "" };
+const contact = { key: "contact", num: "09", cat: "Contact", title: "LET'S BUILD\nWHAT'S NEXT", loc: "Talk to SigmaValue", desc: "Connect with our team to explore the right AI, technology, or advisory solution for your organization.", icon: null, accent: [0.92, 0.44, 0.26], specs: null, bullets: [], action: "", href: "" };
 
 const CHAPTERS = [hero, ...cards, contact];
 const CATEGORIES = [...new Set(cards.map((card) => card.cat))];
