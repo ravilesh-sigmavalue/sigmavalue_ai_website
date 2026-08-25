@@ -2,12 +2,12 @@ import { Button, Card, Modal } from "react-bootstrap";
 import { FiArrowRight, FiX } from "react-icons/fi";
 import "../CrossIndustryModal.css";
 
-const PHASES = [
-  "DISCOVERY / 4–6 WEEKS",
-  "DESIGN / 6–8 WEEKS",
-  "BUILD / 10–16 WEEKS",
-  "SCALE / ONGOING",
-];
+// const PHASES = [
+//   "DISCOVERY / 4–6 WEEKS",
+//   "DESIGN / 6–8 WEEKS",
+//   "BUILD / 10–16 WEEKS",
+//   "SCALE / ONGOING",
+// ];
 
 export function CrossIndustryModal({
   show,
@@ -50,7 +50,7 @@ export function CrossIndustryModal({
           {solutions.slice(0, 4).map(({ title: cardTitle, text, icon: Icon }, index) => (
             <Card className="cross-industry-card" key={cardTitle}>
               <Card.Body>
-                <span className="cross-industry-phase">{PHASES[index]}</span>
+                {/* <span className="cross-industry-phase">{PHASES[index]}</span> */}
                 <span className="cross-industry-icon"><Icon /></span>
                 <Card.Title>{cardTitle}</Card.Title>
                 <Card.Text>{text}</Card.Text>

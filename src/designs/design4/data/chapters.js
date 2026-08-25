@@ -20,7 +20,7 @@ const SERVICES = [
     bullets: ["Purpose-built AI solutions", "Operational automation", "Advanced enterprise analytics"]
   },
   {
-    title: "CROSS-INDUSTRY\nAGENTIC AI",
+    title: "CROSS-INDUSTRY\nAGENTIC AI ADVISORY & IMPLEMENTATION SERVICES",
     cat: "Advisory",
     loc: "Advisory & Implementation Services",
     desc: "End-to-end advisory and implementation support to identify, design, deploy, and scale agentic AI solutions across business functions and industries.",
@@ -30,7 +30,7 @@ const SERVICES = [
     bullets: ["Opportunity identification", "Agentic solution design", "Enterprise-scale deployment"]
   },
   {
-    title: "REAL ESTATE\nTECHNOLOGY",
+    title: "REAL ESTATE\nTECHNOLOGY & DIGITAL TRANSFORMATION SERVICES",
     cat: "Real Estate",
     loc: "Digital Transformation Services",
     desc: "Technology-led transformation of real estate operations using AI, automation, GIS, data intelligence, and digital workflows.",
@@ -50,17 +50,17 @@ const SERVICES = [
     bullets: ["Transaction structuring", "Financing and partnerships", "Optimized investment strategies"]
   },
   {
-    title: "STRATEGIC\nTRANSACTION",
+    title: "STRATEGIC TRANSACTION ADVISORY",
     cat: "Transactions",
     loc: "Strategy & Evaluation",
-    desc: "End-to-end strategic transaction support for acquisitions, divestments, joint ventures, partnerships, and other growth opportunities.",
+    desc: "End-to-end advisory for acquisitions, divestments, joint ventures, partnerships, and other strategic transactions, from evaluation through execution.",
     icon: "bridge",
     accent: [0.2667, 0.549, 0.4549],
     specs: [["M&A", "Strategy"], ["Joint", "Ventures"], ["Growth", "Partners"]],
     bullets: ["Acquisition and divestment strategy", "Joint venture evaluation", "Strategic partnership planning"]
   },
   {
-    title: "SERVICES\nADVISORY",
+    title: "SERVICES",
     cat: "Transactions",
     loc: "Evaluation Through Execution",
     desc: "End-to-end advisory for acquisitions, divestments, joint ventures, partnerships, and other strategic transactions, from evaluation through execution.",
@@ -75,7 +75,7 @@ const hero = { key: "hero", num: "01", cat: "", title: "SIGMAVALUE", loc: "", de
 
 const cards = SERVICES.map((service, index) => ({
   key: "ch",
-  num: String(index + 2).padStart(2, "0"),
+  num: String(index + 1).padStart(2, "0"),
   ...service,
   action: "Explore service",
   href: "#contact"

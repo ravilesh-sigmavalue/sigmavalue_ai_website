@@ -1,12 +1,13 @@
 .cross-industry-dialog {
-  width: calc(100% - 24px);
-  max-width: 900px !important;
-  margin: 12px auto;
+  width: min(1340px, calc(100vw - 32px)) !important;
+  max-width: none !important;
+  margin: 16px auto;
 }
 
 .cross-industry-modal {
   width: 100%;
-  max-height: calc(100vh - 24px);
+  height: min(640px, calc(100vh - 32px));
+  max-height: calc(100vh - 32px);
   overflow: hidden;
   border: 1px solid rgba(91, 112, 134, 0.34) !important;
   border-radius: 20px !important;
@@ -86,7 +87,7 @@
   gap: 16px;
 }
 
-.cross-industry-card {
+ .cross-industry-card {
   min-height: 230px;
   overflow: hidden;
   border: 1px solid rgba(91, 112, 134, 0.3) !important;

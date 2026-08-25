@@ -1,12 +1,13 @@
 .re-dialog {
-  width: calc(100% - 24px);
-  max-width: 1180px !important;
-  margin: 12px auto;
+  width: min(1340px, calc(100vw - 32px)) !important;
+  max-width: none !important;
+  margin: 16px auto;
 }
 
 .re-modal {
   position: relative;
-  max-height: calc(100vh - 24px);
+  height: min(640px, calc(100vh - 32px));
+  max-height: calc(100vh - 32px);
   overflow: hidden;
   border: 1px solid rgba(67, 209, 202, 0.22) !important;
   border-radius: 20px !important;
@@ -76,6 +77,8 @@
 
   width: 100%;
 
+  height: 100%;
+
   min-height: 0;
 
   max-height: calc(100vh - 24px);
@@ -99,6 +102,19 @@
   transition:
     background 0.5s ease,
     color 0.5s ease;
+}
+
+@media (max-width: 700px) {
+  .re-dialog {
+    width: calc(100vw - 16px) !important;
+    margin: 8px auto !important;
+  }
+
+  .re-modal {
+    height: calc(100vh - 16px);
+    max-height: calc(100vh - 16px);
+    border-radius: 15px !important;
+  }
 }
 
 
@@ -1917,4 +1933,100 @@ html[data-theme="light"] body[data-design="design4"] .re-capability {
       0.01ms !important;
   }
 
+}
+
+/* Fill the large desktop modal with a balanced, readable composition. */
+@media (min-width: 1101px) {
+  .re-shell {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: min(1240px, calc(100% - 80px));
+    height: 100%;
+    padding: 28px 0;
+    box-sizing: border-box;
+  }
+
+  .re-main-grid {
+    grid-template-columns: minmax(410px, 0.9fr) minmax(570px, 1.1fr);
+    gap: 42px;
+    align-items: center;
+  }
+
+  .re-heading-area h2 {
+    font-size: clamp(36px, 2.7vw, 44px);
+    line-height: 1.02;
+  }
+
+  .re-eyebrow {
+    margin-bottom: 11px;
+    font-size: 10px;
+  }
+
+  .re-intro {
+    max-width: 390px;
+    font-size: 10px;
+    line-height: 1.55;
+  }
+
+  .re-city-wrap {
+    height: 285px;
+    margin-top: 4px;
+  }
+
+  .re-skyline-image {
+    max-width: 570px;
+  }
+
+  .re-benefits {
+    margin-top: 6px;
+  }
+
+  .re-benefit {
+    min-height: 48px;
+    padding: 10px 8px;
+  }
+
+  .re-benefit strong,
+  .re-benefit span {
+    font-size: 8px;
+  }
+
+  .re-flow {
+    gap: 14px;
+  }
+
+  .re-capability {
+    min-height: 120px !important;
+    padding: 14px 16px 14px 10px;
+    gap: 13px;
+  }
+
+  .re-capability-icon {
+    flex-basis: 50px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .re-capability-copy h3 {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .re-capability-copy p {
+    margin-top: 6px;
+    font-size: 9px;
+    line-height: 1.5;
+  }
+
+  .re-explore-button {
+    margin-top: 7px;
+    font-size: 8px;
+  }
+
+  .re-flow-line {
+    left: 35px;
+    top: 48px;
+    bottom: 48px;
+  }
 }

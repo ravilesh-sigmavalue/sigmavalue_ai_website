@@ -1,9 +1,114 @@
 import { useEffect, useRef } from "react";
 
+function getNatureInstanceCounts(width) {
+  if (width < 760) return { trees: 5, shrubs: 4, rocks: 2, patches: 0 };
+  if (width < 1100) return { trees: 7, shrubs: 7, rocks: 3, patches: 5 };
+  return { trees: 11, shrubs: 12, rocks: 5, patches: 9 };
+}
+
+function createNatureElements(THREE, width) {
+  const counts = getNatureInstanceCounts(width);
+  const group = new THREE.Group();
+  group.name = "light-theme-nature";
+
+  const emerald = new THREE.MeshStandardMaterial({ color: 0x1a7a50, roughness: 0.86, metalness: 0.02 });
+  const sage = new THREE.MeshStandardMaterial({ color: 0x78a978, roughness: 0.9, metalness: 0 });
+  const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x9a6b32, roughness: 0.96, metalness: 0 });
+  const rockMaterial = new THREE.MeshStandardMaterial({ color: 0xb18b52, roughness: 0.92, metalness: 0.02 });
+  const patchMaterial = new THREE.MeshStandardMaterial({ color: 0xa8d4a0, roughness: 1, transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide });
+
+  const crownGeometry = new THREE.ConeGeometry(0.42, 1.15, 7);
+  crownGeometry.translate(0, 0.575, 0);
+  const trunkGeometry = new THREE.CylinderGeometry(0.09, 0.13, 0.82, 6);
+  trunkGeometry.translate(0, 0.41, 0);
+  const shrubGeometry = new THREE.IcosahedronGeometry(0.34, 0);
+  const rockGeometry = new THREE.IcosahedronGeometry(0.34, 1);
+  const rockPosition = rockGeometry.attributes.position;
+  for (let i = 0; i < rockPosition.count; i++) {
+    const x = rockPosition.getX(i), y = rockPosition.getY(i), z = rockPosition.getZ(i);
+    const distortion = 0.88 + ((i * 37) % 13) / 50;
+    rockPosition.setXYZ(i, x * distortion, y * (0.68 + (i % 3) * 0.08), z * (1.08 - (i % 2) * 0.12));
+  }
+  rockGeometry.computeVertexNormals();
+  const patchGeometry = new THREE.CircleGeometry(0.72, 10);
+
+  const crowns = new THREE.InstancedMesh(crownGeometry, emerald, counts.trees);
+  const trunks = new THREE.InstancedMesh(trunkGeometry, trunkMaterial, counts.trees);
+  const shrubs = new THREE.InstancedMesh(shrubGeometry, sage, counts.shrubs);
+  const rocks = new THREE.InstancedMesh(rockGeometry, rockMaterial, counts.rocks);
+  const patches = new THREE.InstancedMesh(patchGeometry, patchMaterial, counts.patches);
+  [crowns, trunks, shrubs, rocks, patches].forEach((mesh) => {
+    mesh.castShadow = false;
+    mesh.receiveShadow = true;
+    mesh.frustumCulled = false;
+    group.add(mesh);
+  });
+
+  const dummy = new THREE.Object3D();
+  const treeTransforms = [];
+  for (let i = 0; i < counts.trees; i++) {
+    const angle = (i / counts.trees) * Math.PI * 2 + 0.22;
+    const radius = 4.65 + (i % 3) * 0.48;
+    const scale = 0.78 + (i % 4) * 0.09;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    dummy.position.set(x, -5.08, z);
+    dummy.rotation.set(0, -angle + 0.35, 0);
+    dummy.scale.setScalar(scale);
+    dummy.updateMatrix();
+    trunks.setMatrixAt(i, dummy.matrix);
+    treeTransforms.push({ x, z, scale, angle, phase: i * 0.73 });
+    dummy.position.y = -4.3;
+    dummy.updateMatrix();
+    crowns.setMatrixAt(i, dummy.matrix);
+  }
+
+  for (let i = 0; i < counts.shrubs; i++) {
+    const angle = (i / counts.shrubs) * Math.PI * 2 + 0.48;
+    const radius = 3.05 + (i % 3) * 0.36;
+    dummy.position.set(Math.cos(angle) * radius, -4.88, Math.sin(angle) * radius);
+    dummy.rotation.set(0, angle, 0);
+    dummy.scale.set(0.72 + (i % 2) * 0.2, 0.55 + (i % 3) * 0.08, 0.72);
+    dummy.updateMatrix();
+    shrubs.setMatrixAt(i, dummy.matrix);
+  }
+
+  for (let i = 0; i < counts.rocks; i++) {
+    const angle = (i / counts.rocks) * Math.PI * 2 + 0.9;
+    const radius = 3.75 + (i % 2) * 0.6;
+    dummy.position.set(Math.cos(angle) * radius, -4.87, Math.sin(angle) * radius);
+    dummy.rotation.set(0.12 * (i % 2), angle * 1.7, -0.08 * (i % 3));
+    dummy.scale.set(0.7 + (i % 3) * 0.12, 0.55, 0.82 + (i % 2) * 0.15);
+    dummy.updateMatrix();
+    rocks.setMatrixAt(i, dummy.matrix);
+  }
+
+  for (let i = 0; i < counts.patches; i++) {
+    const angle = (i / counts.patches) * Math.PI * 2 + 0.31;
+    const radius = 2.45 + (i % 4) * 0.62;
+    dummy.position.set(Math.cos(angle) * radius, -5.065, Math.sin(angle) * radius);
+    dummy.rotation.set(-Math.PI / 2, 0, angle);
+    dummy.scale.set(1.1 + (i % 3) * 0.35, 0.72 + (i % 2) * 0.2, 1);
+    dummy.updateMatrix();
+    patches.setMatrixAt(i, dummy.matrix);
+  }
+
+  [crowns, trunks, shrubs, rocks, patches].forEach((mesh) => { mesh.instanceMatrix.needsUpdate = true; });
+  group.userData = { crowns, treeTransforms, windDummy: new THREE.Object3D() };
+  return group;
+}
+
 function WebGLBackground({ chapters, active, theme }) {
   const canvasRef = useRef(null);
   const activeRef = useRef(active);
   const accentRef = useRef(null);
+  const themeRef = useRef(theme);
+  const applyThemeRef = useRef(null);
+
+  useEffect(() => {
+    themeRef.current = theme;
+    applyThemeRef.current?.(theme);
+  }, [theme]);
 
   useEffect(() => {
     activeRef.current = active;
@@ -21,7 +126,7 @@ function WebGLBackground({ chapters, active, theme }) {
     const THREE = window.THREE;
     if (!canvas || !THREE) return;
 
-    const dark = theme !== "light";
+    let dark = themeRef.current !== "light";
 
     const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -32,6 +137,15 @@ function WebGLBackground({ chapters, active, theme }) {
 
     const scene = new THREE.Scene();
     scene.fog = new THREE.FogExp2(dark ? 0x050605 : 0xdaeef5, dark ? 0.012 : 0.007);
+
+    const hemisphereLight = new THREE.HemisphereLight(0xf2f7df, 0x6f5a3a, dark ? 0 : 1.35);
+    const natureKeyLight = new THREE.DirectionalLight(0xffedbd, dark ? 0 : 1.15);
+    natureKeyLight.position.set(5, 9, 4);
+    scene.add(hemisphereLight, natureKeyLight);
+
+    const natureGroup = createNatureElements(THREE, window.innerWidth);
+    natureGroup.visible = !dark;
+    scene.add(natureGroup);
 
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 6.2, 6.6);
@@ -418,6 +532,17 @@ function WebGLBackground({ chapters, active, theme }) {
 
     }
 
+    applyThemeRef.current = (nextTheme) => {
+      dark = nextTheme !== "light";
+      natureGroup.visible = !dark;
+      renderer.toneMappingExposure = dark ? 1.15 : 1.40;
+      scene.fog.color.setHex(dark ? 0x050605 : 0xdaeef5);
+      scene.fog.density = dark ? 0.012 : 0.007;
+      mat.uniforms.uDark.value = dark ? 1 : 0;
+      hemisphereLight.intensity = dark ? 0 : 1.35;
+      natureKeyLight.intensity = dark ? 0 : 1.15;
+    };
+
     /* ── Ambient Particle Field ── */
     const PCOUNT = window.innerWidth < 760 ? 260 : 650;
     const pGeo = new THREE.BufferGeometry();
@@ -491,14 +616,32 @@ function WebGLBackground({ chapters, active, theme }) {
     const targetA = new THREE.Color(...initAccent);
 
     let raf = 0;
+    let previousFrame = 0;
+    let windTime = 0;
     const animate = (t) => {
       raf = requestAnimationFrame(animate);
       const elapsed = t * 0.001;
+      const deltaTime = previousFrame ? Math.min((t - previousFrame) * 0.001, 0.05) : 0;
+      previousFrame = t;
+      windTime += deltaTime;
       mat.uniforms.uTime.value = elapsed;
 
       if (!reduceMotion) {
         // Slightly faster rotation in light for more dynamism
         building.rotation.y += dark ? 0.0009 : 0.0011;
+
+        if (natureGroup.visible) {
+          const { crowns, treeTransforms, windDummy } = natureGroup.userData;
+          treeTransforms.forEach((tree, index) => {
+            const sway = Math.sin(windTime * 0.85 + tree.phase) * 0.035;
+            windDummy.position.set(tree.x, -4.3, tree.z);
+            windDummy.rotation.set(sway, -tree.angle + 0.35, sway * 0.55);
+            windDummy.scale.setScalar(tree.scale);
+            windDummy.updateMatrix();
+            crowns.setMatrixAt(index, windDummy.matrix);
+          });
+          crowns.instanceMatrix.needsUpdate = true;
+        }
       }
 
       if (accentRef.current) {
@@ -569,6 +712,7 @@ function WebGLBackground({ chapters, active, theme }) {
       cancelAnimationFrame(raf);
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", onResize);
+      applyThemeRef.current = null;
       scene.traverse((obj) => {
         obj.geometry?.dispose();
         if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
@@ -576,7 +720,7 @@ function WebGLBackground({ chapters, active, theme }) {
       });
       renderer.dispose();
     };
-  }, [chapters, theme]);
+  }, [chapters]);
 
   return (
     <>

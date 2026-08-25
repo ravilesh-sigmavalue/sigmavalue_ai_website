@@ -3,38 +3,34 @@ import { FiArrowRight, FiX } from "react-icons/fi";
 import {
   TbBrain,
   TbChartHistogram,
-  TbPuzzle,
+  TbCirclesRelation,
   TbRobot,
 } from "react-icons/tb";
 import { useState } from "react";
 
 const enterpriseSolutions = [
   {
-    //id: "01",
     title: "Agentic AI & Automation",
     text: "Build AI agents and intelligent workflows to automate complex enterprise processes and operations.",
     icon: TbRobot,
     theme: "coral",
   },
   {
-    //id: "02",
     title: "Enterprise Knowledge & Copilots",
     text: "Develop AI-powered knowledge systems, copilots and assistants that leverage organizational data and documents.",
     icon: TbBrain,
     theme: "teal",
   },
   {
-    //id: "03",
     title: "AI Analytics & Decision Intelligence",
     text: "Deliver AI-powered analytics, forecasting and decision-support solutions for smarter business decisions.",
     icon: TbChartHistogram,
     theme: "teal",
   },
   {
-    //id: "04",
     title: "Custom AI Solutions & Integration",
-    text: "Develop and integrate tailored AI applications with existing ERP, CRM, databases and enterprise systems.",
-    icon: TbPuzzle,
+    text: "Develop and integrate tailored AI solutions with existing ERP, CRM, databases and enterprise systems.",
+    icon: TbCirclesRelation,
     theme: "coral",
   },
 ];
@@ -44,16 +40,23 @@ export function EnterpriseAIModal({
   onHide,
   eyebrow = "ENTERPRISE AI",
   title = "Intelligence built around your enterprise.",
-  subtitle = "Four connected capabilities for smarter, automated and data-driven organizations.",
+  subtitle = "For connected capabilities to streamline, automate and scale with your organization.",
   solutions = enterpriseSolutions,
   variant = "default",
+  theme,
   onExplore,
 }) {
   const [activeIndex, setActiveIndex] = useState(null);
 
   const connected = variant === "connected";
-
   const visibleSolutions = solutions.slice(0, 4);
+
+  // Detect current theme (light or dark)
+  const isLight =
+    theme === "light" ||
+    (typeof document !== "undefined" && document.documentElement.dataset.theme === "light");
+
+  const buildingImage = isLight ? "/Enterprizedlight.png" : "/Enterprizedark.png";
 
   const handleExplore = (solution, index) => {
     onExplore?.(solution, index);
@@ -66,28 +69,27 @@ export function EnterpriseAIModal({
       centered
       size="xl"
       dialogClassName="enterprise-ai-dialog"
-      contentClassName={`enterprise-ai-modal ${connected ? "enterprise-ai-modal-connected" : ""}`}
+      contentClassName={`enterprise-ai-modal ${connected ? "enterprise-ai-modal-connected" : ""} ${isLight ? "light-mode" : "dark-mode"
+        }`}
       backdropClassName="super-agent-backdrop"
     >
       {/* =========================
           HEADER
       ========================== */}
       <Modal.Header className="enterprise-ai-header">
-        <div>
-          <span>{eyebrow}</span>
+        <div className="enterprise-header-left-badge">
+          <span className="badge-text">{eyebrow}</span>
+          <span className="badge-circuit-line">
+            <i className="circuit-bar" />
+            <i className="circuit-node" />
+          </span>
+        </div>
 
-          <Modal.Title>
-            {connected && title.includes("your enterprise")
-              ? (
-                <>
-                  {title.split("your enterprise")[0]}
-                  <em>your enterprise.</em>
-                </>
-              )
-              : title}
+        <div className="enterprise-header-center">
+          <Modal.Title className="enterprise-title-hero">
+            Intelligence built around <span className="title-cyan-highlight">your enterprise.</span>
           </Modal.Title>
-
-          <p>{subtitle}</p>
+          <p className="enterprise-subtitle-hero">{subtitle}</p>
         </div>
 
         <Button
@@ -106,111 +108,139 @@ export function EnterpriseAIModal({
       {connected ? (
         <Modal.Body className="enterprise-ai-body enterprise-connected-body">
           <div className="enterprise-connected-layout">
+            {/* Background Cyber Grid / PCB Canvas */}
+            <div className="enterprise-cyber-grid" aria-hidden="true" />
+            <div className="enterprise-cyber-vignette" aria-hidden="true" />
 
             {/* =========================
-                BACKGROUND GRID
-            ========================== */}
-            <div className="enterprise-grid" aria-hidden="true" />
-
-            {/* =========================
-                CONNECTION SVG
+                CIRCUIT TRACE NETWORK SVG (Thunder Electric Lines: Building <-> Cards)
             ========================== */}
             <svg
-              className="enterprise-network"
-              viewBox="0 0 900 430"
+              className="enterprise-network-svg"
+              viewBox="0 0 1000 480"
               preserveAspectRatio="none"
               aria-hidden="true"
             >
-              {/* 01 → center */}
+              <defs>
+                {/* Brand Gradients */}
+                <linearGradient id="tealTraceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#43a09b" />
+                  <stop offset="50%" stopColor="#5cb8b2" />
+                  <stop offset="100%" stopColor="#a7f3ec" />
+                </linearGradient>
+                <linearGradient id="coralTraceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="#e87042" />
+                  <stop offset="50%" stopColor="#f0865e" />
+                  <stop offset="100%" stopColor="#ffc4ad" />
+                </linearGradient>
+
+                {/* Thunder Glow Filters */}
+                <filter id="thunderGlowTeal" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur1" />
+                  <feGaussianBlur stdDeviation="7" result="blur2" />
+                  <feMerge>
+                    <feMergeNode in="blur2" />
+                    <feMergeNode in="blur1" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+                <filter id="thunderGlowCoral" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur1" />
+                  <feGaussianBlur stdDeviation="7" result="blur2" />
+                  <feMerge>
+                    <feMergeNode in="blur2" />
+                    <feMergeNode in="blur1" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              {/* ===================== PATH 1 (Top-Left: Building <-> Card 1, Coral) ===================== */}
+              <path className="thunder-aura trace-coral" d="M 430 200 H 370 V 110 H 295" />
               <path
-                className={`network-line network-coral ${activeIndex === 0 ? "network-active" : ""
-                  }`}
-                d="M 215 90 C 270 90 305 135 360 175 "
+                id="thunder-track-1"
+                className={`thunder-track trace-coral ${activeIndex === 0 ? "trace-active" : ""}`}
+                d="M 430 200 H 370 V 110 H 295"
               />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 430 200 H 370 V 110 H 295" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 295 110 H 370 V 200 H 430" />
+              <circle className="circuit-node-dot building-node node-coral" cx="430" cy="200" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="295" cy="110" r="4.5" />
 
-              {/* 02 → center */}
+              {/* ===================== PATH 2 (Top-Right: Building <-> Card 2, Teal) ===================== */}
+              <path className="thunder-aura trace-teal" d="M 570 200 H 630 V 110 H 705" />
               <path
-                className={`network-line network-teal ${activeIndex === 1 ? "network-active" : ""
-                  }`}
-                d="M 685 90 C 630 90 595 135 540 175"
+                id="thunder-track-2"
+                className={`thunder-track trace-teal ${activeIndex === 1 ? "trace-active" : ""}`}
+                d="M 570 200 H 630 V 110 H 705"
               />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 570 200 H 630 V 110 H 705" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 705 110 H 630 V 200 H 570" />
+              <circle className="circuit-node-dot building-node node-teal" cx="570" cy="200" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="705" cy="110" r="4.5" />
 
-              {/* 03 → center */}
+              {/* ===================== PATH 3 (Bottom-Left: Building <-> Card 3, Teal) ===================== */}
+              <path className="thunder-aura trace-teal" d="M 430 280 H 370 V 370 H 295" />
               <path
-                className={`network-line network-teal ${activeIndex === 2 ? "network-active" : ""
-                  }`}
-                d="M 215 340 C 270 340 305 295 360 255"
+                id="thunder-track-3"
+                className={`thunder-track trace-teal ${activeIndex === 2 ? "trace-active" : ""}`}
+                d="M 430 280 H 370 V 370 H 295"
               />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 430 280 H 370 V 370 H 295" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 295 370 H 370 V 280 H 430" />
+              <circle className="circuit-node-dot building-node node-teal" cx="430" cy="280" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="295" cy="370" r="4.5" />
 
-              {/* 04 → center */}
+              {/* ===================== PATH 4 (Bottom-Right: Building <-> Card 4, Coral) ===================== */}
+              <path className="thunder-aura trace-coral" d="M 570 280 H 630 V 370 H 705" />
               <path
-                className={`network-line network-coral ${activeIndex === 3 ? "network-active" : ""
-                  }`}
-                d="M 685 340 C 630 340 595 295 540 255"
+                id="thunder-track-4"
+                className={`thunder-track trace-coral ${activeIndex === 3 ? "trace-active" : ""}`}
+                d="M 570 280 H 630 V 370 H 705"
               />
-
-              {/* Connection points */}
-              <circle
-                className="network-dot network-dot-coral"
-                cx="215"
-                cy="90"
-                r="3"
-              />
-
-              <circle
-                className="network-dot network-dot-teal"
-                cx="685"
-                cy="90"
-                r="3"
-              />
-
-              <circle
-                className="network-dot network-dot-teal"
-                cx="215"
-                cy="340"
-                r="3"
-              />
-
-              <circle
-                className="network-dot network-dot-coral"
-                cx="685"
-                cy="340"
-                r="3"
-              />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 570 280 H 630 V 370 H 705" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 705 370 H 630 V 280 H 570" />
+              <circle className="circuit-node-dot building-node node-coral" cx="570" cy="280" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="705" cy="370" r="4.5" />
             </svg>
 
             {/* =========================
-                CENTER AI HUB
+                CENTER BUILDING HUB
             ========================== */}
-            <div className="enterprise-ai-core">
-              <span className="enterprise-ai-core-orbit enterprise-ai-core-orbit-one" />
-              <span className="enterprise-ai-core-orbit enterprise-ai-core-orbit-two" />
+            <div className="enterprise-building-hub">
+              <div className="building-image-wrap">
+                {/* Concentric Pedestal Glow & Rings at Base */}
+                <div className="building-pedestal-glow" />
+                <div className="building-pedestal-ring ring-outer" />
+                <div className="building-pedestal-ring ring-mid" />
+                <div className="building-pedestal-ring ring-inner" />
 
-              <span className="enterprise-ai-core-platform">
-                <i className="enterprise-ai-core-cube-top" />
-                <i className="enterprise-ai-core-cube-front" />
-              </span>
+                {/* Building Image */}
+                <img
+                  className="enterprise-hub-building"
+                  src={buildingImage}
+                  alt="Enterprise AI Central Headquarters"
+                />
+              </div>
             </div>
 
             {/* =========================
-                FOUR DYNAMIC CARDS
+                FOUR CONNECTED CARDS
             ========================== */}
             {visibleSolutions.map((solution, index) => {
               const {
-                id,
                 title,
                 text,
                 icon: Icon,
-                theme = index === 0 || index === 3
-                  ? "coral"
-                  : "teal",
+                theme: cardTheme = index === 0 || index === 3 ? "coral" : "teal",
               } = solution;
 
               return (
                 <Card
-                  key={solution.id || solution.title}
-                  className={`enterprise-solution-card enterprise-connected-card card-${index + 1} ${theme} ${activeIndex === index ? "solution-active" : ""
-                    }`}
+                  key={solution.title}
+                  className={`enterprise-solution-card enterprise-connected-card card-pos-${
+                    index + 1
+                  } theme-${cardTheme} ${activeIndex === index ? "solution-active" : ""}`}
                   onMouseEnter={() => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
                   onClick={() => handleExplore(solution, index)}
@@ -223,29 +253,31 @@ export function EnterpriseAIModal({
                     }
                   }}
                 >
-                  <Card.Body>
+                  {/* Connection Node Indicator on Card Edge */}
+                  <span className={`card-edge-node node-${cardTheme}`} />
 
-                    {/* Card top */}
-                    <div className="enterprise-card-top">
-                      <span className="enterprise-card-icon">
-                        <Icon />
+                  <Card.Body>
+                    <div className="enterprise-card-header-row">
+                      <span className={`enterprise-hex-badge hex-${cardTheme}`}>
+                        <span className="hex-inner">
+                          <Icon />
+                        </span>
                       </span>
 
+                      <Card.Title className="enterprise-card-title">{title}</Card.Title>
                     </div>
 
-                    <div className="enterprise-card-heading">
-                      <Card.Title>{title}</Card.Title>
+                    <Card.Text className="enterprise-card-desc">{text}</Card.Text>
+
+                    <div className="enterprise-card-action">
+                      <span className="enterprise-card-arrow-btn">
+                        <FiArrowRight />
+                      </span>
                     </div>
-
-                    {/* Description */}
-                    <Card.Text>{text}</Card.Text>
-
-                    <FiArrowRight className="enterprise-card-arrow" />
                   </Card.Body>
                 </Card>
               );
             })}
-
           </div>
         </Modal.Body>
       ) : (
@@ -255,33 +287,21 @@ export function EnterpriseAIModal({
         <Modal.Body className="enterprise-ai-body">
           <div className="enterprise-default-grid">
             {solutions.map(({ title, text, icon: Icon }, index) => (
-              <Card
-                className="enterprise-solution-card h-100"
-                key={title}
-              >
+              <Card className="enterprise-solution-card h-100" key={title}>
                 <Card.Body>
                   <div className="enterprise-card-top">
                     <span>
                       <Icon />
                     </span>
-
-                    <Badge>
-                      {String(index + 1).padStart(2, "0")}
-                    </Badge>
+                    <Badge>{String(index + 1).padStart(2, "0")}</Badge>
                   </div>
-
                   <Card.Title>{title}</Card.Title>
-
                   <Card.Text>{text}</Card.Text>
                 </Card.Body>
-
                 <Card.Footer>
                   <Button
                     variant="link"
-                    onClick={() => onExplore?.(
-                      { title, text, icon: Icon },
-                      index
-                    )}
+                    onClick={() => onExplore?.({ title, text, icon: Icon }, index)}
                   >
                     Explore capability
                     <FiArrowRight />
@@ -295,3 +315,4 @@ export function EnterpriseAIModal({
     </Modal>
   );
 }
+

@@ -3,6 +3,7 @@ import { Badge, Button, Card, Modal } from "react-bootstrap";
 import {
   FiArrowLeft,
   FiArrowRight,
+  FiArrowUpRight,
   FiBarChart2,
   FiBriefcase,
   FiCpu,
@@ -15,6 +16,43 @@ import {
 } from "react-icons/fi";
 
 const groupIcons = [FiHome, FiBarChart2, FiMap, FiGrid, FiCpu, FiPieChart, FiBriefcase, FiZap];
+
+const agentLinks = {
+  // SigmaValue — Valuation Intelligence
+  "Valuation Agent": "https://os.sigmavalue.ai/valuation",
+  "Valuation B2C": "https://sigmavalue.ai/valuation/",
+  // SigmaMarket Lens — Market Intelligence
+  "Market Research Agent": "https://os.sigmavalue.ai/market_research",
+  "Transaction Intelligence Agent": "https://os.sigmavalue.ai/data_retrieval",
+  "Live Data Intelligence Agent": "https://os.sigmavalue.ai/web_search",
+  "Analytics Agent": null,
+  "Data Dashboard": null,
+  // SigmaGeo — Geo-Spatial Intelligence
+  "Land/GIS Agent": "https://os.sigmavalue.ai/visualization_agent",
+  "Elevation Agent": "https://os.sigmavalue.ai/elevation",
+  // SigmaFeasibility — Simulator
+  "Feasibility Agent": "https://os.sigmavalue.ai/feasibility",
+  "Legal Agent": null,
+  "Document Intelligence Agent": "https://os.sigmavalue.ai/user_input",
+  // SigmaPhysical — Physical AI
+  "Physical AI Agent": null,
+  // SigmaPortfolio — Investment & Portfolio Intelligence
+  "Portfolio Management Agent": "https://os.sigmavalue.ai/portfolio-management",
+  "Value Creation Agent": null,
+  "Autonomous Relationship Agent": null,
+  // SigmaREOS — Real Estate Operations
+  "Autonomous Real Estate ERP Agent": null,
+  "Property Management Agent": null,
+  "Project Management Agent": null,
+  // SigmaWorkspace — AI Workspace & Automation
+  "Generative Interface": null,
+  "Solution Engine": null,
+  "Connector": "https://os.sigmavalue.ai/connector",
+  "Team Collaboration": null,
+};
+
+// Groups that render individual clickable agent cards
+const linkedGroups = new Set([0, 1, 2, 3, 4, 5, 6, 7]);
 
 export function AgentPlatformModal({ show, onHide, groups, theme }) {
   const [groupIndex, setGroupIndex] = useState(0);
@@ -252,21 +290,53 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
               </Badge>
             </Card.Header>
             <Card.Body>
-              <Card.Text>{group.agents[0][1]}</Card.Text>
-              <div className="super-capabilities">
-                {group.agents.map(([name]) => (
-                  <span key={name}>{name}</span>
-                ))}
-              </div>
+              {linkedGroups.has(groupIndex) ? (
+                <div className="super-agent-details">
+                  {group.agents.map(([name, description]) => {
+                    const href = agentLinks[name];
+                    const hasLink = Boolean(href);
+                    return (
+                      <div className="super-agent-detail" key={name}>
+                        {hasLink ? (
+                          <a href={href} target="_blank" rel="noreferrer">
+                            <div className="super-agent-detail-header">
+                              <span className="super-agent-detail-name">{name}</span>
+                              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                                <span className="super-agent-detail-visit">VISIT →</span>
+                                <span className="super-agent-detail-arrow"><FiArrowUpRight /></span>
+                              </div>
+                            </div>
+                            <p>{description}</p>
+                          </a>
+                        ) : (
+                          <div className="super-agent-detail-disabled">
+                            <div className="super-agent-detail-header">
+                              <span className="super-agent-detail-name">{name}</span>
+                              <span className="super-agent-detail-soon">COMING SOON</span>
+                            </div>
+                            <p>{description}</p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <>
+                  <Card.Text>{group.agents[0][1]}</Card.Text>
+                  <div className="super-capabilities">
+                    {group.agents.map(([name]) => (
+                      <span key={name}>{name}</span>
+                    ))}
+                  </div>
+                </>
+              )}
             </Card.Body>
             <Card.Footer>
               <span className="super-status">
                 <i /> {group.agents.length} CONNECTED AI AGENT
                 {group.agents.length > 1 ? "S" : ""}
               </span>
-              <Button>
-                Explore system <FiArrowRight />
-              </Button>
             </Card.Footer>
           </Card>
         </section>
