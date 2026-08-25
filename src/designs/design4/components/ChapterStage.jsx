@@ -6,16 +6,16 @@ import { AgentPlatformModal } from "./AgentPlatformModal";
 import { EnterpriseAIModal } from "./EnterpriseAIModal";
 import { CrossIndustryModal } from "./CrossIndustryModal";
 import { RealEstateTechnologyModal } from "./RealEstateTechnologyModal";
+import { StrategicTransactionModal } from "./StrategicTransactionModal";
 import {
   agentGroups, crossIndustrySolutions, dealStructuringSolutions,
-  realEstateTechnologySolutions, servicesAdvisorySolutions, strategicTransactionSolutions,
+  realEstateTechnologySolutions, servicesAdvisorySolutions,
 } from "./ServiceConstellation";
 
 const exploreModalContent = {
   2: { eyebrow: "CROSS-INDUSTRY AGENTIC AI", title: "From AI opportunity to enterprise-scale impact.", subtitle: "End-to-end advisory, implementation and optimization across industries and business functions.", solutions: crossIndustrySolutions },
   3: { eyebrow: "REAL ESTATE TECHNOLOGY & DIGITAL TRANSFORMATION SERVICES", title: "Transform every stage of real estate operations.", subtitle: "Connected technology, intelligent data and modern platforms for the complete real estate lifecycle.", solutions: realEstateTechnologySolutions },
   4: { eyebrow: "DEAL STRUCTURING & CAPITAL ADVISORY", title: "Structure stronger deals and smarter capital.", subtitle: "Integrated transaction, financing and investment advisory designed to optimize risk, returns and project economics.", solutions: dealStructuringSolutions },
-  5: { eyebrow: "STRATEGIC TRANSACTION", title: "Navigate every transaction with clarity.", subtitle: "End-to-end strategic, diligence and execution support for complex real estate transactions.", solutions: strategicTransactionSolutions },
   6: { eyebrow: "SERVICES ADVISORY", title: "Decision-ready real estate advisory.", subtitle: "Specialist intelligence and analysis for valuation, viability, markets and development decisions.", solutions: servicesAdvisorySolutions },
 };
 
@@ -287,9 +287,10 @@ function ChapterStage({ chapters, active, theme }) {
         )}
       </AnimatePresence>
       <AgentPlatformModal show={exploreCard === 0} onHide={() => setExploreCard(null)} groups={agentGroups} theme={theme} />
-      <EnterpriseAIModal show={exploreCard !== null && ![0, 2, 3].includes(exploreCard)} onHide={() => setExploreCard(null)} variant={exploreCard === 1 ? "connected" : "default"} theme={theme} {...(exploreModalContent[exploreCard] || {})} />
+      <EnterpriseAIModal show={exploreCard !== null && ![0, 2, 3, 5].includes(exploreCard)} onHide={() => setExploreCard(null)} variant={exploreCard === 1 ? "connected" : "default"} theme={theme} {...(exploreModalContent[exploreCard] || {})} />
       <CrossIndustryModal show={exploreCard === 2} onHide={() => setExploreCard(null)} {...exploreModalContent[2]} />
       <RealEstateTechnologyModal show={exploreCard === 3} onHide={() => setExploreCard(null)} />
+      <StrategicTransactionModal show={exploreCard === 5} onHide={() => setExploreCard(null)} />
     </div>
   );
 }

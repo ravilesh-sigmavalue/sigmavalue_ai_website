@@ -210,44 +210,44 @@
 
 body[data-design="design4"]
 .cross-industry-card:nth-child(1) {
-  background-image: url("/images/card1 dark.png") !important;
+  background-image: url("/crossindustry_images/card1 dark.png") !important;
 }
 
 body[data-design="design4"]
 .cross-industry-card:nth-child(2) {
-  background-image: url("/images/card2 dark.png") !important;
+  background-image: url("/crossindustry_images/card2 dark.png") !important;
 }
 
 body[data-design="design4"]
 .cross-industry-card:nth-child(3) {
-  background-image: url("/images/card3 drak.png") !important;
+  background-image: url("/crossindustry_images/card3 drak.png") !important;
 }
 
 body[data-design="design4"]
 .cross-industry-card:nth-child(4) {
-  background-image: url("/images/card4 dark.png") !important;
+  background-image: url("/crossindustry_images/card4 dark.png") !important;
 }
 
 
 /* Design 4 only: Cross Industry modal light-theme palette. */
 html[data-theme="light"] body[data-design="design4"]
 .cross-industry-card:nth-child(1) {
-  background-image: url("/images/card1 light.png") !important;
+  background-image: url("/crossindustry_images/card1 light.png") !important;
 }
 
 html[data-theme="light"] body[data-design="design4"]
 .cross-industry-card:nth-child(2) {
-  background-image: url("/images/card2 light.png") !important;
+  background-image: url("/crossindustry_images/card2 light.png") !important;
 }
 
 html[data-theme="light"] body[data-design="design4"]
 .cross-industry-card:nth-child(3) {
-  background-image: url("/images/card3 light.png") !important;
+  background-image: url("/crossindustry_images/card3 light.png") !important;
 }
 
 html[data-theme="light"] body[data-design="design4"]
 .cross-industry-card:nth-child(4) {
-  background-image: url("/images/card4 light.png") !important;
+  background-image: url("/crossindustry_images/card4 light.png") !important;
 }
 html[data-theme="light"] body[data-design="design4"]
 .cross-industry-card::before {

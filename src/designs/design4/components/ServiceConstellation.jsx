@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { AgentPlatformModal } from "./AgentPlatformModal";
 import { EnterpriseAIModal } from "./EnterpriseAIModal";
+import { StrategicTransactionModal } from "./StrategicTransactionModal";
 import { FiCompass, FiDatabase, FiDollarSign, FiGitMerge, FiLayers, FiPieChart, FiRefreshCw, FiTrendingUp, FiZap } from "react-icons/fi";
 
 export const agentGroups = [
@@ -160,7 +161,7 @@ export function ServiceConstellation({ chapters, active, theme }) {
     <EnterpriseAIModal show={crossIndustryModal} onHide={() => setCrossIndustryModal(false)} eyebrow="CROSS-INDUSTRY AGENTIC AI" title="From AI opportunity to enterprise-scale impact." subtitle="End-to-end advisory, implementation and optimization across industries and business functions." solutions={crossIndustrySolutions} />
     <EnterpriseAIModal show={realEstateTechnologyModal} onHide={() => setRealEstateTechnologyModal(false)} eyebrow="REAL ESTATE TECHNOLOGY & DIGITAL TRANSFORMATION SERVICES" title="Transform every stage of real estate operations." subtitle="Connected technology, intelligent data and modern platforms for the complete real estate lifecycle." solutions={realEstateTechnologySolutions} />
     <EnterpriseAIModal show={dealStructuringModal} onHide={() => setDealStructuringModal(false)} eyebrow="DEAL STRUCTURING & CAPITAL ADVISORY" title="Structure stronger deals and smarter capital." subtitle="Integrated transaction, financing and investment advisory designed to optimize risk, returns and project economics." solutions={dealStructuringSolutions} />
-    <EnterpriseAIModal show={strategicTransactionModal} onHide={() => setStrategicTransactionModal(false)} eyebrow="STRATEGIC TRANSACTION" title="Navigate every transaction with clarity." subtitle="End-to-end strategic, diligence and execution support for complex real estate transactions." solutions={strategicTransactionSolutions} />
+    <StrategicTransactionModal show={strategicTransactionModal} onHide={() => setStrategicTransactionModal(false)} />
     <EnterpriseAIModal show={servicesAdvisoryModal} onHide={() => setServicesAdvisoryModal(false)} eyebrow="SERVICES ADVISORY" title="Decision-ready real estate advisory." subtitle="Specialist intelligence and analysis for valuation, viability, markets and development decisions." solutions={servicesAdvisorySolutions} />
   </div>;
 }
