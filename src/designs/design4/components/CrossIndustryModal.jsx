@@ -24,9 +24,9 @@ export function CrossIndustryModal({
       onHide={onHide}
       centered
       size="xl"
-      dialogClassName="cross-industry-dialog"
+      dialogClassName="cross-industry-dialog d4-right-panel-dialog"
       contentClassName="cross-industry-modal"
-      backdropClassName="cross-industry-backdrop"
+      backdropClassName="cross-industry-backdrop d4-right-panel-backdrop"
     >
       <Modal.Header className="cross-industry-header">
         <div>

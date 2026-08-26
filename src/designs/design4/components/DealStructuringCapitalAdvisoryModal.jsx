@@ -166,7 +166,7 @@ function CapabilityCard({ item }) {
 
 export function DealStructuringCapitalAdvisoryModal({ show, onHide }) {
   return (
-    <Modal show={show} onHide={onHide} centered size="xl" dialogClassName="dsca-dialog" contentClassName="dsca-modal" backdropClassName="dsca-backdrop">
+    <Modal show={show} onHide={onHide} centered size="xl" dialogClassName="dsca-dialog d4-right-panel-dialog" contentClassName="dsca-modal" backdropClassName="dsca-backdrop d4-right-panel-backdrop">
       <section className="dsca-section" aria-labelledby="dsca-title">
         <button type="button" className="dsca-close" onClick={onHide} aria-label="Close"><FiX /></button>
         <div className="dsca-top">

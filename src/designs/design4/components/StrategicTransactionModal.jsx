@@ -222,7 +222,7 @@ function StageRow({ stage }) {
 
 export function StrategicTransactionModal({ show, onHide }) {
   return (
-    <Modal show={show} onHide={onHide} centered dialogClassName="stm-dialog" contentClassName="stm-modal" backdropClassName="stm-backdrop">
+    <Modal show={show} onHide={onHide} centered dialogClassName="stm-dialog d4-right-panel-dialog" contentClassName="stm-modal" backdropClassName="stm-backdrop d4-right-panel-backdrop">
       <section className="stm-section" aria-labelledby="stm-title">
         <button type="button" className="stm-close" onClick={onHide} aria-label="Close Strategic Transaction"><FiX /></button>
         <header className="stm-header">

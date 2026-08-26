@@ -1373,6 +1373,26 @@ body.modal-open {
   margin: 16px auto !important;
 }
 
+/* Desktop: keep the main 3D building visible and open the platform on its right. */
+@media (min-width: 1100px) {
+  body[data-design="design4"] .d4-right-panel-backdrop.show {
+    opacity: .42 !important;
+    backdrop-filter: blur(3px) !important;
+  }
+
+  html[data-theme="light"] body[data-design="design4"] .d4-right-panel-backdrop.show {
+    background: #000 !important;
+    opacity: .5 !important;
+  }
+
+  body[data-design="design4"] .d4-right-panel-dialog {
+    width: min(920px, calc(54vw - 32px)) !important;
+    max-width: none !important;
+    height: calc(100vh - 32px);
+    margin: 16px 16px 16px auto !important;
+  }
+}
+
 .super-agent-modal {
   --super-violet: var(--brand-coral);
   --super-cyan: var(--brand-teal);

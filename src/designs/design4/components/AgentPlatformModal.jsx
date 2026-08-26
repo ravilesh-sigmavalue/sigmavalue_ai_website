@@ -116,9 +116,9 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
       onHide={onHide}
       centered
       size="xl"
-      dialogClassName="super-agent-dialog"
+      dialogClassName="super-agent-dialog d4-right-panel-dialog"
       contentClassName={`super-agent-modal ${isLight ? "light-mode" : "dark-mode"}`}
-      backdropClassName="super-agent-backdrop"
+      backdropClassName="super-agent-backdrop d4-right-panel-backdrop"
     >
       <Modal.Header className="super-agent-header">
         <div>

@@ -228,9 +228,9 @@ export function ServicesAdvisoryModal({
       show={show}
       onHide={onHide}
       centered
-      dialogClassName="sa-dialog"
+      dialogClassName="sa-dialog d4-right-panel-dialog"
       contentClassName="sa-modal"
-      backdropClassName="sa-backdrop"
+      backdropClassName="sa-backdrop d4-right-panel-backdrop"
     >
 
       <section

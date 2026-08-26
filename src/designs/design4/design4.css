@@ -568,7 +568,7 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front {
 @media (min-width: 769px) {
   body[data-design="design4"] #carousel3d {
     top: 60%;
-    left: 50%;
+    left: 30%;
   }
 
   body[data-design="design4"] .bcard {

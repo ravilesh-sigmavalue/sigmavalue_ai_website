@@ -176,9 +176,9 @@ export function RealEstateTechnologyModal({ show, onHide }) {
       onHide={onHide}
       centered
       size="xl"
-      dialogClassName="re-dialog"
+      dialogClassName="re-dialog d4-right-panel-dialog"
       contentClassName="re-modal"
-      backdropClassName="re-backdrop"
+      backdropClassName="re-backdrop d4-right-panel-backdrop"
     >
       <button type="button" className="re-close" onClick={onHide} aria-label="Close Real Estate Technology">×</button>
       <section

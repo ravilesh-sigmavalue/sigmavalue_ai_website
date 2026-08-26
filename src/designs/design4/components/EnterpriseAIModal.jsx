@@ -68,10 +68,10 @@ export function EnterpriseAIModal({
       onHide={onHide}
       centered
       size="xl"
-      dialogClassName="enterprise-ai-dialog"
+      dialogClassName="enterprise-ai-dialog d4-right-panel-dialog"
       contentClassName={`enterprise-ai-modal ${connected ? "enterprise-ai-modal-connected" : ""} ${isLight ? "light-mode" : "dark-mode"
         }`}
-      backdropClassName="super-agent-backdrop"
+      backdropClassName="super-agent-backdrop d4-right-panel-backdrop"
     >
       {/* =========================
           HEADER
