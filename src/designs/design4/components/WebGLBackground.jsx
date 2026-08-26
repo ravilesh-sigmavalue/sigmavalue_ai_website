@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 
 function getNatureInstanceCounts(width) {
-  if (width < 760) return { trees: 5, shrubs: 4, rocks: 2, patches: 0 };
-  if (width < 1100) return { trees: 7, shrubs: 7, rocks: 3, patches: 5 };
-  return { trees: 11, shrubs: 12, rocks: 5, patches: 9 };
+  if (width < 760) return { trees: 5, grass: 6 };
+  if (width < 1100) return { trees: 7, grass: 10 };
+  return { trees: 9, grass: 14 };
 }
 
 function createNatureElements(THREE, width) {
@@ -11,90 +11,143 @@ function createNatureElements(THREE, width) {
   const group = new THREE.Group();
   group.name = "light-theme-nature";
 
-  const emerald = new THREE.MeshStandardMaterial({ color: 0x1a7a50, roughness: 0.86, metalness: 0.02 });
-  const sage = new THREE.MeshStandardMaterial({ color: 0x78a978, roughness: 0.9, metalness: 0 });
-  const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x9a6b32, roughness: 0.96, metalness: 0 });
-  const rockMaterial = new THREE.MeshStandardMaterial({ color: 0xb18b52, roughness: 0.92, metalness: 0.02 });
-  const patchMaterial = new THREE.MeshStandardMaterial({ color: 0xa8d4a0, roughness: 1, transparent: true, opacity: 0.42, depthWrite: false, side: THREE.DoubleSide });
+  const texLoader = new THREE.TextureLoader();
 
-  const crownGeometry = new THREE.ConeGeometry(0.42, 1.15, 7);
-  crownGeometry.translate(0, 0.575, 0);
-  const trunkGeometry = new THREE.CylinderGeometry(0.09, 0.13, 0.82, 6);
-  trunkGeometry.translate(0, 0.41, 0);
-  const shrubGeometry = new THREE.IcosahedronGeometry(0.34, 0);
-  const rockGeometry = new THREE.IcosahedronGeometry(0.34, 1);
-  const rockPosition = rockGeometry.attributes.position;
-  for (let i = 0; i < rockPosition.count; i++) {
-    const x = rockPosition.getX(i), y = rockPosition.getY(i), z = rockPosition.getZ(i);
-    const distortion = 0.88 + ((i * 37) % 13) / 50;
-    rockPosition.setXYZ(i, x * distortion, y * (0.68 + (i % 3) * 0.08), z * (1.08 - (i % 2) * 0.12));
-  }
-  rockGeometry.computeVertexNormals();
-  const patchGeometry = new THREE.CircleGeometry(0.72, 10);
+  // 1. Crisp high-definition tree texture
+  const treeTexture = texLoader.load('/tree-light.png');
+  treeTexture.colorSpace = THREE.SRGBColorSpace;
+  treeTexture.generateMipmaps = true;
+  treeTexture.minFilter = THREE.LinearMipmapLinearFilter;
 
-  const crowns = new THREE.InstancedMesh(crownGeometry, emerald, counts.trees);
-  const trunks = new THREE.InstancedMesh(trunkGeometry, trunkMaterial, counts.trees);
-  const shrubs = new THREE.InstancedMesh(shrubGeometry, sage, counts.shrubs);
-  const rocks = new THREE.InstancedMesh(rockGeometry, rockMaterial, counts.rocks);
-  const patches = new THREE.InstancedMesh(patchGeometry, patchMaterial, counts.patches);
-  [crowns, trunks, shrubs, rocks, patches].forEach((mesh) => {
-    mesh.castShadow = false;
-    mesh.receiveShadow = true;
-    mesh.frustumCulled = false;
-    group.add(mesh);
+  const sharedTreeMat = new THREE.SpriteMaterial({
+    map: treeTexture,
+    transparent: true,
+    alphaTest: 0.08,
+    depthTest: true,
+    depthWrite: true
   });
 
+  // 2. High-definition grass and stone textures (6 clean isolated varieties)
+  const grassTextures = [
+    texLoader.load('/grass-stone-1.png'),
+    texLoader.load('/grass-stone-2.png'),
+    texLoader.load('/grass-stone-3.png'),
+    texLoader.load('/grass-stone-4.png'),
+    texLoader.load('/grass-stone-5.png'),
+    texLoader.load('/grass-stone-6.png'),
+  ];
+  grassTextures.forEach((t) => {
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.generateMipmaps = true;
+    t.minFilter = THREE.LinearMipmapLinearFilter;
+  });
+
+  const grassMaterials = grassTextures.map((t) => new THREE.SpriteMaterial({
+    map: t,
+    transparent: true,
+    alphaTest: 0.08,
+    depthTest: true,
+    depthWrite: true
+  }));
+
+  // Soft contact shadows on the ground
+  const totalShadows = counts.trees + counts.grass;
+  const shadowGeo = new THREE.CircleGeometry(0.55, 16);
+  const shadowMat = new THREE.MeshBasicMaterial({
+    color: 0x16382b,
+    transparent: true,
+    opacity: 0.32,
+    depthWrite: false,
+    side: THREE.DoubleSide
+  });
+  const shadows = new THREE.InstancedMesh(shadowGeo, shadowMat, totalShadows);
+  shadows.castShadow = false;
+  shadows.receiveShadow = true;
+  shadows.frustumCulled = false;
+  group.add(shadows);
+
+  const treeData = [];
+  const grassData = [];
   const dummy = new THREE.Object3D();
-  const treeTransforms = [];
+  let shadowIdx = 0;
+
+  // Generate compact, ultra-crisp Trees with grass and stones at their base
   for (let i = 0; i < counts.trees; i++) {
-    const angle = (i / counts.trees) * Math.PI * 2 + 0.22;
-    const radius = 4.65 + (i % 3) * 0.48;
-    const scale = 0.78 + (i % 4) * 0.09;
+    const angle = (i / counts.trees) * Math.PI * 2 + 0.18;
+    const radius = 4.45 + (i % 3) * 0.42;
+    // Compact scale so pixel density is sharp and crisp
+    const scale = 1.45 + (i % 4) * 0.14;
     const x = Math.cos(angle) * radius;
     const z = Math.sin(angle) * radius;
-    dummy.position.set(x, -5.08, z);
-    dummy.rotation.set(0, -angle + 0.35, 0);
-    dummy.scale.setScalar(scale);
+    const baseY = -5.08 + (scale * 0.58);
+
+    // 3D Tree Sprite
+    const treeSprite = new THREE.Sprite(sharedTreeMat);
+    treeSprite.position.set(x, baseY, z);
+    treeSprite.scale.set(scale * 1.40, scale * 1.40, 1);
+    group.add(treeSprite);
+
+    // Ground Contact Shadow under tree
+    dummy.position.set(x, -5.07, z);
+    dummy.rotation.set(-Math.PI / 2, 0, 0);
+    dummy.scale.set(scale * 0.55, scale * 0.55, 1);
     dummy.updateMatrix();
-    trunks.setMatrixAt(i, dummy.matrix);
-    treeTransforms.push({ x, z, scale, angle, phase: i * 0.73 });
-    dummy.position.y = -4.3;
+    shadows.setMatrixAt(shadowIdx++, dummy.matrix);
+
+    treeData.push({ sprite: treeSprite, x, z, baseY, phase: i * 0.73 });
+
+    // Companion grass & stone clump right at the root base of each tree
+    const rootGrassMat = grassMaterials[i % grassMaterials.length];
+    const rootGrass = new THREE.Sprite(rootGrassMat);
+    const gOffsetX = (i % 2 === 0 ? 0.18 : -0.18) * scale;
+    const gOffsetZ = (i % 3 === 0 ? 0.15 : -0.15) * scale;
+    const gScale = scale * 0.58;
+    const gBaseY = -5.08 + (gScale * 0.38);
+
+    rootGrass.position.set(x + gOffsetX, gBaseY, z + gOffsetZ);
+    rootGrass.scale.set(gScale * 1.15, gScale * 0.92, 1);
+    group.add(rootGrass);
+
+    // Shadow under base grass
+    dummy.position.set(x + gOffsetX, -5.068, z + gOffsetZ);
+    dummy.rotation.set(-Math.PI / 2, 0, 0);
+    dummy.scale.set(gScale * 0.65, gScale * 0.65, 1);
     dummy.updateMatrix();
-    crowns.setMatrixAt(i, dummy.matrix);
+    if (shadowIdx < totalShadows) {
+      shadows.setMatrixAt(shadowIdx++, dummy.matrix);
+    }
+
+    grassData.push({ sprite: rootGrass, x: x + gOffsetX, z: z + gOffsetZ, baseY: gBaseY, phase: i * 0.95 });
   }
 
-  for (let i = 0; i < counts.shrubs; i++) {
-    const angle = (i / counts.shrubs) * Math.PI * 2 + 0.48;
-    const radius = 3.05 + (i % 3) * 0.36;
-    dummy.position.set(Math.cos(angle) * radius, -4.88, Math.sin(angle) * radius);
-    dummy.rotation.set(0, angle, 0);
-    dummy.scale.set(0.72 + (i % 2) * 0.2, 0.55 + (i % 3) * 0.08, 0.72);
-    dummy.updateMatrix();
-    shrubs.setMatrixAt(i, dummy.matrix);
+  // Generate additional surrounding Grass & Stone clusters along the perimeter
+  for (let i = 0; i < counts.grass - counts.trees; i++) {
+    const angle = (i / (counts.grass - counts.trees)) * Math.PI * 2 + 0.45;
+    const radius = 3.35 + (i % 3) * 0.55;
+    const gScale = 0.52 + (i % 3) * 0.12;
+    const x = Math.cos(angle) * radius;
+    const z = Math.sin(angle) * radius;
+    const gBaseY = -5.08 + (gScale * 0.38);
+
+    const gMat = grassMaterials[(i + 2) % grassMaterials.length];
+    const grassSprite = new THREE.Sprite(gMat);
+    grassSprite.position.set(x, gBaseY, z);
+    grassSprite.scale.set(gScale * 1.18, gScale * 0.95, 1);
+    group.add(grassSprite);
+
+    if (shadowIdx < totalShadows) {
+      dummy.position.set(x, -5.068, z);
+      dummy.rotation.set(-Math.PI / 2, 0, 0);
+      dummy.scale.set(gScale * 0.62, gScale * 0.62, 1);
+      dummy.updateMatrix();
+      shadows.setMatrixAt(shadowIdx++, dummy.matrix);
+    }
+
+    grassData.push({ sprite: grassSprite, x, z, baseY: gBaseY, phase: (i + counts.trees) * 0.82 });
   }
 
-  for (let i = 0; i < counts.rocks; i++) {
-    const angle = (i / counts.rocks) * Math.PI * 2 + 0.9;
-    const radius = 3.75 + (i % 2) * 0.6;
-    dummy.position.set(Math.cos(angle) * radius, -4.87, Math.sin(angle) * radius);
-    dummy.rotation.set(0.12 * (i % 2), angle * 1.7, -0.08 * (i % 3));
-    dummy.scale.set(0.7 + (i % 3) * 0.12, 0.55, 0.82 + (i % 2) * 0.15);
-    dummy.updateMatrix();
-    rocks.setMatrixAt(i, dummy.matrix);
-  }
-
-  for (let i = 0; i < counts.patches; i++) {
-    const angle = (i / counts.patches) * Math.PI * 2 + 0.31;
-    const radius = 2.45 + (i % 4) * 0.62;
-    dummy.position.set(Math.cos(angle) * radius, -5.065, Math.sin(angle) * radius);
-    dummy.rotation.set(-Math.PI / 2, 0, angle);
-    dummy.scale.set(1.1 + (i % 3) * 0.35, 0.72 + (i % 2) * 0.2, 1);
-    dummy.updateMatrix();
-    patches.setMatrixAt(i, dummy.matrix);
-  }
-
-  [crowns, trunks, shrubs, rocks, patches].forEach((mesh) => { mesh.instanceMatrix.needsUpdate = true; });
-  group.userData = { crowns, treeTransforms, windDummy: new THREE.Object3D() };
+  shadows.instanceMatrix.needsUpdate = true;
+  group.userData = { treeData, grassData };
   return group;
 }
 
@@ -148,7 +201,7 @@ function WebGLBackground({ chapters, active, theme }) {
     scene.add(natureGroup);
 
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
-    camera.position.set(0, 6.2, 6.6);
+    camera.position.set(0, 4.2, 6.6);
 
     /* ── Central Building Group ── */
     const building = new THREE.Group();
@@ -274,8 +327,7 @@ function WebGLBackground({ chapters, active, theme }) {
     roof.position.y = 4.96;
     building.add(roof);
 
-    // Floating SigmaValue logo above the roof. It has no supporting mast,
-    // surrounding disc or ring—only the transparent brand mark rotates.
+    // Floating SigmaValue logo above the roof
     const logoTexture = new THREE.TextureLoader().load('/logo.png');
     logoTexture.colorSpace = THREE.SRGBColorSpace;
     const logoGeo = new THREE.PlaneGeometry(0.58, 0.58);
@@ -317,8 +369,6 @@ function WebGLBackground({ chapters, active, theme }) {
     logoMesh.position.z = 0.006;
     logoGroup.add(logoMesh);
 
-    // A separate front-facing reverse face prevents the texture from looking
-    // mirrored when the rotating emblem turns away from the camera.
     const logoBack = new THREE.Mesh(logoGeo, logoMat);
     logoBack.position.z = -0.006;
     logoBack.rotation.y = Math.PI;
@@ -529,7 +579,6 @@ function WebGLBackground({ chapters, active, theme }) {
         ring.position.y = -5.08;
         scene.add(ring);
       });
-
     }
 
     applyThemeRef.current = (nextTheme) => {
@@ -604,10 +653,10 @@ function WebGLBackground({ chapters, active, theme }) {
     /* ── Smooth Orbit Animation Loop ── */
     const ANGLE_STEP = 0.72;
     const ORBIT_RADIUS = 6.6;
-    const lastServiceIndex = Math.max(
-      1,
-      chapters.reduce((last, chapter, index) => chapter.key === "ch" ? index : last, 0)
-    );
+    // Map ALL chapters (hero → service cards → contact/demo) evenly across
+    // the full building height. chapters.length - 1 gives the total number of
+    // scroll steps so chapter[0]=crown and chapter[N-1]=exactly ground level.
+    const totalScrollSteps = Math.max(1, chapters.length - 1);
     let scrollRawSmooth = 0;
     let sceneOpacity = 1;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -627,20 +676,19 @@ function WebGLBackground({ chapters, active, theme }) {
       mat.uniforms.uTime.value = elapsed;
 
       if (!reduceMotion) {
-        // Slightly faster rotation in light for more dynamism
         building.rotation.y += dark ? 0.0009 : 0.0011;
 
-        if (natureGroup.visible) {
-          const { crowns, treeTransforms, windDummy } = natureGroup.userData;
-          treeTransforms.forEach((tree, index) => {
-            const sway = Math.sin(windTime * 0.85 + tree.phase) * 0.035;
-            windDummy.position.set(tree.x, -4.3, tree.z);
-            windDummy.rotation.set(sway, -tree.angle + 0.35, sway * 0.55);
-            windDummy.scale.setScalar(tree.scale);
-            windDummy.updateMatrix();
-            crowns.setMatrixAt(index, windDummy.matrix);
+        if (natureGroup.visible && natureGroup.userData.treeData) {
+          const { treeData, grassData } = natureGroup.userData;
+          treeData.forEach((tree) => {
+            tree.sprite.position.x = tree.x + Math.sin(windTime * 0.85 + tree.phase) * 0.015;
+            tree.sprite.position.y = tree.baseY + Math.cos(windTime * 0.65 + tree.phase) * 0.008;
           });
-          crowns.instanceMatrix.needsUpdate = true;
+          if (grassData) {
+            grassData.forEach((grass) => {
+              grass.sprite.position.x = grass.x + Math.sin(windTime * 1.05 + grass.phase) * 0.012;
+            });
+          }
         }
       }
 
@@ -674,20 +722,20 @@ function WebGLBackground({ chapters, active, theme }) {
       const scrollRawTarget = window.scrollY / window.innerHeight;
       scrollRawSmooth += (scrollRawTarget - scrollRawSmooth) * 0.055;
 
-      // The building journey ends with the final service card. The separate
-      // contact/demo chapter no longer consumes another building level.
-      const scrollProgress = Math.min(Math.max(scrollRawSmooth / lastServiceIndex, 0), 1);
+      // scrollProgress: 0 = card 0 (hero, camera at crown top)
+      //                 1 = card N-1 (contact/demo, camera at earth ground level)
+      const scrollProgress = Math.min(Math.max(scrollRawSmooth / totalScrollSteps, 0), 1);
 
       const contactStageActive = chapters[activeRef.current]?.key === "contact";
-      sceneOpacity += ((contactStageActive ? 0.08 : 1) - sceneOpacity) * 0.08;
+      sceneOpacity += ((contactStageActive ? 0.85 : 1) - sceneOpacity) * 0.08;
       canvas.style.opacity = String(sceneOpacity);
 
       const orbitAngle = scrollRawSmooth * ANGLE_STEP;
       const orbitRadius = ORBIT_RADIUS + Math.sin(scrollRawSmooth * 0.4) * 0.25;
-      // Design 4 uses a lower desktop viewpoint so the tower remains the
-      // visual centre above and beside the compact card.
+      // card 0 (hero): camera at building crown top
+      // card N-1 (contact/demo): camera exactly at earth/ground level
       const camTopY = window.innerWidth < 760 ? 6.6 : 4.2;
-      const camBottomY = window.innerWidth < 760 ? -4.5 : -5.2;
+      const camBottomY = window.innerWidth < 760 ? -4.5 : -5.08;
       const totalDescent = camTopY - camBottomY;
 
       camPX += (mouseX * 0.4 - camPX) * 0.04;
@@ -697,10 +745,8 @@ function WebGLBackground({ chapters, active, theme }) {
       camera.position.z = Math.cos(orbitAngle) * orbitRadius;
       camera.position.y = camTopY - scrollProgress * totalDescent + camPY;
 
-      // On entry, aim higher so the crown, mast and logo sit safely below
-      // the navigation instead of being cropped above the viewport. Blend
-      // back to the original lower focus as the visitor scrolls down.
-      const entryFocusOffset = 0.75 - scrollProgress * 1.45;
+      // At hero, look up to frame crown & logo. By last card, look forward at ground.
+      const entryFocusOffset = 0.75 - scrollProgress * 0.85;
       camera.lookAt(0, camera.position.y + entryFocusOffset, 0);
 
       renderer.render(scene, camera);
