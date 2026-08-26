@@ -1483,6 +1483,11 @@ body.modal-open {
   scrollbar-color: rgba(67, 160, 155, 0.3) transparent;
 }
 
+.super-agent-modal.light-mode .super-agent-body,
+html[data-theme="light"] body[data-design="design4"] .super-agent-modal .super-agent-body {
+  background: #fff !important;
+}
+
 .super-agent-body:before {
   content: "";
   position: absolute;
@@ -2054,6 +2059,24 @@ body.modal-open {
 .super-agent-detail a:hover .super-agent-detail-visit {
   opacity: 1;
   transform: translateX(0);
+}
+
+.super-agent-detail a.super-agent-video-card {
+  border-color: rgba(232, 112, 66, 0.28);
+  background: rgba(232, 112, 66, 0.04);
+}
+
+.super-agent-detail a.super-agent-video-card:hover {
+  border-color: rgba(232, 112, 66, 0.65);
+  background: rgba(232, 112, 66, 0.1);
+  box-shadow: 0 8px 24px rgba(232, 112, 66, 0.2), 0 0 0 1px rgba(232, 112, 66, 0.3);
+}
+
+.super-agent-detail a.super-agent-video-card:hover .super-agent-detail-arrow {
+  background: var(--brand-coral) !important;
+  border-color: var(--brand-coral) !important;
+  color: #fff !important;
+  transform: scale(1.1);
 }
 
 .super-agent-detail p {

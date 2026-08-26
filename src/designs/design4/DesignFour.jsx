@@ -3,7 +3,7 @@ import { CHAPTERS } from "./data/chapters";
 import { useChapterScroll } from "./hooks/useChapterScroll";
 import { WebGLBackground } from "./components/WebGLBackground";
 import { ChapterStage, ContactChapter } from "./components/ChapterStage";
-import { AnnouncementBadge, AskBar, FloatingDemoButton, LeftCategoryNav, LiveSiteBadge, Loader, Pager, ScrollCue } from "./components/Chrome";
+import { AnnouncementBadge, AskBar, FloatingDemoButton, LeftCategoryNav, LiveSiteBadge, Loader, ScrollCue } from "./components/Chrome";
 import { Header } from "./components/Header";
 import { SiteDrawer } from "./components/SiteDrawer";
 import { MobileExperience } from "./components/MobileExperience";
@@ -40,7 +40,6 @@ export function DesignFour() {
         <AnnouncementBadge show={active === 0} />
         <LiveSiteBadge />
         <Header go={goToChapter} onMenu={() => setDrawer(true)} theme={theme} onTheme={() => setTheme((t) => t === "dark" ? "light" : "dark")} />
-        <Pager active={active} go={goToChapter} />
         <LeftCategoryNav active={active} go={goToChapter} />
         <AskBar show={active > 0} />
         <ChapterStage chapters={CHAPTERS} active={active} theme={theme} />
