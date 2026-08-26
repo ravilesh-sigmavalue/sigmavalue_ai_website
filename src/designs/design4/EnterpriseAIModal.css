@@ -1,101 +1,70 @@
 /* =========================================================
-   ENTERPRISE AI MODAL
-   Bootstrap handles basic modal/card/flex/button structure.
-   Custom CSS is mainly for illustration + theme.
+   ENTERPRISE AI DIALOG
 ========================================================= */
 
+.enterprise-ai-dialog.d4-right-panel-dialog,
 .enterprise-ai-dialog {
-  width: min(920px, calc(100vw - 32px)) !important;
+  width: min(920px, calc(100vw - 30px)) !important;
   max-width: none !important;
 }
 
+.enterprise-ai-backdrop {
+  background: rgba(2, 8, 14, 0.4) !important;
+}
+
+
+/* =========================================================
+   DARK THEME / COMMON VARIABLES
+========================================================= */
+
 .enterprise-ai-modal {
   --ent-bg: #03131f;
-  --ent-card: rgba(4, 25, 38, 0.92);
+  --ent-bg-deep: #020b13;
 
-  --ent-text: #f4fbfc;
-  --ent-muted: #90a7b0;
+  --ent-text: #f4f8fb;
+  --ent-muted: #91a2af;
 
-  --ent-teal: #39c8bf;
-  --ent-teal-soft: #6ce0d7;
+  --ent-coral: #d9774d;
+  --ent-mid: #b17f67;
+  --ent-teal: #43a09b;
 
-  --ent-coral: #e87042;
-  --ent-coral-soft: #f0865e;
+  --ent-coral-soft: #e99b79;
+  --ent-teal-soft: #6bbab6;
 
-  --ent-border: rgba(57, 200, 191, 0.24);
+  /* Main reusable gradient */
+  --enterprise-gradient:
+    linear-gradient(90deg,
+      #d9774d 0%,
+      #b17f67 45%,
+      #43a09b 100%);
 
   position: relative;
-
   overflow: hidden;
 
   color: var(--ent-text);
 
-  border: 1px solid var(--ent-border) !important;
-  border-radius: 20px !important;
+  border:
+    1px solid rgba(67, 160, 155, 0.28) !important;
+
+  border-radius: 22px !important;
 
   background:
     radial-gradient(circle at 50% 52%,
-      rgba(23, 126, 134, 0.13),
-      transparent 42%),
+      rgba(67, 160, 155, 0.1),
+      transparent 40%),
     linear-gradient(145deg,
-      #061827 0%,
-      #02111c 55%,
-      #031723 100%) !important;
+      #041725 0%,
+      #02121e 50%,
+      #020b13 100%) !important;
 
   box-shadow:
-    0 32px 90px rgba(0, 0, 0, 0.68),
-    0 0 45px rgba(30, 194, 185, 0.09);
+    0 28px 80px rgba(0, 0, 0, 0.55),
+    0 0 45px rgba(67, 160, 155, 0.06);
 }
 
 
 /* =========================================================
-   CLOSE
-========================================================= */
-
-.enterprise-close {
-  position: absolute;
-  z-index: 20;
-
-  top: 15px;
-  right: 15px;
-
-  width: 34px;
-  height: 34px;
-
-  display: grid;
-  place-items: center;
-
-  padding: 0 !important;
-
-  color: var(--ent-text) !important;
-
-  font-size: 20px;
-  font-weight: 300;
-  line-height: 1;
-
-  border: 1px solid rgba(57, 200, 191, 0.45) !important;
-  border-radius: 50% !important;
-
-  background: rgba(6, 28, 40, 0.6) !important;
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-
-.enterprise-close:hover {
-  transform: rotate(90deg);
-
-  color: #ffffff !important;
-
-  border-color: var(--ent-coral) !important;
-  background: var(--ent-coral) !important;
-}
-
-
-/* =========================================================
-   MAIN CANVAS
+   MAIN STAGE
 ========================================================= */
 
 .enterprise-stage {
@@ -106,21 +75,23 @@
   display: grid;
 
   grid-template-columns:
-    minmax(200px, 1fr) minmax(260px, 1.2fr) minmax(230px, 1fr);
+    225px minmax(285px, 1fr) 225px;
 
   grid-template-rows:
-    110px 315px 180px;
+    112px 315px 175px;
 
-  column-gap: 18px;
-  row-gap: 14px;
+  column-gap: 20px;
+  row-gap: 10px;
 
-  padding: 32px 44px 28px 34px;
+  padding: 28px 38px 26px;
 
   overflow: hidden;
 }
 
 
-/* subtle large circular rings */
+/* =========================================================
+   LARGE BACKGROUND RINGS
+========================================================= */
 
 .enterprise-stage::before {
   content: "";
@@ -128,49 +99,57 @@
   position: absolute;
   z-index: 0;
 
-  width: 380px;
-  height: 380px;
-
   left: 50%;
-  top: 48%;
+  top: 54%;
+
+  width: 560px;
+  height: 560px;
 
   transform: translate(-50%, -50%);
 
-  border: 1px solid rgba(60, 203, 195, 0.05);
   border-radius: 50%;
 
+  border:
+    1px solid rgba(67, 160, 155, 0.035);
+
   box-shadow:
-    0 0 0 68px rgba(60, 203, 195, 0.025),
-    0 0 0 138px rgba(60, 203, 195, 0.018);
+    0 0 0 72px rgba(67, 160, 155, 0.016),
+    0 0 0 150px rgba(67, 160, 155, 0.014),
+    0 0 0 225px rgba(67, 160, 155, 0.01);
+
+  pointer-events: none;
 }
 
 
-/* dotted decoration similar to reference */
+/* =========================================================
+   LOWER LEFT DOT PATTERN
+========================================================= */
 
 .enterprise-stage::after {
   content: "";
 
   position: absolute;
+  z-index: 0;
 
-  left: 10px;
-  bottom: 14px;
+  left: 12px;
+  bottom: 12px;
 
-  width: 125px;
-  height: 125px;
+  width: 122px;
+  height: 122px;
 
-  opacity: 0.32;
+  opacity: 0.38;
 
   background-image:
     radial-gradient(circle,
       var(--ent-teal) 1px,
-      transparent 1.4px);
+      transparent 1.3px);
 
   background-size: 9px 9px;
 
   mask-image:
     linear-gradient(135deg,
       #000 5%,
-      transparent 75%);
+      transparent 77%);
 
   pointer-events: none;
 }
@@ -182,66 +161,97 @@
 
 .enterprise-intro {
   position: relative;
-  z-index: 7;
+  z-index: 10;
 
-  grid-column: 1 / 3;
+  grid-column: 1 / -1;
   grid-row: 1;
 
   align-self: start;
   justify-self: start;
 
-  width: max-content;
-  max-width: 100%;
+  width: 100%;
 }
 
+
+/* =========================================================
+   EYEBROW
+========================================================= */
+
 .enterprise-eyebrow {
+  margin-bottom: 8px;
+
   color: var(--ent-teal);
 
   font-size: 9px;
   font-weight: 800;
 
-  letter-spacing: 0.13em;
+  letter-spacing: 0.14em;
 }
+
+
+/* =========================================================
+   MAIN HEADING
+========================================================= */
 
 .enterprise-intro h2 {
   margin: 0;
 
-  color: var(--ent-text);
+  font-size: clamp(26px, 2.55vw, 34px);
 
-  font-size: clamp(22px, 2.2vw, 30px);
-  font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: -0.035em;
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
 
   white-space: nowrap;
+
+  background: var(--enterprise-gradient);
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .enterprise-intro h2 span {
-  color: var(--ent-teal);
-
-  text-shadow:
-    0 0 18px rgba(57, 200, 191, 0.24);
+  color: inherit;
+  -webkit-text-fill-color: inherit;
+  text-shadow: none;
 }
+
+
+/* =========================================================
+   MAIN TITLE ACCENT
+========================================================= */
 
 .enterprise-title-line {
   width: 52px;
   height: 2px;
 
-  margin: 13px 0;
+  margin-top: 12px;
 
-  border-radius: 20px;
+  border-radius: 999px;
 
-  background: var(--ent-teal);
+  background:
+    var(--enterprise-gradient);
 
   box-shadow:
-    0 0 10px rgba(57, 200, 191, 0.42);
+    0 0 8px rgba(67, 160, 155, 0.2);
 }
 
+
+/* =========================================================
+   INTRO DESCRIPTION
+========================================================= */
+
 .enterprise-intro-copy {
+  margin: 13px 0 0;
+
   color: var(--ent-muted);
 
   font-size: 10px;
-  line-height: 1.6;
+
+  line-height: 1.55;
 }
 
 
@@ -251,7 +261,7 @@
 
 .enterprise-building-hub {
   position: relative;
-  z-index: 4;
+  z-index: 5;
 
   grid-column: 2;
   grid-row: 2;
@@ -259,39 +269,44 @@
   width: 100%;
   height: 100%;
 
-  align-self: center;
-  justify-self: center;
-
   display: flex;
   align-items: center;
   justify-content: center;
 
-  transform: translateY(-12px);
+  align-self: center;
+  justify-self: center;
+
+  transform: translateY(-6px);
+
+  pointer-events: none;
 }
+
+
+/* =========================================================
+   BUILDING IMAGE
+========================================================= */
 
 .enterprise-building-image {
   position: relative;
   z-index: 5;
 
-  width: min(290px, 24vw);
-  max-height: 340px;
+  width: min(285px, 26vw);
+
+  max-width: 100%;
+  max-height: 315px;
 
   object-fit: contain;
 
   filter:
-    drop-shadow(0 14px 20px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 17px rgba(57, 200, 191, 0.28));
+    drop-shadow(0 17px 18px rgba(0, 0, 0, 0.38)) drop-shadow(0 0 13px rgba(67, 160, 155, 0.14));
 
   animation:
-    enterpriseFloat 4.5s ease-in-out infinite alternate;
+    enterprise-building-float 4.5s ease-in-out infinite alternate;
 }
 
-.building-light {
-  display: none;
-}
-
-@keyframes enterpriseFloat {
+@keyframes enterprise-building-float {
   from {
-    transform: translateY(2px);
+    transform: translateY(1px);
   }
 
   to {
@@ -300,17 +315,32 @@
 }
 
 
-/* main teal glow under building */
+/* =========================================================
+   BUILDING IMAGE THEME
+========================================================= */
 
-.enterprise-building-glow {
+.building-light {
+  display: none;
+}
+
+.building-dark {
+  display: block;
+}
+
+
+/* =========================================================
+   BUILDING AURA
+========================================================= */
+
+.enterprise-building-aura {
   position: absolute;
   z-index: 1;
 
   left: 50%;
-  bottom: 60px;
+  bottom: 52px;
 
-  width: 245px;
-  height: 60px;
+  width: 250px;
+  height: 80px;
 
   transform: translateX(-50%);
 
@@ -318,22 +348,24 @@
 
   background:
     radial-gradient(ellipse,
-      rgba(54, 216, 204, 0.55),
-      rgba(34, 132, 139, 0.15) 50%,
-      transparent 75%);
+      rgba(67, 160, 155, 0.28),
+      rgba(67, 160, 155, 0.07) 50%,
+      transparent 74%);
 
-  filter: blur(12px);
+  filter: blur(15px);
 }
 
 
-/* orbit rings */
+/* =========================================================
+   BUILDING ORBIT RINGS
+========================================================= */
 
 .enterprise-orbit {
   position: absolute;
   z-index: 2;
 
   left: 50%;
-  bottom: 65px;
+  bottom: 56px;
 
   transform:
     translateX(-50%) rotateX(69deg);
@@ -344,135 +376,325 @@
 }
 
 .enterprise-orbit-one {
-  width: 275px;
-  height: 105px;
+  width: 286px;
+  height: 93px;
 
-  border: 1.5px solid rgba(57, 200, 191, 0.72);
-
-  box-shadow:
-    0 0 17px rgba(57, 200, 191, 0.35);
+  border:
+    1px solid rgba(67, 160, 155, 0.42);
 }
 
 .enterprise-orbit-two {
-  width: 215px;
-  height: 80px;
+  width: 235px;
+  height: 75px;
 
-  border: 1px solid rgba(72, 220, 211, 0.5);
+  border:
+    1px solid rgba(67, 160, 155, 0.2);
 }
 
 .enterprise-orbit-three {
-  width: 155px;
+  width: 180px;
   height: 56px;
 
-  border: 1px dashed rgba(232, 112, 66, 0.45);
-}
-
-
-/* small hub connection points */
-
-.enterprise-hub-dot {
-  position: absolute;
-
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: var(--ent-teal);
-
-  box-shadow:
-    0 0 5px var(--ent-teal),
-    0 0 12px var(--ent-teal);
-}
-
-.hub-dot-left {
-  left: 8%;
-  top: 58%;
-}
-
-.hub-dot-right {
-  right: 8%;
-  top: 58%;
+  border:
+    1px dashed rgba(217, 119, 77, 0.22);
 }
 
 
 /* =========================================================
-   NETWORK CARDS
+   COMMON CARD
 ========================================================= */
 
 .enterprise-network-card {
   position: relative;
-  z-index: 6;
+  z-index: 7;
 
-  width: 100%;
-  max-width: 225px;
+  width: 220px;
+  max-width: 220px;
 
-  color: var(--ent-text) !important;
+  border-radius: 15px !important;
 
-  border: 1px solid var(--ent-border) !important;
-  border-radius: 13px !important;
-
-  background:
-    linear-gradient(145deg,
-      rgba(5, 31, 44, 0.94),
-      rgba(4, 20, 31, 0.92)) !important;
-
-  box-shadow:
-    0 11px 25px rgba(0, 0, 0, 0.22),
-    0 0 20px rgba(42, 205, 195, 0.05);
+  overflow: visible;
 
   backdrop-filter: blur(10px);
 
   transition:
     transform 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
 }
 
-.enterprise-network-card.theme-teal {
-  border-color: rgba(57, 200, 191, 0.38) !important;
-
-  background:
-    linear-gradient(145deg,
-      rgba(4, 31, 43, 0.96),
-      rgba(3, 22, 33, 0.94)) !important;
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.25),
-    0 0 20px rgba(57, 200, 191, 0.07);
-}
-
-.enterprise-network-card.theme-teal:hover {
-  border-color: rgba(57, 200, 191, 0.75) !important;
-
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.32),
-    0 0 28px rgba(57, 200, 191, 0.18);
-}
-
-.enterprise-network-card:hover {
-  transform: translateY(-3px);
-
-  border-color:
-    rgba(57, 200, 191, 0.65) !important;
-
-  box-shadow:
-    0 15px 30px rgba(0, 0, 0, 0.32),
-    0 0 22px rgba(57, 200, 191, 0.15);
-}
-
-.enterprise-network-card .card-body {
-  min-height: 136px;
-  height: 136px;
-
-  padding: 15px 14px 12px 40px;
-}
 
 /* =========================================================
-   CARD POSITION
+   CARD BODY
 ========================================================= */
 
-/* LEFT OF BUILDING */
+.enterprise-network-card .card-body {
+  position: relative;
+  z-index: 2;
+
+  min-height: 145px;
+
+  padding:
+    16px 15px 13px 41px;
+}
+
+
+/* =========================================================
+   DARK THEME
+   ALL FOUR CARD SURFACES
+========================================================= */
+
+.enterprise-ai-modal .enterprise-network-card.theme-teal,
+
+.enterprise-ai-modal .enterprise-network-card.theme-coral {
+  border:
+    1px solid transparent !important;
+
+  background:
+    linear-gradient(135deg,
+      rgba(36, 23, 27, 0.97) 0%,
+      rgba(18, 22, 29, 0.97) 48%,
+      rgba(4, 29, 35, 0.97) 100%) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.3),
+    -4px 0 18px rgba(217, 119, 77, 0.04),
+    4px 0 18px rgba(67, 160, 155, 0.05);
+}
+
+
+/* =========================================================
+   DARK CARD HOVER
+========================================================= */
+
+.enterprise-ai-modal .enterprise-network-card.theme-teal:hover,
+
+.enterprise-ai-modal .enterprise-network-card.theme-coral:hover {
+  transform: translateY(-3px);
+
+  background:
+    linear-gradient(135deg,
+      rgba(46, 28, 31, 0.98) 0%,
+      rgba(24, 25, 32, 0.98) 48%,
+      rgba(5, 37, 42, 0.98) 100%) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  box-shadow:
+    0 17px 34px rgba(0, 0, 0, 0.36),
+    -5px 0 22px rgba(217, 119, 77, 0.09),
+    5px 0 22px rgba(67, 160, 155, 0.1);
+}
+
+
+/* =========================================================
+   CARD HEADING
+   SAME GRADIENT IN DARK + LIGHT
+========================================================= */
+
+.enterprise-card-title {
+  margin: 0;
+
+  width: fit-content;
+  max-width: 100%;
+
+  display: inline-block;
+
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.28;
+
+  background:
+    var(--enterprise-gradient);
+
+  -webkit-background-clip:
+    text;
+
+  background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  color:
+    transparent;
+}
+
+
+/* =========================================================
+   CARD ACCENT LINE
+   SAME GRADIENT IN DARK + LIGHT
+========================================================= */
+
+.enterprise-card-accent {
+  width: 28px;
+  height: 2px;
+
+  margin:
+    8px 0 8px;
+
+  border-radius: 999px;
+
+  background:
+    var(--enterprise-gradient);
+}
+
+
+/* =========================================================
+   CARD DESCRIPTION
+========================================================= */
+
+.enterprise-card-description {
+  margin: 0;
+
+  color: var(--ent-muted);
+
+  font-size: 8.5px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   ICON ORB
+   GRADIENT BORDER
+========================================================= */
+
+.enterprise-icon-orb {
+  position: absolute;
+  z-index: 10;
+
+  top: 24px;
+  left: -22px;
+
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid transparent !important;
+
+  border-radius: 50%;
+
+  backdrop-filter: blur(7px);
+
+  background:
+    linear-gradient(#071923,
+      #071923) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  box-shadow:
+    0 0 0 7px rgba(67, 160, 155, 0.035),
+    0 0 18px rgba(67, 160, 155, 0.07),
+    0 0 12px rgba(217, 119, 77, 0.05);
+}
+
+.enterprise-icon-orb svg {
+  width: 21px;
+  height: 21px;
+
+  fill: none;
+
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   ICON SYMBOL COLORS
+========================================================= */
+
+.enterprise-icon-teal {
+  color: var(--ent-teal-soft);
+}
+
+.enterprise-icon-coral {
+  color: var(--ent-coral-soft);
+}
+
+
+/* =========================================================
+   CARD ARROW
+   GRADIENT BORDER
+========================================================= */
+
+.enterprise-card-arrow {
+  width: 21px;
+  height: 21px;
+
+  display: grid !important;
+  place-items: center;
+
+  padding: 0 !important;
+
+  border:
+    1px solid transparent !important;
+
+  border-radius: 50% !important;
+
+  background:
+    linear-gradient(#071923,
+      #071923) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  font-size: 11px;
+  line-height: 1;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   ARROW SYMBOL COLOR
+========================================================= */
+
+.theme-teal .enterprise-card-arrow {
+  color:
+    var(--ent-teal) !important;
+}
+
+.theme-coral .enterprise-card-arrow {
+  color:
+    var(--ent-coral) !important;
+}
+
+
+/* =========================================================
+   CARD ARROW HOVER
+========================================================= */
+
+.enterprise-ai-modal .enterprise-card-arrow:hover {
+  color:
+    #ffffff !important;
+
+  background:
+    var(--enterprise-gradient) !important;
+
+  transform:
+    translateX(2px);
+
+  box-shadow:
+    0 0 12px rgba(67, 160, 155, 0.16),
+    0 0 10px rgba(217, 119, 77, 0.12);
+}
+
+
+/* =========================================================
+   LEFT CARD
+========================================================= */
+
 .card-analytics {
   grid-column: 1;
   grid-row: 2;
@@ -482,239 +704,84 @@
 }
 
 
-/* RIGHT OF BUILDING */
+/* =========================================================
+   RIGHT CARD
+========================================================= */
+
 .card-agentic {
   grid-column: 3;
   grid-row: 2;
+
   justify-self: end;
   align-self: center;
-  width: 225px;
-  max-width: 225px;
 
-  margin-right: 28px;
+  margin-right: 4px;
 }
 
-
-/* bottom cards don't individually control the grid */
-.card-knowledge,
-.card-custom {
-  transform: translateY(0);
-}
-
-/* coral custom solution card */
-
-.enterprise-network-card.theme-coral {
-  border-color: rgba(232, 112, 66, 0.48) !important;
-
-  background:
-    linear-gradient(145deg,
-      rgba(38, 23, 24, 0.94),
-      rgba(17, 21, 29, 0.96)) !important;
-
-  box-shadow:
-    0 12px 28px rgba(0, 0, 0, 0.25),
-    0 0 22px rgba(232, 112, 66, 0.08);
-}
-
-.enterprise-network-card.theme-coral:hover {
-  border-color: rgba(232, 112, 66, 0.82) !important;
-
-  box-shadow:
-    0 16px 34px rgba(0, 0, 0, 0.32),
-    0 0 30px rgba(232, 112, 66, 0.2);
-}
 
 /* =========================================================
-   BOTTOM TWO CARDS
+   BOTTOM CARDS
 ========================================================= */
 
 .enterprise-bottom-cards {
   position: relative;
-  z-index: 6;
+  z-index: 7;
 
   grid-column: 1 / -1;
   grid-row: 3;
 
-  align-self: start;
   justify-self: center;
+  align-self: start;
 
   display: grid;
-  grid-template-columns: repeat(2, 210px);
-  column-gap: 34px;
+
+  grid-template-columns:
+    repeat(2, 220px);
+
+  column-gap: 36px;
 
   width: max-content;
 }
 
 .enterprise-bottom-cards .enterprise-network-card {
-  width: 210px;
-  max-width: 210px;
+  width: 220px;
+  max-width: 220px;
+
   margin: 0;
+
   align-self: start;
 }
 
-.enterprise-bottom-cards .card-knowledge,
-.enterprise-bottom-cards .card-custom {
-  justify-self: stretch;
-}
 
 /* =========================================================
-   CARD TYPOGRAPHY
-========================================================= */
-
-.enterprise-card-title {
-  color: var(--ent-teal);
-
-  font-size: 11px;
-  font-weight: 750;
-
-  line-height: 1.25;
-}
-
-.theme-coral .enterprise-card-title {
-  color: var(--ent-coral);
-}
-
-.enterprise-card-description {
-  color: var(--ent-muted);
-
-  font-size: 8.5px;
-  line-height: 1.55;
-}
-
-
-/* =========================================================
-   ICON BUBBLES
-========================================================= */
-
-.enterprise-icon-orb {
-  position: absolute;
-  z-index: 8;
-
-  top: 24px;
-  left: -25px;
-
-  width: 48px;
-  height: 48px;
-
-  display: grid;
-  place-items: center;
-
-  border-radius: 50%;
-
-  backdrop-filter: blur(7px);
-}
-
-.enterprise-icon-orb svg {
-  width: 22px;
-  height: 22px;
-
-  fill: none;
-  stroke: currentColor;
-
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.enterprise-icon-teal {
-  color: var(--ent-teal-soft);
-
-  border:
-    1px solid rgba(57, 200, 191, 0.54);
-
-  background:
-    rgba(9, 61, 68, 0.72);
-
-  box-shadow:
-    0 0 0 8px rgba(57, 200, 191, 0.05),
-    0 0 21px rgba(57, 200, 191, 0.22);
-}
-
-.enterprise-icon-coral {
-  color: var(--ent-coral-soft);
-
-  border:
-    1px solid rgba(232, 112, 66, 0.65);
-
-  background:
-    rgba(85, 37, 26, 0.7);
-
-  box-shadow:
-    0 0 0 8px rgba(232, 112, 66, 0.05),
-    0 0 22px rgba(232, 112, 66, 0.23);
-}
-
-
-/* =========================================================
-   CARD ARROW
-========================================================= */
-
-.enterprise-card-arrow {
-  width: 20px;
-  height: 20px;
-
-  display: grid !important;
-  place-items: center;
-
-  color: var(--ent-teal) !important;
-
-  font-size: 12px;
-  line-height: 1;
-
-  border:
-    1px solid rgba(57, 200, 191, 0.42) !important;
-
-  border-radius: 50% !important;
-
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-}
-
-.enterprise-card-arrow:hover {
-  transform: translateX(2px);
-
-  color: #03131f !important;
-
-  background:
-    var(--ent-teal) !important;
-}
-
-.theme-coral .enterprise-card-arrow {
-  color: var(--ent-coral) !important;
-
-  border-color:
-    rgba(232, 112, 66, 0.48) !important;
-}
-
-.theme-coral .enterprise-card-arrow:hover {
-  color: #ffffff !important;
-
-  background:
-    var(--ent-coral) !important;
-}
-
-
-/* =========================================================
-   CONNECTION LINES
+   CONNECTOR SVG
 ========================================================= */
 
 .enterprise-network-lines {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
 
-  left: 34px;
-  right: 34px;
-  top: 32px;
-  bottom: 24px;
+  left: 30px;
+  right: 30px;
 
-  width: calc(100% - 68px);
-  height: calc(100% - 56px);
+  top: 106px;
+  bottom: 18px;
+
+  width:
+    calc(100% - 60px);
+
+  height:
+    calc(100% - 124px);
 
   overflow: visible;
 
   pointer-events: none;
 }
+
+
+/* =========================================================
+   CONNECTOR BASE
+========================================================= */
 
 .enterprise-wire,
 .enterprise-wire-flow {
@@ -725,60 +792,88 @@
 }
 
 .enterprise-wire {
-  stroke-width: 1.6;
+  stroke-width: 1.7;
 
-  opacity: 0.72;
+  opacity: 0.78;
 }
+
+
+/* =========================================================
+   CONNECTOR ANIMATION
+========================================================= */
 
 .enterprise-wire-flow {
   stroke-width: 2.1;
 
-  stroke-dasharray: 8 45;
+  stroke-dasharray:
+    7 48;
 
   animation:
-    enterpriseWireFlow 2.6s linear infinite;
+    enterprise-wire-flow 2.8s linear infinite;
 }
+
+
+/* =========================================================
+   TEAL CONNECTOR
+========================================================= */
 
 .wire-teal {
-  stroke: var(--ent-teal);
+  stroke:
+    var(--ent-teal);
 
   filter:
-    drop-shadow(0 0 5px rgba(57, 200, 191, 0.68));
+    drop-shadow(0 0 4px rgba(67, 160, 155, 0.6));
 }
+
+
+/* =========================================================
+   CORAL CONNECTOR
+========================================================= */
 
 .wire-coral {
-  stroke: var(--ent-coral);
+  stroke:
+    var(--ent-coral);
 
   filter:
-    drop-shadow(0 0 5px rgba(232, 112, 66, 0.68));
+    drop-shadow(0 0 4px rgba(217, 119, 77, 0.58));
 }
 
-@keyframes enterpriseWireFlow {
+
+@keyframes enterprise-wire-flow {
   to {
-    stroke-dashoffset: -106;
+    stroke-dashoffset:
+      -110;
   }
 }
 
+
+/* =========================================================
+   CONNECTION NODES
+========================================================= */
+
 .wire-node {
   animation:
-    enterpriseNodePulse 1.8s ease-in-out infinite;
+    enterprise-node-pulse 1.8s ease-in-out infinite;
 }
 
 .node-teal {
-  fill: var(--ent-teal);
+  fill:
+    var(--ent-teal);
 
   filter:
     drop-shadow(0 0 5px var(--ent-teal));
 }
 
 .node-coral {
-  fill: var(--ent-coral);
+  fill:
+    var(--ent-coral);
 
   filter:
     drop-shadow(0 0 5px var(--ent-coral));
 }
 
-@keyframes enterpriseNodePulse {
+
+@keyframes enterprise-node-pulse {
 
   0%,
   100% {
@@ -792,126 +887,423 @@
 
 
 /* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.enterprise-close {
+  position: absolute;
+  z-index: 30;
+
+  top: 13px;
+  right: 13px;
+
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 !important;
+
+  color:
+    var(--ent-text) !important;
+
+  font-size: 19px;
+  font-weight: 300;
+  line-height: 1;
+
+  border:
+    1px solid rgba(67, 160, 155, 0.4) !important;
+
+  border-radius:
+    50% !important;
+
+  background:
+    rgba(3, 22, 32, 0.58) !important;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+.enterprise-close:hover {
+  transform:
+    rotate(90deg);
+
+  color:
+    #ffffff !important;
+
+  border-color:
+    transparent !important;
+
+  background:
+    var(--enterprise-gradient) !important;
+}
+
+
+/* =========================================================
+   =========================================================
    LIGHT THEME
+   =========================================================
 ========================================================= */
 
 html[data-theme="light"] .enterprise-ai-modal,
+
 html[data-bs-theme="light"] .enterprise-ai-modal,
+
 .enterprise-ai-modal.light-mode {
-  --ent-bg: #f8fcfc;
+  --ent-bg: #f7fafb;
+  --ent-bg-deep: #f1f5f6;
 
-  --ent-card:
-    rgba(255, 255, 255, 0.94);
+  --ent-text: #122431;
+  --ent-muted: #687781;
 
-  --ent-text: #142831;
-  --ent-muted: #61747b;
+  --ent-coral: #d9774d;
+  --ent-mid: #b17f67;
+  --ent-teal: #43a09b;
 
-  --ent-teal: #28aaa4;
-  --ent-teal-soft: #20aaa5;
+  --ent-coral-soft: #d9774d;
+  --ent-teal-soft: #43a09b;
 
-  --ent-coral: #e87042;
-  --ent-coral-soft: #e87042;
-
-  --ent-border:
-    rgba(52, 163, 158, 0.17);
+  border:
+    1px solid rgba(158, 175, 184, 0.5) !important;
 
   background:
     radial-gradient(circle at 50% 52%,
-      rgba(54, 190, 181, 0.11),
-      transparent 43%),
-    linear-gradient(145deg,
-      #ffffff 0%,
-      #f7fbfb 55%,
-      #f2f8f8 100%) !important;
-
-  border-color:
-    rgba(60, 152, 151, 0.18) !important;
+      rgba(67, 160, 155, 0.055),
+      transparent 39%),
+    linear-gradient(180deg,
+      #fbfdfd 0%,
+      #f3f7f8 100%) !important;
 
   box-shadow:
-    0 24px 65px rgba(38, 76, 82, 0.13);
+    0 20px 55px rgba(54, 79, 91, 0.1);
 }
 
 
-/* cards */
+/* =========================================================
+   LIGHT BACKGROUND RINGS
+========================================================= */
 
-html[data-theme="light"] .enterprise-network-card,
-html[data-bs-theme="light"] .enterprise-network-card,
-.enterprise-ai-modal.light-mode .enterprise-network-card {
+html[data-theme="light"] .enterprise-stage::before,
+
+html[data-bs-theme="light"] .enterprise-stage::before,
+
+.enterprise-ai-modal.light-mode .enterprise-stage::before {
+  border-color:
+    rgba(67, 160, 155, 0.035);
+
+  box-shadow:
+    0 0 0 72px rgba(67, 160, 155, 0.016),
+
+    0 0 0 150px rgba(67, 160, 155, 0.012),
+
+    0 0 0 225px rgba(67, 160, 155, 0.009);
+}
+
+
+/* =========================================================
+   LIGHT THEME
+   ALL 4 CARDS WITH GRADIENT BORDER
+========================================================= */
+
+html[data-theme="light"] .enterprise-network-card.theme-teal,
+
+html[data-theme="light"] .enterprise-network-card.theme-coral,
+
+html[data-bs-theme="light"] .enterprise-network-card.theme-teal,
+
+html[data-bs-theme="light"] .enterprise-network-card.theme-coral,
+
+.enterprise-ai-modal.light-mode .enterprise-network-card.theme-teal,
+
+.enterprise-ai-modal.light-mode .enterprise-network-card.theme-coral {
+  border:
+    1px solid transparent !important;
+
   background:
-    rgba(255, 255, 255, 0.92) !important;
+    linear-gradient(135deg,
+      rgba(255, 250, 247, 0.98) 0%,
+      rgba(255, 255, 255, 0.98) 48%,
+      rgba(246, 252, 251, 0.98) 100%) padding-box,
 
-  border-color:
-    rgba(52, 163, 158, 0.16) !important;
+    var(--enterprise-gradient) border-box !important;
 
   box-shadow:
-    0 9px 24px rgba(51, 81, 87, 0.1);
+    0 10px 24px rgba(66, 92, 105, 0.08),
+
+    -3px 0 14px rgba(217, 119, 77, 0.035),
+
+    3px 0 14px rgba(67, 160, 155, 0.04);
 }
 
 
-/* light icon circles */
+/* =========================================================
+   LIGHT CARD HOVER
+========================================================= */
+
+html[data-theme="light"] .enterprise-network-card.theme-teal:hover,
+
+html[data-theme="light"] .enterprise-network-card.theme-coral:hover,
+
+html[data-bs-theme="light"] .enterprise-network-card.theme-teal:hover,
+
+html[data-bs-theme="light"] .enterprise-network-card.theme-coral:hover,
+
+.enterprise-ai-modal.light-mode .enterprise-network-card.theme-teal:hover,
+
+.enterprise-ai-modal.light-mode .enterprise-network-card.theme-coral:hover {
+  transform:
+    translateY(-3px);
+
+  background:
+    linear-gradient(135deg,
+      #fff9f5 0%,
+      #ffffff 48%,
+      #f3fbfa 100%) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  box-shadow:
+    0 15px 30px rgba(66, 92, 105, 0.12),
+
+    -4px 0 17px rgba(217, 119, 77, 0.06),
+
+    4px 0 17px rgba(67, 160, 155, 0.07);
+}
+
+
+/* =========================================================
+   LIGHT CARD HEADING
+   KEEP SAME GRADIENT
+========================================================= */
+
+html[data-theme="light"] .enterprise-card-title,
+
+html[data-bs-theme="light"] .enterprise-card-title,
+
+.enterprise-ai-modal.light-mode .enterprise-card-title {
+  background:
+    var(--enterprise-gradient);
+
+  -webkit-background-clip:
+    text;
+
+  background-clip:
+    text;
+
+  -webkit-text-fill-color:
+    transparent;
+
+  color:
+    transparent;
+}
+
+
+/* =========================================================
+   LIGHT CARD ACCENT
+========================================================= */
+
+html[data-theme="light"] .enterprise-card-accent,
+
+html[data-bs-theme="light"] .enterprise-card-accent,
+
+.enterprise-ai-modal.light-mode .enterprise-card-accent {
+  background:
+    var(--enterprise-gradient);
+}
+
+
+/* =========================================================
+   LIGHT ICON ORB
+========================================================= */
+
+html[data-theme="light"] .enterprise-icon-orb,
+
+html[data-bs-theme="light"] .enterprise-icon-orb,
+
+.enterprise-ai-modal.light-mode .enterprise-icon-orb {
+  border:
+    1px solid transparent !important;
+
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.98),
+      rgba(248, 252, 252, 0.98)) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+
+  box-shadow:
+    0 0 0 7px rgba(67, 160, 155, 0.025),
+
+    0 6px 15px rgba(58, 100, 105, 0.07);
+}
+
+
+/* =========================================================
+   LIGHT ICON COLORS
+========================================================= */
 
 html[data-theme="light"] .enterprise-icon-teal,
+
 html[data-bs-theme="light"] .enterprise-icon-teal,
+
 .enterprise-ai-modal.light-mode .enterprise-icon-teal {
-  background:
-    rgba(239, 252, 251, 0.96);
-
-  border-color:
-    rgba(40, 170, 164, 0.34);
-
-  box-shadow:
-    0 0 0 8px rgba(40, 170, 164, 0.045),
-    0 8px 18px rgba(45, 111, 112, 0.09);
+  color:
+    var(--ent-teal);
 }
+
 
 html[data-theme="light"] .enterprise-icon-coral,
-html[data-bs-theme="light"] .enterprise-icon-coral,
-.enterprise-ai-modal.light-mode .enterprise-icon-coral {
-  background:
-    rgba(255, 247, 243, 0.98);
 
-  border-color:
-    rgba(232, 112, 66, 0.34);
+html[data-bs-theme="light"] .enterprise-icon-coral,
+
+.enterprise-ai-modal.light-mode .enterprise-icon-coral {
+  color:
+    var(--ent-coral);
+}
+
+
+/* =========================================================
+   LIGHT ARROW
+   SAME GRADIENT BORDER
+========================================================= */
+
+html[data-theme="light"] .enterprise-card-arrow,
+
+html[data-bs-theme="light"] .enterprise-card-arrow,
+
+.enterprise-ai-modal.light-mode .enterprise-card-arrow {
+  border:
+    1px solid transparent !important;
+
+  background:
+    linear-gradient(#ffffff,
+      #ffffff) padding-box,
+
+    var(--enterprise-gradient) border-box !important;
+}
+
+
+/* =========================================================
+   LIGHT ARROW COLORS
+========================================================= */
+
+html[data-theme="light"] .theme-teal .enterprise-card-arrow,
+
+html[data-bs-theme="light"] .theme-teal .enterprise-card-arrow,
+
+.enterprise-ai-modal.light-mode .theme-teal .enterprise-card-arrow {
+  color:
+    var(--ent-teal) !important;
+}
+
+
+html[data-theme="light"] .theme-coral .enterprise-card-arrow,
+
+html[data-bs-theme="light"] .theme-coral .enterprise-card-arrow,
+
+.enterprise-ai-modal.light-mode .theme-coral .enterprise-card-arrow {
+  color:
+    var(--ent-coral) !important;
+}
+
+
+/* =========================================================
+   LIGHT ARROW HOVER
+========================================================= */
+
+html[data-theme="light"] .enterprise-card-arrow:hover,
+
+html[data-bs-theme="light"] .enterprise-card-arrow:hover,
+
+.enterprise-ai-modal.light-mode .enterprise-card-arrow:hover {
+  color:
+    #ffffff !important;
+
+  background:
+    var(--enterprise-gradient) !important;
+
+  transform:
+    translateX(2px);
 
   box-shadow:
-    0 0 0 8px rgba(232, 112, 66, 0.045),
-    0 8px 18px rgba(150, 78, 53, 0.08);
+    0 4px 12px rgba(83, 106, 112, 0.13);
 }
 
 
-/* close light */
-
-html[data-theme="light"] .enterprise-close,
-html[data-bs-theme="light"] .enterprise-close,
-.enterprise-ai-modal.light-mode .enterprise-close {
-  color: #27434b !important;
-
-  background:
-    rgba(255, 255, 255, 0.74) !important;
-}
-
-
-/* switch building images */
+/* =========================================================
+   LIGHT BUILDING SWITCH
+========================================================= */
 
 html[data-theme="light"] .building-dark,
+
 html[data-bs-theme="light"] .building-dark,
+
 .enterprise-ai-modal.light-mode .building-dark {
   display: none;
 }
 
+
 html[data-theme="light"] .building-light,
+
 html[data-bs-theme="light"] .building-light,
+
 .enterprise-ai-modal.light-mode .building-light {
   display: block;
+
+  filter:
+    drop-shadow(0 15px 18px rgba(84, 111, 124, 0.16));
 }
 
 
-/* softer glow in light mode */
+/* =========================================================
+   LIGHT BUILDING AURA
+========================================================= */
 
-html[data-theme="light"] .enterprise-building-glow,
-html[data-bs-theme="light"] .enterprise-building-glow,
-.enterprise-ai-modal.light-mode .enterprise-building-glow {
-  opacity: 0.55;
+html[data-theme="light"] .enterprise-building-aura,
+
+html[data-bs-theme="light"] .enterprise-building-aura,
+
+.enterprise-ai-modal.light-mode .enterprise-building-aura {
+  opacity: 0.42;
+}
+
+
+/* =========================================================
+   LIGHT CLOSE BUTTON
+========================================================= */
+
+html[data-theme="light"] .enterprise-close,
+
+html[data-bs-theme="light"] .enterprise-close,
+
+.enterprise-ai-modal.light-mode .enterprise-close {
+  color:
+    #243a46 !important;
+
+  border:
+    1px solid rgba(136, 163, 175, 0.5) !important;
+
+  background:
+    rgba(255, 255, 255, 0.8) !important;
+}
+
+
+html[data-theme="light"] .enterprise-close:hover,
+
+html[data-bs-theme="light"] .enterprise-close:hover,
+
+.enterprise-ai-modal.light-mode .enterprise-close:hover {
+  color:
+    #ffffff !important;
+
+  border-color:
+    transparent !important;
+
+  background:
+    var(--enterprise-gradient) !important;
 }
 
 
@@ -920,65 +1312,118 @@ html[data-bs-theme="light"] .enterprise-building-glow,
 ========================================================= */
 
 @media (max-width: 991.98px) {
+
+  .enterprise-ai-dialog.d4-right-panel-dialog,
   .enterprise-ai-dialog {
-    width: calc(100vw - 24px) !important;
+    width:
+      calc(100vw - 24px) !important;
+
+    margin:
+      12px auto !important;
   }
+
 
   .enterprise-stage {
-    grid-template-columns: 1fr 1fr;
+    min-height:
+      auto;
+
+    grid-template-columns:
+      repeat(2,
+        minmax(0, 1fr));
 
     grid-template-rows:
-      auto 280px auto auto;
+      auto 285px auto auto;
 
-    gap: 18px;
+    gap:
+      18px 24px;
 
     padding:
-      34px 28px 30px;
+      28px 30px 30px;
   }
+
 
   .enterprise-intro {
-    grid-column: 1 / -1;
-    grid-row: 1;
+    grid-column:
+      1 / -1;
+
+    grid-row:
+      1;
   }
+
+
+  .enterprise-intro h2 {
+    white-space:
+      normal;
+  }
+
 
   .enterprise-building-hub {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    grid-column:
+      1 / -1;
+
+    grid-row:
+      2;
+
+    transform:
+      none;
   }
 
-  .card-agentic {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .card-analytics {
-    grid-column: 2;
-    grid-row: 3;
-  }
-
-  .card-knowledge {
-    grid-column: 1;
-    grid-row: 4;
-  }
-
-  .card-custom {
-    grid-column: 2;
-    grid-row: 4;
-  }
-
-  .enterprise-network-card {
-    justify-self: center;
-
-    width: calc(100% - 28px);
-    max-width: none;
-  }
-
-  .enterprise-network-lines {
-    display: none;
-  }
 
   .enterprise-building-image {
-    width: 250px;
+    width:
+      250px;
+
+    max-height:
+      275px;
+  }
+
+
+  .card-analytics {
+    grid-column:
+      1;
+
+    grid-row:
+      3;
+
+    justify-self:
+      center;
+  }
+
+
+  .card-agentic {
+    grid-column:
+      2;
+
+    grid-row:
+      3;
+
+    justify-self:
+      center;
+
+    margin-right:
+      0;
+  }
+
+
+  .enterprise-bottom-cards {
+    grid-column:
+      1 / -1;
+
+    grid-row:
+      4;
+
+    grid-template-columns:
+      repeat(2,
+        220px);
+
+    column-gap:
+      36px;
+  }
+
+
+  .enterprise-network-lines {
+    display:
+      none;
   }
 }
 
@@ -988,94 +1433,302 @@ html[data-bs-theme="light"] .enterprise-building-glow,
 ========================================================= */
 
 @media (max-width: 575.98px) {
-  .enterprise-ai-dialog {
-    width: calc(100vw - 14px) !important;
 
-    margin: 7px auto !important;
+  .enterprise-ai-dialog.d4-right-panel-dialog,
+  .enterprise-ai-dialog {
+    width:
+      calc(100vw - 14px) !important;
+
+    margin:
+      7px auto !important;
   }
+
 
   .enterprise-ai-modal {
     max-height:
       calc(100vh - 14px);
 
-    overflow-y: auto;
+    overflow-y:
+      auto;
 
     border-radius:
-      15px !important;
+      16px !important;
   }
+
 
   .enterprise-stage {
-    display: flex;
-    flex-direction: column;
+    display:
+      flex;
 
-    min-height: 0;
+    flex-direction:
+      column;
 
-    gap: 18px;
+    min-height:
+      0;
+
+    gap:
+      18px;
 
     padding:
-      28px 22px 26px;
+      26px 22px 28px;
   }
 
-  .enterprise-intro h2 {
-    font-size: 29px;
-  }
-
-  .enterprise-building-hub {
-    height: 260px;
-    flex: 0 0 260px;
-
-    order: 2;
-  }
 
   .enterprise-intro {
-    position: relative;
-    top: auto;
-    left: auto;
-    width: 100%;
-  }
-
-  .card-agentic {
-    order: 3;
-  }
-
-  .card-analytics {
-    order: 4;
-  }
-
-  .card-knowledge {
-    order: 5;
-  }
-
-  .card-custom {
-    order: 6;
-  }
-
-  .enterprise-network-card {
     width:
-      calc(100% - 26px);
-
-    max-width: none;
-
-    margin-left: 26px;
+      100%;
   }
 
-  .enterprise-network-card .card-body {
-    min-height: 125px;
+
+  .enterprise-intro h2 {
+    padding-right:
+      30px;
+
+    font-size:
+      26px;
+
+    white-space:
+      normal;
   }
+
+
+  .enterprise-intro-copy {
+    max-width:
+      92%;
+  }
+
+
+  .enterprise-building-hub {
+    order:
+      2;
+
+    width:
+      100%;
+
+    height:
+      265px;
+
+    flex:
+      0 0 265px;
+  }
+
 
   .enterprise-building-image {
-    width: 235px;
+    width:
+      235px;
+
+    max-height:
+      255px;
   }
 
-  .enterprise-orbit-one {
-    width: 235px;
+
+  .card-analytics {
+    order:
+      3;
   }
 
-  .enterprise-orbit-two {
-    width: 185px;
+
+  .card-agentic {
+    order:
+      4;
+
+    margin-right:
+      0;
   }
 
-  .enterprise-orbit-three {
-    width: 140px;
+
+  .enterprise-bottom-cards {
+    display:
+      contents;
+  }
+
+
+  .card-knowledge {
+    order:
+      5;
+  }
+
+
+  .card-custom {
+    order:
+      6;
+  }
+
+
+  .enterprise-network-card,
+  .enterprise-bottom-cards .enterprise-network-card {
+    width:
+      calc(100% - 24px);
+
+    max-width:
+      none;
+
+    margin-left:
+      24px;
+  }
+
+
+  .enterprise-network-card .card-body {
+    min-height:
+      130px;
+  }
+
+
+  .enterprise-icon-orb {
+    left:
+      -23px;
+  }
+
+
+  .enterprise-network-lines {
+    display:
+      none;
+  }
+}
+
+
+/* =========================================================
+   DESKTOP / HALF WINDOW PANEL
+========================================================= */
+
+@media (min-width: 992px) {
+
+  .enterprise-stage {
+    grid-template-columns:
+      minmax(190px, 0.82fr) minmax(250px, 1.12fr) minmax(190px, 0.82fr);
+
+    grid-template-rows:
+      112px 315px 175px;
+
+    column-gap:
+      12px;
+
+    row-gap:
+      10px;
+
+    padding:
+      28px 20px 26px;
+  }
+
+
+  .enterprise-network-card,
+  .enterprise-bottom-cards .enterprise-network-card {
+    width:
+      100%;
+
+    max-width:
+      205px;
+
+    min-width:
+      0;
+  }
+
+
+  .enterprise-network-card .card-body {
+    min-height:
+      150px;
+
+    padding:
+      16px 14px 13px 38px;
+  }
+
+
+  .enterprise-card-title {
+    font-size:
+      10.75px;
+
+    line-height:
+      1.3;
+
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .enterprise-card-description {
+    font-size:
+      8px;
+
+    line-height:
+      1.5;
+
+    overflow-wrap:
+      anywhere;
+  }
+
+
+  .enterprise-icon-orb {
+    left:
+      -20px;
+
+    width:
+      44px;
+
+    height:
+      44px;
+  }
+
+
+  .enterprise-icon-orb svg {
+    width:
+      20px;
+
+    height:
+      20px;
+  }
+
+
+  .card-analytics {
+    justify-self:
+      start;
+  }
+
+
+  .card-agentic {
+    justify-self:
+      end;
+
+    margin-right:
+      0;
+  }
+
+
+  .enterprise-building-image {
+    width:
+      min(265px, 22vw);
+
+    max-height:
+      300px;
+  }
+
+
+  .enterprise-building-aura {
+    width:
+      225px;
+  }
+
+
+  .enterprise-bottom-cards {
+    grid-template-columns:
+      repeat(2,
+        minmax(0, 205px));
+
+    column-gap:
+      28px;
+
+    width:
+      min(438px, 100%);
+  }
+
+
+  .enterprise-network-lines {
+    left:
+      18px;
+
+    right:
+      18px;
+
+    width:
+      calc(100% - 36px);
   }
 }
