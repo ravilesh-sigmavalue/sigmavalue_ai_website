@@ -1,13 +1,25 @@
 import { useEffect, useRef } from "react";
+import { DEFAULT_SCENE_SETTINGS } from "./SceneSettingsPanel";
 
-function getNatureInstanceCounts(width) {
-  if (width < 760) return { trees: 5, grass: 6 };
-  if (width < 1100) return { trees: 7, grass: 10 };
-  return { trees: 9, grass: 14 };
+// Returns counts, honouring settingsRef overrides with mobile-safe caps
+function getNatureInstanceCounts(width, settingsRef) {
+  const s = settingsRef?.current ?? {};
+  let maxTrees, maxGrass;
+  if (width < 760) { maxTrees = 6; maxGrass = 8; }
+  else if (width < 1100) { maxTrees = 9; maxGrass = 12; }
+  else { maxTrees = 12; maxGrass = 18; }
+
+  const defTrees = width < 760 ? 5 : width < 1100 ? 7 : 9;
+  const defGrass = width < 760 ? 6 : width < 1100 ? 10 : 14;
+
+  return {
+    trees: Math.min(Math.max(s.treeCount ?? defTrees, 2), maxTrees),
+    grass: Math.min(Math.max(s.grassCount ?? defGrass, 2), maxGrass),
+  };
 }
 
-function createNatureElements(THREE, width) {
-  const counts = getNatureInstanceCounts(width);
+function createNatureElements(THREE, width, settingsRef) {
+  const counts = getNatureInstanceCounts(width, settingsRef);
   const group = new THREE.Group();
   group.name = "light-theme-nature";
 
@@ -50,26 +62,9 @@ function createNatureElements(THREE, width) {
     depthWrite: true
   }));
 
-  // Soft contact shadows on the ground
-  const totalShadows = counts.trees + counts.grass;
-  const shadowGeo = new THREE.CircleGeometry(0.55, 16);
-  const shadowMat = new THREE.MeshBasicMaterial({
-    color: 0x16382b,
-    transparent: true,
-    opacity: 0.32,
-    depthWrite: false,
-    side: THREE.DoubleSide
-  });
-  const shadows = new THREE.InstancedMesh(shadowGeo, shadowMat, totalShadows);
-  shadows.castShadow = false;
-  shadows.receiveShadow = true;
-  shadows.frustumCulled = false;
-  group.add(shadows);
-
   const treeData = [];
   const grassData = [];
   const dummy = new THREE.Object3D();
-  let shadowIdx = 0;
 
   // Generate compact, ultra-crisp Trees with grass and stones at their base
   for (let i = 0; i < counts.trees; i++) {
@@ -87,14 +82,7 @@ function createNatureElements(THREE, width) {
     treeSprite.scale.set(scale * 1.40, scale * 1.40, 1);
     group.add(treeSprite);
 
-    // Ground Contact Shadow under tree
-    dummy.position.set(x, -5.07, z);
-    dummy.rotation.set(-Math.PI / 2, 0, 0);
-    dummy.scale.set(scale * 0.55, scale * 0.55, 1);
-    dummy.updateMatrix();
-    shadows.setMatrixAt(shadowIdx++, dummy.matrix);
-
-    treeData.push({ sprite: treeSprite, x, z, baseY, phase: i * 0.73 });
+    treeData.push({ sprite: treeSprite, x, z, baseY, phase: i * 0.73, baseScale: scale * 1.40 });
 
     // Companion grass & stone clump right at the root base of each tree
     const rootGrassMat = grassMaterials[i % grassMaterials.length];
@@ -107,15 +95,6 @@ function createNatureElements(THREE, width) {
     rootGrass.position.set(x + gOffsetX, gBaseY, z + gOffsetZ);
     rootGrass.scale.set(gScale * 1.15, gScale * 0.92, 1);
     group.add(rootGrass);
-
-    // Shadow under base grass
-    dummy.position.set(x + gOffsetX, -5.068, z + gOffsetZ);
-    dummy.rotation.set(-Math.PI / 2, 0, 0);
-    dummy.scale.set(gScale * 0.65, gScale * 0.65, 1);
-    dummy.updateMatrix();
-    if (shadowIdx < totalShadows) {
-      shadows.setMatrixAt(shadowIdx++, dummy.matrix);
-    }
 
     grassData.push({ sprite: rootGrass, x: x + gOffsetX, z: z + gOffsetZ, baseY: gBaseY, phase: i * 0.95 });
   }
@@ -133,30 +112,22 @@ function createNatureElements(THREE, width) {
     const grassSprite = new THREE.Sprite(gMat);
     grassSprite.position.set(x, gBaseY, z);
     grassSprite.scale.set(gScale * 1.18, gScale * 0.95, 1);
-    group.add(grassSprite);
-
-    if (shadowIdx < totalShadows) {
-      dummy.position.set(x, -5.068, z);
-      dummy.rotation.set(-Math.PI / 2, 0, 0);
-      dummy.scale.set(gScale * 0.62, gScale * 0.62, 1);
-      dummy.updateMatrix();
-      shadows.setMatrixAt(shadowIdx++, dummy.matrix);
-    }
-
     grassData.push({ sprite: grassSprite, x, z, baseY: gBaseY, phase: (i + counts.trees) * 0.82 });
   }
 
-  shadows.instanceMatrix.needsUpdate = true;
   group.userData = { treeData, grassData };
   return group;
 }
 
-function WebGLBackground({ chapters, active, theme }) {
+function WebGLBackground({ chapters, active, theme, settingsRef: externalSettingsRef }) {
   const canvasRef = useRef(null);
   const activeRef = useRef(active);
   const accentRef = useRef(null);
   const themeRef = useRef(theme);
   const applyThemeRef = useRef(null);
+  // Always create an internal ref (hooks must not be conditional), use external one if provided
+  const internalSettingsRef = useRef(DEFAULT_SCENE_SETTINGS);
+  const settingsRef = externalSettingsRef ?? internalSettingsRef;
 
   useEffect(() => {
     themeRef.current = theme;
@@ -196,9 +167,32 @@ function WebGLBackground({ chapters, active, theme }) {
     natureKeyLight.position.set(5, 9, 4);
     scene.add(hemisphereLight, natureKeyLight);
 
-    const natureGroup = createNatureElements(THREE, window.innerWidth);
+    let natureGroup = createNatureElements(THREE, window.innerWidth, settingsRef);
     natureGroup.visible = !dark;
     scene.add(natureGroup);
+
+    // Track last counts so we know when to rebuild
+    let lastTreeCount = settingsRef.current.treeCount ?? (window.innerWidth < 760 ? 5 : window.innerWidth < 1100 ? 7 : 9);
+    let lastGrassCount = settingsRef.current.grassCount ?? (window.innerWidth < 760 ? 6 : window.innerWidth < 1100 ? 10 : 14);
+
+    // Debounced rebuild when tree/grass counts change
+    let rebuildTimer = null;
+    function scheduleNatureRebuild() {
+      clearTimeout(rebuildTimer);
+      rebuildTimer = setTimeout(() => {
+        scene.remove(natureGroup);
+        natureGroup.traverse((obj) => {
+          obj.geometry?.dispose();
+          if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
+          else obj.material?.dispose();
+        });
+        natureGroup = createNatureElements(THREE, window.innerWidth, settingsRef);
+        natureGroup.visible = !dark;
+        scene.add(natureGroup);
+        lastTreeCount = settingsRef.current.treeCount ?? lastTreeCount;
+        lastGrassCount = settingsRef.current.grassCount ?? lastGrassCount;
+      }, 300);
+    }
 
     const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
     camera.position.set(0, 4.2, 6.6);
@@ -510,9 +504,9 @@ function WebGLBackground({ chapters, active, theme }) {
       l.position.y = y;
       building.add(l);
     }
-    addBaseOutline(2.75, 2.02, -4.59,  dark ? 0x43a09b : 0x2daa72, 0.72); // vivid emerald
+    addBaseOutline(2.75, 2.02, -4.59, dark ? 0x43a09b : 0x2daa72, 0.72); // vivid emerald
     addBaseOutline(3.05, 2.26, -4.615, dark ? 0x5cb8b2 : 0x1a7a50, 0.58); // rich emerald
-    addBaseOutline(3.35, 2.50, -4.64,  dark ? 0xe87042 : 0xd4a520, 0.50); // warm gold
+    addBaseOutline(3.35, 2.50, -4.64, dark ? 0xe87042 : 0xd4a520, 0.50); // warm gold
 
     // Match the light-theme base treatment in dark mode.
     if (dark) {
@@ -675,18 +669,39 @@ function WebGLBackground({ chapters, active, theme }) {
       windTime += deltaTime;
       mat.uniforms.uTime.value = elapsed;
 
+      // ── Live settings reads ────────────────────────────────────────────────
+      const S = settingsRef.current;
+      const treeScaleMult = S.treeScale ?? DEFAULT_SCENE_SETTINGS.treeScale;
+      const windMult = S.windSpeed ?? DEFAULT_SCENE_SETTINGS.windSpeed;
+      const buildingMult = S.buildingSpeed ?? DEFAULT_SCENE_SETTINGS.buildingSpeed;
+      const particleMult = S.particleSize ?? DEFAULT_SCENE_SETTINGS.particleSize;
+
+      // Trigger nature rebuild when count changes
+      const curTrees = S.treeCount ?? lastTreeCount;
+      const curGrass = S.grassCount ?? lastGrassCount;
+      if (curTrees !== lastTreeCount || curGrass !== lastGrassCount) {
+        scheduleNatureRebuild();
+      }
+
+      // Live particle size update
+      pMat.size = (dark ? 0.045 : 0.060) * particleMult;
+
       if (!reduceMotion) {
-        building.rotation.y += dark ? 0.0009 : 0.0011;
+        building.rotation.y += (dark ? 0.0009 : 0.0011) * buildingMult;
 
         if (natureGroup.visible && natureGroup.userData.treeData) {
           const { treeData, grassData } = natureGroup.userData;
           treeData.forEach((tree) => {
-            tree.sprite.position.x = tree.x + Math.sin(windTime * 0.85 + tree.phase) * 0.015;
-            tree.sprite.position.y = tree.baseY + Math.cos(windTime * 0.65 + tree.phase) * 0.008;
+            // Live tree scale update
+            const liveScale = tree.baseScale * treeScaleMult;
+            tree.sprite.scale.set(liveScale, liveScale, 1);
+            // Wind animation
+            tree.sprite.position.x = tree.x + Math.sin(windTime * 0.85 * windMult + tree.phase) * 0.015 * windMult;
+            tree.sprite.position.y = tree.baseY + Math.cos(windTime * 0.65 * windMult + tree.phase) * 0.008 * windMult;
           });
           if (grassData) {
             grassData.forEach((grass) => {
-              grass.sprite.position.x = grass.x + Math.sin(windTime * 1.05 + grass.phase) * 0.012;
+              grass.sprite.position.x = grass.x + Math.sin(windTime * 1.05 * windMult + grass.phase) * 0.012 * windMult;
             });
           }
         }
