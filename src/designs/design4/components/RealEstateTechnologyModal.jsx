@@ -1,5 +1,5 @@
 import { Modal } from "react-bootstrap";
-import "./RealEstateTechnologyModal.css";
+import "../RealEstateTechnologyModal.css";
 
 const capabilities = [
   {

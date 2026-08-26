@@ -1,0 +1,1081 @@
+/* =========================================================
+   ENTERPRISE AI MODAL
+   Bootstrap handles basic modal/card/flex/button structure.
+   Custom CSS is mainly for illustration + theme.
+========================================================= */
+
+.enterprise-ai-dialog {
+  width: min(920px, calc(100vw - 32px)) !important;
+  max-width: none !important;
+}
+
+.enterprise-ai-modal {
+  --ent-bg: #03131f;
+  --ent-card: rgba(4, 25, 38, 0.92);
+
+  --ent-text: #f4fbfc;
+  --ent-muted: #90a7b0;
+
+  --ent-teal: #39c8bf;
+  --ent-teal-soft: #6ce0d7;
+
+  --ent-coral: #e87042;
+  --ent-coral-soft: #f0865e;
+
+  --ent-border: rgba(57, 200, 191, 0.24);
+
+  position: relative;
+
+  overflow: hidden;
+
+  color: var(--ent-text);
+
+  border: 1px solid var(--ent-border) !important;
+  border-radius: 20px !important;
+
+  background:
+    radial-gradient(circle at 50% 52%,
+      rgba(23, 126, 134, 0.13),
+      transparent 42%),
+    linear-gradient(145deg,
+      #061827 0%,
+      #02111c 55%,
+      #031723 100%) !important;
+
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.68),
+    0 0 45px rgba(30, 194, 185, 0.09);
+}
+
+
+/* =========================================================
+   CLOSE
+========================================================= */
+
+.enterprise-close {
+  position: absolute;
+  z-index: 20;
+
+  top: 15px;
+  right: 15px;
+
+  width: 34px;
+  height: 34px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 !important;
+
+  color: var(--ent-text) !important;
+
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+
+  border: 1px solid rgba(57, 200, 191, 0.45) !important;
+  border-radius: 50% !important;
+
+  background: rgba(6, 28, 40, 0.6) !important;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.enterprise-close:hover {
+  transform: rotate(90deg);
+
+  color: #ffffff !important;
+
+  border-color: var(--ent-coral) !important;
+  background: var(--ent-coral) !important;
+}
+
+
+/* =========================================================
+   MAIN CANVAS
+========================================================= */
+
+.enterprise-stage {
+  position: relative;
+
+  min-height: 650px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(200px, 1fr) minmax(260px, 1.2fr) minmax(230px, 1fr);
+
+  grid-template-rows:
+    110px 315px 180px;
+
+  column-gap: 18px;
+  row-gap: 14px;
+
+  padding: 32px 44px 28px 34px;
+
+  overflow: hidden;
+}
+
+
+/* subtle large circular rings */
+
+.enterprise-stage::before {
+  content: "";
+
+  position: absolute;
+  z-index: 0;
+
+  width: 380px;
+  height: 380px;
+
+  left: 50%;
+  top: 48%;
+
+  transform: translate(-50%, -50%);
+
+  border: 1px solid rgba(60, 203, 195, 0.05);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 0 68px rgba(60, 203, 195, 0.025),
+    0 0 0 138px rgba(60, 203, 195, 0.018);
+}
+
+
+/* dotted decoration similar to reference */
+
+.enterprise-stage::after {
+  content: "";
+
+  position: absolute;
+
+  left: 10px;
+  bottom: 14px;
+
+  width: 125px;
+  height: 125px;
+
+  opacity: 0.32;
+
+  background-image:
+    radial-gradient(circle,
+      var(--ent-teal) 1px,
+      transparent 1.4px);
+
+  background-size: 9px 9px;
+
+  mask-image:
+    linear-gradient(135deg,
+      #000 5%,
+      transparent 75%);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   INTRO
+========================================================= */
+
+.enterprise-intro {
+  position: relative;
+  z-index: 7;
+
+  grid-column: 1 / 3;
+  grid-row: 1;
+
+  align-self: start;
+  justify-self: start;
+
+  width: max-content;
+  max-width: 100%;
+}
+
+.enterprise-eyebrow {
+  color: var(--ent-teal);
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+}
+
+.enterprise-intro h2 {
+  margin: 0;
+
+  color: var(--ent-text);
+
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+
+  white-space: nowrap;
+}
+
+.enterprise-intro h2 span {
+  color: var(--ent-teal);
+
+  text-shadow:
+    0 0 18px rgba(57, 200, 191, 0.24);
+}
+
+.enterprise-title-line {
+  width: 52px;
+  height: 2px;
+
+  margin: 13px 0;
+
+  border-radius: 20px;
+
+  background: var(--ent-teal);
+
+  box-shadow:
+    0 0 10px rgba(57, 200, 191, 0.42);
+}
+
+.enterprise-intro-copy {
+  color: var(--ent-muted);
+
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   BUILDING HUB
+========================================================= */
+
+.enterprise-building-hub {
+  position: relative;
+  z-index: 4;
+
+  grid-column: 2;
+  grid-row: 2;
+
+  width: 100%;
+  height: 100%;
+
+  align-self: center;
+  justify-self: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transform: translateY(-12px);
+}
+
+.enterprise-building-image {
+  position: relative;
+  z-index: 5;
+
+  width: min(290px, 24vw);
+  max-height: 340px;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(0 14px 20px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 17px rgba(57, 200, 191, 0.28));
+
+  animation:
+    enterpriseFloat 4.5s ease-in-out infinite alternate;
+}
+
+.building-light {
+  display: none;
+}
+
+@keyframes enterpriseFloat {
+  from {
+    transform: translateY(2px);
+  }
+
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+
+/* main teal glow under building */
+
+.enterprise-building-glow {
+  position: absolute;
+  z-index: 1;
+
+  left: 50%;
+  bottom: 60px;
+
+  width: 245px;
+  height: 60px;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(ellipse,
+      rgba(54, 216, 204, 0.55),
+      rgba(34, 132, 139, 0.15) 50%,
+      transparent 75%);
+
+  filter: blur(12px);
+}
+
+
+/* orbit rings */
+
+.enterprise-orbit {
+  position: absolute;
+  z-index: 2;
+
+  left: 50%;
+  bottom: 65px;
+
+  transform:
+    translateX(-50%) rotateX(69deg);
+
+  border-radius: 50%;
+
+  pointer-events: none;
+}
+
+.enterprise-orbit-one {
+  width: 275px;
+  height: 105px;
+
+  border: 1.5px solid rgba(57, 200, 191, 0.72);
+
+  box-shadow:
+    0 0 17px rgba(57, 200, 191, 0.35);
+}
+
+.enterprise-orbit-two {
+  width: 215px;
+  height: 80px;
+
+  border: 1px solid rgba(72, 220, 211, 0.5);
+}
+
+.enterprise-orbit-three {
+  width: 155px;
+  height: 56px;
+
+  border: 1px dashed rgba(232, 112, 66, 0.45);
+}
+
+
+/* small hub connection points */
+
+.enterprise-hub-dot {
+  position: absolute;
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--ent-teal);
+
+  box-shadow:
+    0 0 5px var(--ent-teal),
+    0 0 12px var(--ent-teal);
+}
+
+.hub-dot-left {
+  left: 8%;
+  top: 58%;
+}
+
+.hub-dot-right {
+  right: 8%;
+  top: 58%;
+}
+
+
+/* =========================================================
+   NETWORK CARDS
+========================================================= */
+
+.enterprise-network-card {
+  position: relative;
+  z-index: 6;
+
+  width: 100%;
+  max-width: 225px;
+
+  color: var(--ent-text) !important;
+
+  border: 1px solid var(--ent-border) !important;
+  border-radius: 13px !important;
+
+  background:
+    linear-gradient(145deg,
+      rgba(5, 31, 44, 0.94),
+      rgba(4, 20, 31, 0.92)) !important;
+
+  box-shadow:
+    0 11px 25px rgba(0, 0, 0, 0.22),
+    0 0 20px rgba(42, 205, 195, 0.05);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.enterprise-network-card.theme-teal {
+  border-color: rgba(57, 200, 191, 0.38) !important;
+
+  background:
+    linear-gradient(145deg,
+      rgba(4, 31, 43, 0.96),
+      rgba(3, 22, 33, 0.94)) !important;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.25),
+    0 0 20px rgba(57, 200, 191, 0.07);
+}
+
+.enterprise-network-card.theme-teal:hover {
+  border-color: rgba(57, 200, 191, 0.75) !important;
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.32),
+    0 0 28px rgba(57, 200, 191, 0.18);
+}
+
+.enterprise-network-card:hover {
+  transform: translateY(-3px);
+
+  border-color:
+    rgba(57, 200, 191, 0.65) !important;
+
+  box-shadow:
+    0 15px 30px rgba(0, 0, 0, 0.32),
+    0 0 22px rgba(57, 200, 191, 0.15);
+}
+
+.enterprise-network-card .card-body {
+  min-height: 136px;
+  height: 136px;
+
+  padding: 15px 14px 12px 40px;
+}
+
+/* =========================================================
+   CARD POSITION
+========================================================= */
+
+/* LEFT OF BUILDING */
+.card-analytics {
+  grid-column: 1;
+  grid-row: 2;
+
+  justify-self: start;
+  align-self: center;
+}
+
+
+/* RIGHT OF BUILDING */
+.card-agentic {
+  grid-column: 3;
+  grid-row: 2;
+  justify-self: end;
+  align-self: center;
+  width: 225px;
+  max-width: 225px;
+
+  margin-right: 28px;
+}
+
+
+/* bottom cards don't individually control the grid */
+.card-knowledge,
+.card-custom {
+  transform: translateY(0);
+}
+
+/* coral custom solution card */
+
+.enterprise-network-card.theme-coral {
+  border-color: rgba(232, 112, 66, 0.48) !important;
+
+  background:
+    linear-gradient(145deg,
+      rgba(38, 23, 24, 0.94),
+      rgba(17, 21, 29, 0.96)) !important;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.25),
+    0 0 22px rgba(232, 112, 66, 0.08);
+}
+
+.enterprise-network-card.theme-coral:hover {
+  border-color: rgba(232, 112, 66, 0.82) !important;
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.32),
+    0 0 30px rgba(232, 112, 66, 0.2);
+}
+
+/* =========================================================
+   BOTTOM TWO CARDS
+========================================================= */
+
+.enterprise-bottom-cards {
+  position: relative;
+  z-index: 6;
+
+  grid-column: 1 / -1;
+  grid-row: 3;
+
+  align-self: start;
+  justify-self: center;
+
+  display: grid;
+  grid-template-columns: repeat(2, 210px);
+  column-gap: 34px;
+
+  width: max-content;
+}
+
+.enterprise-bottom-cards .enterprise-network-card {
+  width: 210px;
+  max-width: 210px;
+  margin: 0;
+  align-self: start;
+}
+
+.enterprise-bottom-cards .card-knowledge,
+.enterprise-bottom-cards .card-custom {
+  justify-self: stretch;
+}
+
+/* =========================================================
+   CARD TYPOGRAPHY
+========================================================= */
+
+.enterprise-card-title {
+  color: var(--ent-teal);
+
+  font-size: 11px;
+  font-weight: 750;
+
+  line-height: 1.25;
+}
+
+.theme-coral .enterprise-card-title {
+  color: var(--ent-coral);
+}
+
+.enterprise-card-description {
+  color: var(--ent-muted);
+
+  font-size: 8.5px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   ICON BUBBLES
+========================================================= */
+
+.enterprise-icon-orb {
+  position: absolute;
+  z-index: 8;
+
+  top: 24px;
+  left: -25px;
+
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  backdrop-filter: blur(7px);
+}
+
+.enterprise-icon-orb svg {
+  width: 22px;
+  height: 22px;
+
+  fill: none;
+  stroke: currentColor;
+
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.enterprise-icon-teal {
+  color: var(--ent-teal-soft);
+
+  border:
+    1px solid rgba(57, 200, 191, 0.54);
+
+  background:
+    rgba(9, 61, 68, 0.72);
+
+  box-shadow:
+    0 0 0 8px rgba(57, 200, 191, 0.05),
+    0 0 21px rgba(57, 200, 191, 0.22);
+}
+
+.enterprise-icon-coral {
+  color: var(--ent-coral-soft);
+
+  border:
+    1px solid rgba(232, 112, 66, 0.65);
+
+  background:
+    rgba(85, 37, 26, 0.7);
+
+  box-shadow:
+    0 0 0 8px rgba(232, 112, 66, 0.05),
+    0 0 22px rgba(232, 112, 66, 0.23);
+}
+
+
+/* =========================================================
+   CARD ARROW
+========================================================= */
+
+.enterprise-card-arrow {
+  width: 20px;
+  height: 20px;
+
+  display: grid !important;
+  place-items: center;
+
+  color: var(--ent-teal) !important;
+
+  font-size: 12px;
+  line-height: 1;
+
+  border:
+    1px solid rgba(57, 200, 191, 0.42) !important;
+
+  border-radius: 50% !important;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+
+.enterprise-card-arrow:hover {
+  transform: translateX(2px);
+
+  color: #03131f !important;
+
+  background:
+    var(--ent-teal) !important;
+}
+
+.theme-coral .enterprise-card-arrow {
+  color: var(--ent-coral) !important;
+
+  border-color:
+    rgba(232, 112, 66, 0.48) !important;
+}
+
+.theme-coral .enterprise-card-arrow:hover {
+  color: #ffffff !important;
+
+  background:
+    var(--ent-coral) !important;
+}
+
+
+/* =========================================================
+   CONNECTION LINES
+========================================================= */
+
+.enterprise-network-lines {
+  position: absolute;
+  z-index: 3;
+
+  left: 34px;
+  right: 34px;
+  top: 32px;
+  bottom: 24px;
+
+  width: calc(100% - 68px);
+  height: calc(100% - 56px);
+
+  overflow: visible;
+
+  pointer-events: none;
+}
+
+.enterprise-wire,
+.enterprise-wire-flow {
+  fill: none;
+
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.enterprise-wire {
+  stroke-width: 1.6;
+
+  opacity: 0.72;
+}
+
+.enterprise-wire-flow {
+  stroke-width: 2.1;
+
+  stroke-dasharray: 8 45;
+
+  animation:
+    enterpriseWireFlow 2.6s linear infinite;
+}
+
+.wire-teal {
+  stroke: var(--ent-teal);
+
+  filter:
+    drop-shadow(0 0 5px rgba(57, 200, 191, 0.68));
+}
+
+.wire-coral {
+  stroke: var(--ent-coral);
+
+  filter:
+    drop-shadow(0 0 5px rgba(232, 112, 66, 0.68));
+}
+
+@keyframes enterpriseWireFlow {
+  to {
+    stroke-dashoffset: -106;
+  }
+}
+
+.wire-node {
+  animation:
+    enterpriseNodePulse 1.8s ease-in-out infinite;
+}
+
+.node-teal {
+  fill: var(--ent-teal);
+
+  filter:
+    drop-shadow(0 0 5px var(--ent-teal));
+}
+
+.node-coral {
+  fill: var(--ent-coral);
+
+  filter:
+    drop-shadow(0 0 5px var(--ent-coral));
+}
+
+@keyframes enterpriseNodePulse {
+
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+html[data-theme="light"] .enterprise-ai-modal,
+html[data-bs-theme="light"] .enterprise-ai-modal,
+.enterprise-ai-modal.light-mode {
+  --ent-bg: #f8fcfc;
+
+  --ent-card:
+    rgba(255, 255, 255, 0.94);
+
+  --ent-text: #142831;
+  --ent-muted: #61747b;
+
+  --ent-teal: #28aaa4;
+  --ent-teal-soft: #20aaa5;
+
+  --ent-coral: #e87042;
+  --ent-coral-soft: #e87042;
+
+  --ent-border:
+    rgba(52, 163, 158, 0.17);
+
+  background:
+    radial-gradient(circle at 50% 52%,
+      rgba(54, 190, 181, 0.11),
+      transparent 43%),
+    linear-gradient(145deg,
+      #ffffff 0%,
+      #f7fbfb 55%,
+      #f2f8f8 100%) !important;
+
+  border-color:
+    rgba(60, 152, 151, 0.18) !important;
+
+  box-shadow:
+    0 24px 65px rgba(38, 76, 82, 0.13);
+}
+
+
+/* cards */
+
+html[data-theme="light"] .enterprise-network-card,
+html[data-bs-theme="light"] .enterprise-network-card,
+.enterprise-ai-modal.light-mode .enterprise-network-card {
+  background:
+    rgba(255, 255, 255, 0.92) !important;
+
+  border-color:
+    rgba(52, 163, 158, 0.16) !important;
+
+  box-shadow:
+    0 9px 24px rgba(51, 81, 87, 0.1);
+}
+
+
+/* light icon circles */
+
+html[data-theme="light"] .enterprise-icon-teal,
+html[data-bs-theme="light"] .enterprise-icon-teal,
+.enterprise-ai-modal.light-mode .enterprise-icon-teal {
+  background:
+    rgba(239, 252, 251, 0.96);
+
+  border-color:
+    rgba(40, 170, 164, 0.34);
+
+  box-shadow:
+    0 0 0 8px rgba(40, 170, 164, 0.045),
+    0 8px 18px rgba(45, 111, 112, 0.09);
+}
+
+html[data-theme="light"] .enterprise-icon-coral,
+html[data-bs-theme="light"] .enterprise-icon-coral,
+.enterprise-ai-modal.light-mode .enterprise-icon-coral {
+  background:
+    rgba(255, 247, 243, 0.98);
+
+  border-color:
+    rgba(232, 112, 66, 0.34);
+
+  box-shadow:
+    0 0 0 8px rgba(232, 112, 66, 0.045),
+    0 8px 18px rgba(150, 78, 53, 0.08);
+}
+
+
+/* close light */
+
+html[data-theme="light"] .enterprise-close,
+html[data-bs-theme="light"] .enterprise-close,
+.enterprise-ai-modal.light-mode .enterprise-close {
+  color: #27434b !important;
+
+  background:
+    rgba(255, 255, 255, 0.74) !important;
+}
+
+
+/* switch building images */
+
+html[data-theme="light"] .building-dark,
+html[data-bs-theme="light"] .building-dark,
+.enterprise-ai-modal.light-mode .building-dark {
+  display: none;
+}
+
+html[data-theme="light"] .building-light,
+html[data-bs-theme="light"] .building-light,
+.enterprise-ai-modal.light-mode .building-light {
+  display: block;
+}
+
+
+/* softer glow in light mode */
+
+html[data-theme="light"] .enterprise-building-glow,
+html[data-bs-theme="light"] .enterprise-building-glow,
+.enterprise-ai-modal.light-mode .enterprise-building-glow {
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 991.98px) {
+  .enterprise-ai-dialog {
+    width: calc(100vw - 24px) !important;
+  }
+
+  .enterprise-stage {
+    grid-template-columns: 1fr 1fr;
+
+    grid-template-rows:
+      auto 280px auto auto;
+
+    gap: 18px;
+
+    padding:
+      34px 28px 30px;
+  }
+
+  .enterprise-intro {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .enterprise-building-hub {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .card-agentic {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .card-analytics {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  .card-knowledge {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .card-custom {
+    grid-column: 2;
+    grid-row: 4;
+  }
+
+  .enterprise-network-card {
+    justify-self: center;
+
+    width: calc(100% - 28px);
+    max-width: none;
+  }
+
+  .enterprise-network-lines {
+    display: none;
+  }
+
+  .enterprise-building-image {
+    width: 250px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 575.98px) {
+  .enterprise-ai-dialog {
+    width: calc(100vw - 14px) !important;
+
+    margin: 7px auto !important;
+  }
+
+  .enterprise-ai-modal {
+    max-height:
+      calc(100vh - 14px);
+
+    overflow-y: auto;
+
+    border-radius:
+      15px !important;
+  }
+
+  .enterprise-stage {
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+
+    gap: 18px;
+
+    padding:
+      28px 22px 26px;
+  }
+
+  .enterprise-intro h2 {
+    font-size: 29px;
+  }
+
+  .enterprise-building-hub {
+    height: 260px;
+    flex: 0 0 260px;
+
+    order: 2;
+  }
+
+  .enterprise-intro {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+  }
+
+  .card-agentic {
+    order: 3;
+  }
+
+  .card-analytics {
+    order: 4;
+  }
+
+  .card-knowledge {
+    order: 5;
+  }
+
+  .card-custom {
+    order: 6;
+  }
+
+  .enterprise-network-card {
+    width:
+      calc(100% - 26px);
+
+    max-width: none;
+
+    margin-left: 26px;
+  }
+
+  .enterprise-network-card .card-body {
+    min-height: 125px;
+  }
+
+  .enterprise-building-image {
+    width: 235px;
+  }
+
+  .enterprise-orbit-one {
+    width: 235px;
+  }
+
+  .enterprise-orbit-two {
+    width: 185px;
+  }
+
+  .enterprise-orbit-three {
+    width: 140px;
+  }
+}
