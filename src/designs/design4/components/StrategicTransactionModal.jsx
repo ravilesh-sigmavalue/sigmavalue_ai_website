@@ -1,7 +1,7 @@
 import { Modal } from "react-bootstrap";
 import {
-  FiActivity, FiArrowRight, FiDatabase, FiGitBranch, FiShield,
-  FiTrendingUp, FiX,
+  FiActivity, FiArrowRight, FiBarChart2, FiCheckSquare, FiDatabase,
+  FiGitBranch, FiPieChart, FiShield, FiTrendingUp, FiX,
 } from "react-icons/fi";
 import "../StrategicTransactionModal.css";
 
@@ -11,7 +11,7 @@ const stages = [
     tone: "teal",
     title: "Transaction Strategy & Evaluation",
     description: "Assess acquisition, divestment, joint venture and partnership opportunities through commercial, financial and strategic evaluation.",
-    image: "/strategicmodal_images/stage01.png",
+    art: "growth",
     icon: FiTrendingUp,
   },
   {
@@ -19,15 +19,15 @@ const stages = [
     tone: "orange",
     title: "Due Diligence & Transaction Structuring",
     description: "Support business, financial, market and operational due diligence, valuation, deal structuring and negotiation of transaction terms.",
-    image: "/strategicmodal_images/stage02.png",
+    art: "blocks",
     icon: FiDatabase,
   },
   {
     number: "03",
-    tone: "teal",
+    tone: "purple",
     title: "Transaction Execution & Closure",
     description: "Coordinate stakeholders and provide end-to-end support through negotiations, documentation, approvals, closing and post-transaction integration.",
-    image: "/strategicmodal_images/stage03.png",
+    art: "closure",
     icon: FiGitBranch,
   },
 ];
@@ -35,7 +35,7 @@ const stages = [
 const outcomes = [
   { icon: FiActivity, title: "Real-time Intelligence", text: "Live insights to guide decisions", tone: "teal" },
   { icon: FiDatabase, title: "Data-driven Decisions", text: "Analytics that reduce uncertainty", tone: "orange" },
-  { icon: FiShield, title: "End-to-end Execution", text: "From strategy to successful close", tone: "teal" },
+  { icon: FiShield, title: "End-to-end Execution", text: "From strategy to successful close", tone: "purple" },
 ];
 
 function TransactionNetwork() {
@@ -117,10 +117,67 @@ function TransactionNetwork() {
   );
 }
 
-function StageArt({ image }) {
+function StageArt({ type }) {
+
+  if (type === "blocks") {
+    return (
+      <div className="stm-art stm-blocks" aria-hidden="true">
+
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+
+        <span>
+          <FiPieChart />
+        </span>
+
+        <b className="stm-art-spark spark-a" />
+        <b className="stm-art-spark spark-b" />
+
+      </div>
+    );
+  }
+
+  if (type === "closure") {
+    return (
+      <div className="stm-art stm-closure" aria-hidden="true">
+
+        <span>
+          <FiCheckSquare />
+        </span>
+
+        <i />
+
+        <b>
+          <FiShield />
+        </b>
+
+        <em>✓</em>
+
+      </div>
+    );
+  }
+
   return (
-    <div className="stm-art stm-art-image" aria-hidden="true">
-      <img src={image} alt="" loading="eager" decoding="async" />
+    <div className="stm-art stm-growth" aria-hidden="true">
+
+      <div className="stm-chart-grid" />
+
+      <i />
+      <i />
+      <i />
+      <i />
+
+      <span>
+        <FiTrendingUp />
+      </span>
+
+      <b className="stm-growth-node node-a" />
+      <b className="stm-growth-node node-b" />
+      <b className="stm-growth-node node-c" />
+
     </div>
   );
 }
@@ -136,7 +193,7 @@ function StageRow({ stage }) {
         STAGE {stage.number}
       </div>
       {/* Illustration */}
-      <StageArt image={stage.image} />
+      <StageArt type={stage.art} />
 
       {/* Content */}
       <div className="stm-stage-copy">

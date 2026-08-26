@@ -1352,6 +1352,11 @@ html[data-theme="light"] .building-pedestal-ring.ring-outer {
   backdrop-filter: blur(10px);
 }
 
+html[data-theme="light"] body[data-design="design4"] .super-agent-backdrop.show {
+  background: #000 !important;
+  opacity: .82 !important;
+}
+
 html:has(.super-agent-modal),
 body.modal-open {
   overflow: hidden !important;
