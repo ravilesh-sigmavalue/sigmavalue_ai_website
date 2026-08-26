@@ -538,8 +538,8 @@ html[data-theme="dark"] body[data-design="design4"] .nav-container {
   position: absolute;
   top: 0;
   left: 0;
-  width: 580px;
-  height: 520px;
+  width: 340px;
+  height: 210px;
   border-radius: 22px;
   border: 1px solid var(--border-card);
   overflow: hidden;
