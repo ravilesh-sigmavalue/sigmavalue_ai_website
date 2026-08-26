@@ -226,46 +226,19 @@ function ChapterStage({ chapters, active, theme }) {
                 <div className="bcard-header">
                   <div className="bcard-badge-row">
                     <span className="chapter-pill">{card.num}</span>
-                    <span className="category-pill">{card.cat || "Overview"}</span>
+                    {/* <span className="category-pill">{card.cat || "Overview"}</span>
                     {card.loc && (
                       <span className="location-pill">
                         <FiMapPin className="pill-icon" />
                         {card.loc}
                       </span>
-                    )}
+                    )} */}
                   </div>
                   <h3 className="bcard-title">{card.title}</h3>
                 </div>
 
                 {card.desc && <p className="bcard-desc">{card.desc}</p>}
 
-                {card.specs && card.specs.length > 0 && (
-                  <div className="bcard-specs-grid">
-                    {card.specs.map(([label, val]) => (
-                      <div key={label + val} className="bcard-spec-item">
-                        <span className="bcard-spec-label">{label}</span>
-                        <span className="bcard-spec-val">{val}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {card.bullets && card.bullets.length > 0 && (
-                  <div className="bcard-highlights">
-                    <div className="bcard-highlights-title">
-                      <FiLayers className="title-icon" />
-                      <span>Key Capabilities</span>
-                    </div>
-                    <div className="bcard-highlights-list">
-                      {card.bullets.slice(0, 4).map((b, i) => (
-                        <div key={i} className="bcard-highlight-item">
-                          <FiCheckCircle className="check-icon" />
-                          <span>{b}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 {card.action && (
                   <div className="bcard-action-row">

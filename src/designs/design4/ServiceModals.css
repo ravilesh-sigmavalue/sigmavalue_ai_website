@@ -1376,13 +1376,13 @@ body.modal-open {
 /* Desktop: keep the main 3D building visible and open the platform on its right. */
 @media (min-width: 1100px) {
   body[data-design="design4"] .d4-right-panel-backdrop.show {
-    opacity: .42 !important;
-    backdrop-filter: blur(3px) !important;
+    opacity: 0 !important;
+    backdrop-filter: none !important;
   }
 
   html[data-theme="light"] body[data-design="design4"] .d4-right-panel-backdrop.show {
-    background: #000 !important;
-    opacity: .5 !important;
+    background: transparent !important;
+    opacity: 0 !important;
   }
 
   body[data-design="design4"] .d4-right-panel-dialog {
