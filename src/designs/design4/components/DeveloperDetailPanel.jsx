@@ -357,7 +357,7 @@ export function DeveloperDetailPanel({ onBack }) {
               key={t.id}
               type="button"
               className={`dev-tab-btn ${isActive ? "active" : ""}`}
-              style={{ "--tab-accent": t.accentColor }}
+              style={{ "--tab-accent": "#43a09b" }}
               onClick={() => setActiveTab(t.id)}
             >
               <Icon className="dev-tab-icon" />
@@ -368,15 +368,7 @@ export function DeveloperDetailPanel({ onBack }) {
       </div>
 
       {/* ── CONTENT AREA ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeTab}
-          className="dev-tab-content"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-        >
+      <div className="dev-tab-content">
           {/* LEFT — Illustration */}
           <div className="dev-visual-column">
             <div
@@ -384,7 +376,18 @@ export function DeveloperDetailPanel({ onBack }) {
               style={{ borderColor: `${tab.accentColor}30` }}
             >
               <div className="dev-illustration-inner">
-                <Illustration type={tab.id} accentColor={tab.accentColor} />
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={tab.id}
+                    className="dev-illustration-slide"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <Illustration type={tab.id} accentColor={tab.accentColor} />
+                  </motion.div>
+                </AnimatePresence>
               </div>
               {/* Floating accent glow */}
               <div
@@ -410,7 +413,7 @@ export function DeveloperDetailPanel({ onBack }) {
 
           {/* RIGHT — Description */}
           <div className="dev-tab-desc">
-            <div className="dev-tab-eyebrow" style={{ color: tab.accentColor }}>
+            <div className="dev-tab-eyebrow" style={{ color: "#43a09b" }}>
               <tab.icon />
               <span>SigmaValue for Developers</span>
             </div>
@@ -427,8 +430,7 @@ export function DeveloperDetailPanel({ onBack }) {
               <FiArrowUpRight />
             </a>
           </div>
-        </motion.div>
-      </AnimatePresence>
+      </div>
 
       {/* ── BENEFITS / OFFERINGS ── */}
     </div>

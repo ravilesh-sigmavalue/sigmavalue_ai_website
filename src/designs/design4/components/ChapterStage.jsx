@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiMapPin, FiSearch } from "react-icons/fi";
+import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiMapPin, FiSearch, FiX } from "react-icons/fi";
 import { accentRgba, buildPhotoSvg } from "../../../utils/art";
 import { AgentPlatformModal } from "./AgentPlatformModal";
 import { EnterpriseAIModal } from "./EnterpriseAIModal";
@@ -275,7 +275,7 @@ function ChapterStage({ chapters, active, theme }) {
   );
 }
 
-function ContactChapter({ show, title }) {
+function ContactChapter({ show, title, onClose }) {
   const [selectedPersona, setSelectedPersona] = useState(null);
 
   const handleSelect = (personaId) => {
@@ -314,6 +314,9 @@ function ContactChapter({ show, title }) {
       transition={{ duration: 0.4 }}
     >
       <div className="who-you-are-card">
+        <button type="button" className="who-you-are-close" onClick={onClose} aria-label="Close Who you are panel">
+          <FiX />
+        </button>
         {/* Background Dot Matrix Texture */}
         <div className="who-you-are-matrix-bg" />
 
