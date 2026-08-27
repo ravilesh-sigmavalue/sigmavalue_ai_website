@@ -741,6 +741,12 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
       //                 1 = card N-1 (contact/demo, camera at earth ground level)
       const scrollProgress = Math.min(Math.max(scrollRawSmooth / totalScrollSteps, 0), 1);
 
+      // Keep the building below the hero card on the opening section, then
+      // smoothly restore its original position as the chapter scroll begins.
+      const heroBuildingOffset = -2.1 * (1 - Math.min(scrollRawSmooth, 1));
+      building.position.y = heroBuildingOffset;
+      logoGroup.position.y = 6.05 + heroBuildingOffset;
+
       const contactStageActive = chapters[activeRef.current]?.key === "contact";
       sceneOpacity += ((contactStageActive ? 0.85 : 1) - sceneOpacity) * 0.08;
       canvas.style.opacity = String(sceneOpacity);

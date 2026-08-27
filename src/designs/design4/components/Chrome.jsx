@@ -193,15 +193,14 @@ function TopNav({ go, onMenu, theme, onTheme }) {
             Sign In
           </a>
 
-          <a
+          <button
             className="btn-header-cta"
-            href="https://sigmavalue.ai/contact/?page=contactform"
-            target="_blank"
-            rel="noreferrer"
+            type="button"
+            onClick={() => go(CHAPTERS.length - 1)}
           >
             <span>Request Demo</span>
             <FiArrowUpRight />
-          </a>
+          </button>
 
           <button className="mobile-menu-btn" onClick={onMenu} aria-label="Open Navigation Menu">
             <FiMenu />
@@ -384,17 +383,16 @@ function AskBar({ show }) {
   );
 }
 
-function FloatingDemoButton() {
+function FloatingDemoButton({ go }) {
   return (
-    <a
+    <button
       className="floating-demo-pill"
-      href="https://sigmavalue.ai/contact/?page=contactform"
-      target="_blank"
-      rel="noreferrer"
+      type="button"
+      onClick={() => go && go(CHAPTERS.length - 1)}
     >
       <span>Request a Demo</span>
       <FiArrowUpRight />
-    </a>
+    </button>
   );
 }
 

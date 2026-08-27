@@ -11,11 +11,12 @@ import { CHAPTERS } from "../data/chapters";
 type HeaderProps = {
   go: (index: number) => void;
   onMenu: () => void;
+  onRequestDemo: () => void;
   theme: "light" | "dark";
   onTheme: () => void;
 };
 
-export function Header({ go, onMenu, theme, onTheme }: HeaderProps) {
+export function Header({ go, onMenu, onRequestDemo, theme, onTheme }: HeaderProps) {
   const first = (category: string) => CHAPTERS.findIndex((chapter) => chapter.cat === category);
   const [productsOpen, setProductsOpen] = useState(false);
 
@@ -117,21 +118,28 @@ export function Header({ go, onMenu, theme, onTheme }: HeaderProps) {
         </nav>
 
         <div className="nav-actions">
+          {/* Light theme toggle temporarily disabled.
           <button
             className="theme-toggle-btn"
             onClick={onTheme}
+            aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
             title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
           >
             {theme === "dark" ? <FiSun /> : <FiMoon />}
           </button>
+          */}
           <a className="btn-signin" href="https://sigmavalue.ai/auth/signin" target="_blank" rel="noreferrer">
             Sign In
           </a>
-          <a className="btn-header-cta" href="https://sigmavalue.ai/contact/?page=contactform" target="_blank" rel="noreferrer">
+          <button
+            className="btn-header-cta"
+            type="button"
+            onClick={onRequestDemo}
+          >
             <span>Request Demo</span>
             <FiArrowUpRight />
-          </a>
+          </button>
           <button className="mobile-menu-btn" onClick={onMenu} aria-label="Open Navigation Menu">
             <FiMenu />
           </button>

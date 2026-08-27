@@ -207,16 +207,14 @@ function SiteDrawer({ open, setOpen, go, theme }) {
         >
           Sign In
         </a>
-        <a
+        <button
           className="drawer-primary"
-          href="https://sigmavalue.ai/contact/?page=contactform"
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => setOpen(false)}
+          type="button"
+          onClick={() => handleNav(contactIndex >= 0 ? contactIndex : 0)}
         >
           <span>Request Demo</span>
           <FiArrowUpRight />
-        </a>
+        </button>
       </div>
     </Offcanvas>
   );

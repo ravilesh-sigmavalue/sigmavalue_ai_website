@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiLayers, FiMapPin, FiSearch } from "react-icons/fi";
+import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiMapPin, FiSearch } from "react-icons/fi";
 import { accentRgba, buildPhotoSvg } from "../../../utils/art";
 import { AgentPlatformModal } from "./AgentPlatformModal";
 import { EnterpriseAIModal } from "./EnterpriseAIModal";
@@ -9,6 +9,8 @@ import { RealEstateTechnologyModal } from "./RealEstateTechnologyModal";
 import { DealStructuringCapitalAdvisoryModal } from "./DealStructuringCapitalAdvisoryModal";
 import { StrategicTransactionModal } from "./StrategicTransactionModal";
 import { ServicesAdvisoryModal } from "./ServicesAdvisoryModal";
+import { WhoYouAreCard } from "./WhoYouAreCard";
+import { DeveloperDetailPanel } from "./DeveloperDetailPanel";
 import {
   agentGroups, crossIndustrySolutions, dealStructuringSolutions,
   realEstateTechnologySolutions, servicesAdvisorySolutions, strategicTransactionSolutions,
@@ -274,77 +276,71 @@ function ChapterStage({ chapters, active, theme }) {
 }
 
 function ContactChapter({ show, title }) {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [selectedPersona, setSelectedPersona] = useState(null);
 
-  const submit = (e) => {
-    e.preventDefault();
-    const qs = new URLSearchParams({
-      page: "design04-home",
-      name: formData.name,
-      email: formData.email,
-      message: formData.message
-    });
-    location.href = `https://sigmavalue.ai/contact/?${qs}`;
+  const handleSelect = (personaId) => {
+    setSelectedPersona(personaId);
   };
 
   if (!show) return null;
 
+  // If developer is selected, show the Developer Detail Panel fullscreen
+  if (selectedPersona === "developer") {
+    return (
+      <motion.div
+        id="contact"
+        className="contact-panel who-you-are-panel"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.96 }}
+        transition={{ duration: 0.35 }}
+      >
+        <div className="who-you-are-card who-you-are-card--wide">
+          <div className="who-you-are-matrix-bg" />
+          <DeveloperDetailPanel onBack={() => setSelectedPersona(null)} />
+          <div className="contact-note" style={{ marginTop: "4px" }}>
+            <span>Official inquiry handled directly through SigmaValue secure enterprise routing.</span>
+          </div>
+          <div className="contact-links">
+            <a href="https://sigmavalue.ai/" target="_blank" rel="noreferrer">Main Website</a>
+            <span className="sep">•</span>
+            <a href="https://sigmavalue.ai/real-estate-consultancy/" target="_blank" rel="noreferrer">Consultancy</a>
+            <span className="sep">•</span>
+            <a href="https://os.sigmavalue.ai/" target="_blank" rel="noreferrer">SigmaValue OS</a>
+          </div>
+          <div className="foot">© 2025 Creasophere Tech Private Limited. All rights reserved.</div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Default — show persona selection grid
   return (
     <motion.div
       id="contact"
-      className="contact-panel"
-      initial={{ opacity: 0, scale: 0.95 }}
+      className="contact-panel who-you-are-panel"
+      initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
+      exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.4 }}
     >
-      <div className="contact-card">
-        <div className="hero-badge">
-          <span className="pulse-dot" />
-          <span>DIRECT ENTERPRISE ENGAGEMENT</span>
-        </div>
-        <h2 className="contact-title">{title || "Schedule an Enterprise Demo"}</h2>
-        <p className="contact-subtitle">
-          Connect with our real estate AI specialists to evaluate feasibility models, custom valuation APIs, or portfolio tracking.
-        </p>
+      <div className="who-you-are-card">
+        {/* Background Dot Matrix Texture */}
+        <div className="who-you-are-matrix-bg" />
 
-        <form onSubmit={submit} className="contact-form">
-          <div className="form-group">
-            <label>Full Name</label>
-            <input
-              name="name"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g. Michael Vance"
-            />
+        {/* Top Eyebrow Badge */}
+        <div className="who-you-are-header">
+          <div className="hero-badge">
+            <span className="pulse-dot" />
+            <span>DIRECT ENTERPRISE ENGAGEMENT</span>
           </div>
-          <div className="form-group">
-            <label>Work Email</label>
-            <input
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="e.g. michael@enterprise.com"
-            />
-          </div>
-          <div className="form-group">
-            <label>Project / Requirement Overview</label>
-            <textarea
-              name="message"
-              rows={3}
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              placeholder="Tell us about your portfolio size, evaluation goals, or integration needs..."
-            />
-          </div>
-          <button type="submit" className="btn-primary full-width">
-            <span>Continue to Request a Demo</span>
-            <FiArrowUpRight />
-          </button>
-        </form>
+          <h2 className="who-you-are-title">Who you are?</h2>
+          <p className="who-you-are-subtitle">
+            Select your industry role to explore customized AI solutions and schedule a personalized demo.
+          </p>
+        </div>
+
+        <WhoYouAreCard selectedPersona={selectedPersona} onSelect={handleSelect} />
 
         <div className="contact-note">
           <span>Official inquiry handled directly through SigmaValue secure enterprise routing.</span>

@@ -6,6 +6,7 @@ import {
   FiCheck,
   FiChevronLeft,
   FiChevronRight,
+  FiCompass,
   FiCpu,
   FiGrid,
   FiHome,
@@ -15,7 +16,9 @@ import {
   FiMoon,
   FiSend,
   FiSettings,
+  FiShield,
   FiSun,
+  FiTrendingUp,
   FiUser,
   FiX
 } from "react-icons/fi";
@@ -33,9 +36,11 @@ function BrandHeader({ theme, onTheme, onMenu, onHome, menuOpen }) {
       <button className="d4m-brand" type="button" onClick={onHome} aria-label="Go to SigmaValue home">
         <img src={theme === "light" ? "/mobile-logo-light.png" : "/mobile-logo-dark.png"} alt="SigmaValue" />
       </button>
+      {/* Light theme toggle temporarily disabled.
       <button className="d4m-icon-button" type="button" onClick={onTheme} aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}>
         {theme === "dark" ? <FiSun /> : <FiMoon />}
       </button>
+      */}
     </header>
   );
 }
@@ -149,14 +154,66 @@ function ServiceDetail({ index, onSelect }) {
   );
 }
 
+const MOBILE_PERSONAS = [
+  { id: "developer", title: "Developer", desc: "IRR Models & Feasibility AI", icon: FiLayers, accent: "var(--brand-teal)" },
+  { id: "bank", title: "Bank", desc: "Automated Valuation (AVM) & Risk", icon: FiShield, accent: "var(--brand-coral)" },
+  { id: "consultants", title: "Consultants", desc: "Advisory & Spatial Comps", icon: FiCompass, accent: "#38bdf8" },
+  { id: "investors", title: "Investors", desc: "Pipeline Alpha & Yield Modeling", icon: FiTrendingUp, accent: "#f59e0b" }
+];
+
 function Contact() {
+  const [selected, setSelected] = useState("developer");
+
   return (
     <main className="d4m-contact-screen">
       <section>
-        <div className="d4m-eyebrow"><span className="d4m-dot" /> TALK TO SIGMAVALUE</div>
-        <h1>Let's build <span>what's next.</span></h1>
-        <p>Connect with our team to explore the right AI, technology, or advisory solution for your organization.</p>
-        <a className="d4m-primary" href="https://sigmavalue.ai/contact/?page=contactform" target="_blank" rel="noreferrer">Request a Demo <FiArrowUpRight /></a>
+        <div className="d4m-eyebrow"><span className="d4m-dot" /> DIRECT ENTERPRISE ENGAGEMENT</div>
+        <h1>Who <span>you are?</span></h1>
+        <p>Select your role to explore customized AI solutions and schedule a personalized demo.</p>
+
+        <div className="d4m-persona-list" style={{ display: "flex", flexDirection: "column", gap: "10px", margin: "16px 0" }}>
+          {MOBILE_PERSONAS.map((p) => {
+            const Icon = p.icon;
+            const isSel = selected === p.id;
+            return (
+              <div
+                key={p.id}
+                onClick={() => setSelected(p.id)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "12px 14px",
+                  borderRadius: "12px",
+                  background: isSel ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.03)",
+                  border: isSel ? `1.5px solid ${p.accent}` : "1px solid var(--border-card)",
+                  cursor: "pointer",
+                  textAlign: "left"
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "8px", background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", color: p.accent }}>
+                    <Icon size={18} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>{p.title}</div>
+                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>{p.desc}</div>
+                  </div>
+                </div>
+                {isSel && <FiCheck style={{ color: p.accent }} />}
+              </div>
+            );
+          })}
+        </div>
+
+        <a
+          className="d4m-primary"
+          href={`https://sigmavalue.ai/contact/?page=design04-home&role=${selected}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Request Demo as {MOBILE_PERSONAS.find((p) => p.id === selected)?.title} <FiArrowUpRight />
+        </a>
       </section>
     </main>
   );
@@ -165,7 +222,8 @@ function Contact() {
 export function MobileExperience({ theme, onTheme }) {
   const [view, setView] = useState("home");
   const [selected, setSelected] = useState(0);
-  const menuOpen = view === "menu";
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const activeView = useMemo(() => view, [view]);
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "auto" }); }, [view, selected]);
@@ -178,7 +236,7 @@ export function MobileExperience({ theme, onTheme }) {
 
   return (
     <div className="d4m-shell">
-      <BrandHeader theme={theme} onTheme={onTheme} menuOpen={menuOpen} onHome={() => setView("home")} onMenu={() => setView(menuOpen ? "home" : "menu")} />
+      <BrandHeader theme={theme} onTheme={onTheme} menuOpen={menuOpen} onHome={() => setView("home")} onMenu={() => setView((open) => !open)} />
       {activeView === "home" && <Hero onExplore={() => setView("menu")} />}
       {activeView === "menu" && <SectionsMenu selected={selected} onSelect={selectService} onDemo={() => setView("contact")} />}
       {activeView === "service" && <ServiceDetail index={selected} onSelect={selectService} />}
