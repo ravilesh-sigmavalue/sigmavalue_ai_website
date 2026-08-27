@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { DesignFour } from "./designs/design4/DesignFour";
-import "./designs/design4/design4.css";
+import { Experience } from "./features/experience/Experience";
+import "./styles/app.css";
 
 export default function App() {
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function App() {
 
   return (
     <div className="design-root design4">
-      <DesignFour />
+      <Experience />
     </div>
   );
 }
