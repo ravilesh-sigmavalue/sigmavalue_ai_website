@@ -57,6 +57,7 @@ export function Experience() {
         <AskBar show={active > 0} />
         <ChapterStage chapters={CHAPTERS} active={active} theme={theme} />
         <ContactChapter show={chapter.key === "contact"} title={chapter.title} onClose={() => goToChapter(0)} />
+        {/* ── KEY BENEFITS & WHAT WE OFFER ── */}
         <FloatingDemoButton go={goToChapter} />
         <SiteDrawer open={drawer} setOpen={setDrawer} go={goToChapter} theme={theme} />
         <ScrollCue show={active === 0} />

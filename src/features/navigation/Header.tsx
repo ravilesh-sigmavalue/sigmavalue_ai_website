@@ -129,9 +129,7 @@ export function Header({ go, onMenu, onRequestDemo, theme, onTheme }: HeaderProp
             {theme === "dark" ? <FiSun /> : <FiMoon />}
           </button>
           */}
-          <a className="btn-signin" href="https://sigmavalue.ai/auth/signin" target="_blank" rel="noreferrer">
-            Sign In
-          </a>
+       
           <button
             className="btn-header-cta"
             type="button"
