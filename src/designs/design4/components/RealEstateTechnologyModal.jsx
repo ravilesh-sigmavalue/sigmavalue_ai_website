@@ -1,6 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { RightPanelModalHeader } from "./RightPanelModalHeader";
-import "./RealEstateTechnologyModal.css";
+import "../RealEstateTechnologyModal.css";
 
 const capabilities = [
   {
