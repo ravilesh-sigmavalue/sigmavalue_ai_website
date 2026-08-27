@@ -263,12 +263,12 @@ function ChapterStage({ chapters, active, theme }) {
         )}
       </AnimatePresence>
       <AgentPlatformModal show={exploreCard === 0} onHide={() => setExploreCard(null)} groups={agentGroups} theme={theme} />
-      <EnterpriseAIModal show={exploreCard !== null && ![0, 2, 3, 4, 5, 6].includes(exploreCard)} onHide={() => setExploreCard(null)} variant={exploreCard === 1 ? "connected" : "default"} theme={theme} {...(exploreModalContent[exploreCard] || {})} />
-      <CrossIndustryModal show={exploreCard === 2} onHide={() => setExploreCard(null)} {...exploreModalContent[2]} />
-      <RealEstateTechnologyModal show={exploreCard === 3} onHide={() => setExploreCard(null)} />
-      <DealStructuringCapitalAdvisoryModal show={exploreCard === 4} onHide={() => setExploreCard(null)} />
-      <StrategicTransactionModal show={exploreCard === 5} onHide={() => setExploreCard(null)} />
-      <ServicesAdvisoryModal show={exploreCard === 6} onHide={() => setExploreCard(null)} />
+      <EnterpriseAIModal show={exploreCard === 1} onHide={() => setExploreCard(null)} variant="connected" theme={theme} />
+      <CrossIndustryModal show={exploreCard === 2} onHide={() => setExploreCard(null)} solutions={crossIndustrySolutions} theme={theme} />
+      <RealEstateTechnologyModal show={exploreCard === 3} onHide={() => setExploreCard(null)} theme={theme} />
+      <DealStructuringCapitalAdvisoryModal show={exploreCard === 4} onHide={() => setExploreCard(null)} theme={theme} />
+      <StrategicTransactionModal show={exploreCard === 5} onHide={() => setExploreCard(null)} theme={theme} />
+      <ServicesAdvisoryModal show={exploreCard === 6} onHide={() => setExploreCard(null)} theme={theme} />
     </div>
   );
 }

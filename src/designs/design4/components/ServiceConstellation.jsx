@@ -2,66 +2,80 @@ import { useEffect, useState } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import { AgentPlatformModal } from "./AgentPlatformModal";
 import { EnterpriseAIModal } from "./EnterpriseAIModal";
-import { FiCompass, FiDatabase, FiDollarSign, FiGitMerge, FiLayers, FiPieChart, FiRefreshCw, FiTrendingUp, FiZap } from "react-icons/fi";
+import { CrossIndustryModal } from "./CrossIndustryModal";
+import { RealEstateTechnologyModal } from "./RealEstateTechnologyModal";
+import { DealStructuringCapitalAdvisoryModal } from "./DealStructuringCapitalAdvisoryModal";
+import { StrategicTransactionModal } from "./StrategicTransactionModal";
+import { ServicesAdvisoryModal } from "./ServicesAdvisoryModal";
+import {
+  FiCompass, FiDatabase, FiDollarSign, FiGitMerge,
+  FiLayers, FiPieChart, FiRefreshCw, FiTrendingUp, FiZap,
+} from "react-icons/fi";
 
+/* ============================================================
+   AGENT GROUPS (used by modal + chips)
+   ============================================================ */
 export const agentGroups = [
   {
     name: "SigmaValue", type: "Valuation Intelligence", agents: [
-      ["Valuation Agent", "AI-powered property valuation using comparable transactions, market data, property attributes and valuation models."],
-      ["Valuation B2C", "Consumer-focused property valuation providing quick, accessible estimates of residential property value."]
-    ]
+      ["Valuation Agent", "AI-powered property valuation using comparable transactions, market data and valuation models."],
+      ["Valuation B2C", "Consumer-focused property valuation providing quick, accessible estimates of residential value."],
+    ],
   },
   {
     name: "SigmaMarket Lens", type: "Market Intelligence", agents: [
-      ["Market Research Agent", "Conducts automated real estate market research covering demand, supply, pricing, trends and market dynamics."],
-      ["Transaction Intelligence Agent", "Analyzes transaction data to identify comparable deals, pricing patterns, transaction trends and investment signals."],
-      ["Live Data Intelligence Agent", "Continuously captures and interprets live market data and signals to provide up-to-date real estate intelligence."],
-      ["Analytics Agent", "Converts real estate data into actionable insights, trends, dashboards and decision-support analytics."],
-      ["Data Dashboard", "Brings critical market data, performance indicators and decision-ready insights together in one visual workspace."]
-    ]
+      ["Market Research Agent", "Automated real estate market research covering demand, supply, pricing and market dynamics."],
+      ["Transaction Intelligence Agent", "Analyzes transactions to identify comparable deals, pricing patterns and investment signals."],
+      ["Live Data Intelligence Agent", "Captures and interprets live market data to provide up-to-date real estate intelligence."],
+      ["Analytics Agent", "Converts data into actionable insights, dashboards and decision-support analytics."],
+      ["Data Dashboard", "Brings market data, performance indicators and insights into one visual workspace."],
+    ],
   },
   {
     name: "SigmaGeo", type: "Geo-Spatial Intelligence", agents: [
-      ["Land/GIS Agent", "Identifies and analyzes land parcels using GIS, location intelligence, spatial data and surrounding infrastructure."],
-      ["Elevation Agent", "Analyzes terrain, elevation, slope and topography to assess site characteristics and development implications."]
-    ]
+      ["Land/GIS Agent", "Identifies land parcels using GIS, location intelligence and spatial data analysis."],
+      ["Elevation Agent", "Analyzes terrain, elevation and topography to assess site development characteristics."],
+    ],
   },
   {
     name: "SigmaFeasibility", type: "Simulator", agents: [
-      ["Feasibility Agent", "Evaluates development potential across regulations, FSI, product mix, revenue, financial feasibility, risks and project scenarios."],
-      ["Legal Agent", "Analyzes real estate laws, regulations, approvals and legal requirements relevant to properties and development projects."],
-      ["Document Intelligence Agent", "Extracts, interprets and summarizes critical information from property, project, legal and transaction documents."]
-    ]
+      ["Feasibility Agent", "Evaluates development potential across regulations, product mix, revenue and project risks."],
+      ["Legal Intelligence Agent", "Analyzes real estate laws, regulations and legal requirements for properties."],
+      ["Document Intelligence Agent", "Extracts and summarizes information from property, legal and transaction documents."],
+    ],
   },
   {
     name: "SigmaPhysical", type: "Physical AI", agents: [
-      ["Physical AI Agent", "Uses computer vision and physical-world intelligence to analyze properties, sites, construction progress and real-world conditions."]
-    ]
+      ["Physical AI Agent", "Uses computer vision to analyze properties, sites and construction progress."],
+    ],
   },
   {
     name: "SigmaPortfolio", type: "Investment & Portfolio Intelligence", agents: [
-      ["Portfolio Management Agent", "Monitors and analyzes real estate portfolios, asset performance, cash flows, risks and investment outcomes."],
-      ["Value Creation Agent", "Identifies opportunities to improve asset performance, unlock value and optimize real estate investments."],
-      ["Autonomous Relationship Agent", "Automates relationship management and engagement with investors, customers, tenants and other stakeholders."]
-    ]
+      ["Portfolio Management Agent", "Monitors portfolios, asset performance, cash flows, risks and investment outcomes."],
+      ["Value Creation Agent", "Identifies opportunities to improve asset performance and unlock real estate value."],
+      ["Autonomous Relationship Agent", "Automates relationship management with investors, customers and stakeholders."],
+    ],
   },
   {
     name: "SigmaREOS", type: "Real Estate Operations", agents: [
-      ["Autonomous Real Estate ERP Agent", "Automates core real estate business processes, workflows, data and operational activities across the organization."],
-      ["Property Management Agent", "Manages property operations including occupancy, tenants, maintenance, collections and asset-level activities."],
-      ["Project Management Agent", "Plans, tracks and coordinates real estate projects, tasks, timelines, resources, costs and execution."]
-    ]
+      ["Autonomous Real Estate ERP Agent", "Automates core real estate business processes and operational activities."],
+      ["Property Management Agent", "Manages occupancy, tenants, maintenance and collections across properties."],
+      ["Project Management Agent", "Plans and tracks real estate projects, tasks, timelines and resources."],
+    ],
   },
   {
     name: "SigmaWorkspace", type: "AI Workspace & Automation", agents: [
-      ["Generative Interface", "Enables users to interact with SigmaValue through natural-language prompts to create insights, workflows and solutions."],
-      ["Solution Engine", "Converts business requirements into AI-powered workflows, applications, reports and actionable solutions."],
-      ["Connector", "Connects SigmaValue with enterprise systems, data sources, applications and external tools."],
-      ["Team Collaboration", "Enables teams to collaborate, share information, coordinate workflows and work together within the SigmaValue environment."]
-    ]
-  }
+      ["Generative Interface Agent", "Enables natural-language interaction to create insights, workflows and solutions."],
+      ["Solution Engine", "Converts business requirements into AI-powered workflows, reports and solutions."],
+      ["Connector Agent", "Connects SigmaValue with enterprise systems, data sources and external tools."],
+      ["Collaborator Agent", "Enables teams to collaborate, share information and coordinate workflows."],
+    ],
+  },
 ];
 
+/* ============================================================
+   OTHER SOLUTION SETS (used by other modals)
+   ============================================================ */
 export const crossIndustrySolutions = [
   { title: "Agentic AI Strategy & Use Case Discovery", text: "Identify high-value opportunities, assess AI readiness, prioritize use cases and develop an enterprise agentic AI roadmap.", icon: FiCompass },
   { title: "Agent & Workflow Design", text: "Design customized AI agents, multi-agent systems and autonomous workflows aligned with specific business functions and processes.", icon: FiLayers },
@@ -94,73 +108,294 @@ export const servicesAdvisorySolutions = [
   { title: "Feasibility", text: "Integrated development feasibility analysis across regulations, product mix, pricing, revenue, costs, returns, scenarios and project risks.", icon: FiPieChart },
 ];
 
-const slots = [
-  { side: "left", top: 16 }, { side: "right", top: 16 },
-  { side: "left", top: 35 }, { side: "right", top: 35 },
-  { side: "left", top: 56 }, { side: "right", top: 56 },
-  { side: "left", top: 75 }, { side: "right", top: 75 },
+/* ============================================================
+   AGENT STATUS MAP  (link exists = active, null = dev)
+   ============================================================ */
+const agentStatus = {
+  "Valuation Agent":                  "active",
+  "Valuation B2C":                    "active",
+  "Market Research Agent":            "active",
+  "Transaction Intelligence Agent":   "active",
+  "Live Data Intelligence Agent":     "active",
+  "Analytics Agent":                  "dev",
+  "Data Dashboard":                   "dev",
+  "Land/GIS Agent":                   "active",
+  "Elevation Agent":                  "active",
+  "Feasibility Agent":                "active",
+  "Legal Intelligence Agent":         "dev",
+  "Document Intelligence Agent":      "active",
+  "Physical AI Agent":                "dev",
+  "Portfolio Management Agent":       "active",
+  "Value Creation Agent":             "dev",
+  "Autonomous Relationship Agent":    "dev",
+  "Autonomous Real Estate ERP Agent": "dev",
+  "Property Management Agent":        "dev",
+  "Project Management Agent":         "dev",
+  "Generative Interface Agent":       "dev",
+  "Solution Engine":                  "dev",
+  "Connector Agent":                  "active",
+  "Collaborator Agent":               "active",
+};
+
+/* All agents flat list */
+const allAgents = agentGroups.flatMap((g) =>
+  g.agents.map(([name]) => ({
+    name,
+    system: g.name,
+    status: agentStatus[name] || "dev",
+  }))
+);
+
+/* ============================================================
+   CHIP POSITIONS  (relative to card center, in px)
+   Laid out to fan around the card like the reference image.
+   ============================================================ */
+const chipPositions = [
+  // LEFT side fan
+  { x: -195, y: -85 },
+  { x: -155, y: -38 },
+  { x: -200, y:  14 },
+  { x: -148, y:  62 },
+  { x: -195, y: 110 },
+  // RIGHT side fan
+  { x:  195, y: -80 },
+  { x:  150, y: -32 },
+  { x:  198, y:  18 },
+  { x:  148, y:  68 },
+  { x:  196, y: 116 },
+  // BOTTOM row
+  { x:  -70, y: 148 },
+  { x:   20, y: 156 },
+  { x:  110, y: 148 },
+  // TOP row
+  { x:  -55, y: -96 },
+  { x:   55, y: -102 },
 ];
 
-export function ServiceConstellation({ chapters, active, theme }) {
-  const serviceCards = (chapters?.filter((card) => card.key === "ch") || []).map((card, index) => ({
-    ...card,
-    pos: slots[index]?.side || (index % 2 === 0 ? "left" : "right"),
-    top: `${slots[index]?.top ?? 16}%`,
-  }));
+/* ============================================================
+   AGENT CHIPS OVERLAY COMPONENT
+   ============================================================ */
+function AgentChips({ visible, cardPos }) {
+  const chips = allAgents.slice(0, chipPositions.length);
+  // If the card is on the right side of the screen, mirror the x positions
+  const flipX = cardPos === "right";
 
-  const getActiveCardIndex = () => Math.max(
-    0,
-    Math.min(serviceCards.length - 1, (active ?? 1) - 1)
+  return (
+    <div className="agent-chips-overlay" aria-hidden="true">
+      {chips.map(({ name, status }, i) => {
+        const raw = chipPositions[i];
+        const x = flipX ? -raw.x : raw.x;
+        const y = raw.y;
+        return (
+          <div
+            key={name}
+            className={`agent-chip agent-chip-${status}`}
+            style={{
+              left: "50%",
+              top: "50%",
+              transitionDelay: visible ? `${i * 55}ms` : "0ms",
+              opacity: visible ? 1 : 0,
+              transform: visible
+                ? `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(1)`
+                : `translate(calc(-50% + ${x * 0.4}px), calc(-50% + ${y * 0.4}px)) scale(0.5)`,
+            }}
+          >
+            <span className="chip-dot" />
+            <div className="chip-body">
+              <span className="chip-name">{name}</span>
+              <span className={`chip-status chip-status-${status}`}>
+                {status === "active" ? "● ACTIVE" : "◈ IN DEVELOPMENT"}
+              </span>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ============================================================
+   CONSTELLATION LAYOUT SLOTS
+   ============================================================ */
+const slots = [
+  { side: "left",  top: 16 }, { side: "right", top: 16 },
+  { side: "left",  top: 35 }, { side: "right", top: 35 },
+  { side: "left",  top: 56 }, { side: "right", top: 56 },
+  { side: "left",  top: 75 }, { side: "right", top: 75 },
+];
+
+/* ============================================================
+   MAIN COMPONENT
+   ============================================================ */
+export function ServiceConstellation({ chapters, active, theme }) {
+  const serviceCards = (chapters?.filter((card) => card.key === "ch") || []).map(
+    (card, index) => ({
+      ...card,
+      pos: slots[index]?.side || (index % 2 === 0 ? "left" : "right"),
+      top: `${slots[index]?.top ?? 16}%`,
+    })
   );
 
+  const getActiveCardIndex = () =>
+    Math.max(0, Math.min(serviceCards.length - 1, (active ?? 1) - 1));
+
   const [activeCard, setActiveCard] = useState(getActiveCardIndex);
-  const [agentModal, setAgentModal] = useState(false);
-  const [enterpriseModal, setEnterpriseModal] = useState(false);
-  const [crossIndustryModal, setCrossIndustryModal] = useState(false);
+  const [agentModal,                setAgentModal]                = useState(false);
+  const [enterpriseModal,           setEnterpriseModal]           = useState(false);
+  const [crossIndustryModal,        setCrossIndustryModal]        = useState(false);
   const [realEstateTechnologyModal, setRealEstateTechnologyModal] = useState(false);
-  const [dealStructuringModal, setDealStructuringModal] = useState(false);
+  const [dealStructuringModal,      setDealStructuringModal]      = useState(false);
   const [strategicTransactionModal, setStrategicTransactionModal] = useState(false);
-  const [servicesAdvisoryModal, setServicesAdvisoryModal] = useState(false);
+  const [servicesAdvisoryModal,     setServicesAdvisoryModal]     = useState(false);
 
   useEffect(() => {
     setActiveCard(getActiveCardIndex());
   }, [active, serviceCards.length]);
 
-  return <div className="service-constellation" aria-label="SigmaValue Services Ecosystem">
-    {serviceCards.map((card, index) => {
-      const isResolved = index < activeCard;
-      const isActivating = index === activeCard;
-      const isDormant = index > activeCard;
-      const stateClass = isDormant ? "dormant" : isActivating ? "activating" : isResolved ? "resolved" : "";
-      return <article
-        key={card.title}
-        className={`orbit-service-card ${card.pos} ${stateClass}`}
-        style={{ "--slot-top": card.top, "--start-rotation": card.pos === "left" ? "-84deg" : "84deg" }}
-        onClick={() => setActiveCard(index)}
-      >
-        <div className="orbit-card-image" style={{ backgroundImage: `linear-gradient(135deg, rgba(8,14,26,.15), rgba(8,14,26,.9)), url('/FINAL LOGO.jpeg')` }} />
-        <div className="orbit-card-content">
-          <span>{String(index + 1).padStart(2, "0")} / 08 · {card.cat}</span>
-          <h2>{card.title.replace("\n", " ")}</h2>
-          <p>{card.desc}</p>
-          {index === 0 && <button type="button" className="orbit-explore" onClick={() => setAgentModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 1 && <button type="button" className="orbit-explore" onClick={() => setEnterpriseModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 2 && <button type="button" className="orbit-explore" onClick={() => setCrossIndustryModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 3 && <button type="button" className="orbit-explore" onClick={() => setRealEstateTechnologyModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 5 && <button type="button" className="orbit-explore" onClick={() => setDealStructuringModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 6 && <button type="button" className="orbit-explore" onClick={() => setStrategicTransactionModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 7 && <button type="button" className="orbit-explore" onClick={() => setServicesAdvisoryModal(true)}>Explore More <FiArrowUpRight /></button>}
-          {index === 4 && <a href="#contact">Explore More <FiArrowUpRight /></a>}
-        </div>
-      </article>;
-    })}
-    <div className="constellation-status"><span>{String(activeCard + 1).padStart(2, "0")}</span><i /><b>08 SERVICES RESOLVING</b></div>
-    <AgentPlatformModal show={agentModal} onHide={() => setAgentModal(false)} groups={agentGroups} theme={theme} />
-    <EnterpriseAIModal show={enterpriseModal} onHide={() => setEnterpriseModal(false)} variant="connected" />
-    <EnterpriseAIModal show={crossIndustryModal} onHide={() => setCrossIndustryModal(false)} eyebrow="CROSS-INDUSTRY AGENTIC AI" title="From AI opportunity to enterprise-scale impact." subtitle="End-to-end advisory, implementation and optimization across industries and business functions." solutions={crossIndustrySolutions} />
-    <EnterpriseAIModal show={realEstateTechnologyModal} onHide={() => setRealEstateTechnologyModal(false)} eyebrow="REAL ESTATE TECHNOLOGY & DIGITAL TRANSFORMATION SERVICES" title="Transform every stage of real estate operations." subtitle="Connected technology, intelligent data and modern platforms for the complete real estate lifecycle." solutions={realEstateTechnologySolutions} />
-    <EnterpriseAIModal show={dealStructuringModal} onHide={() => setDealStructuringModal(false)} eyebrow="DEAL STRUCTURING & CAPITAL ADVISORY" title="Structure stronger deals and smarter capital." subtitle="Integrated transaction, financing and investment advisory designed to optimize risk, returns and project economics." solutions={dealStructuringSolutions} />
-    <EnterpriseAIModal show={strategicTransactionModal} onHide={() => setStrategicTransactionModal(false)} eyebrow="STRATEGIC TRANSACTION" title="Navigate every transaction with clarity." subtitle="End-to-end strategic, diligence and execution support for complex real estate transactions." solutions={strategicTransactionSolutions} />
-    <EnterpriseAIModal show={servicesAdvisoryModal} onHide={() => setServicesAdvisoryModal(false)} eyebrow="SERVICES ADVISORY" title="Decision-ready real estate advisory." subtitle="Specialist intelligence and analysis for valuation, viability, markets and development decisions." solutions={servicesAdvisorySolutions} />
-  </div>;
+  return (
+    <div className="service-constellation" aria-label="SigmaValue Services Ecosystem">
+      {serviceCards.map((card, index) => {
+        const isResolved   = index < activeCard;
+        const isActivating = index === activeCard;
+        const isDormant    = index > activeCard;
+        const stateClass   = isDormant
+          ? "dormant"
+          : isActivating
+          ? "activating"
+          : isResolved
+          ? "resolved"
+          : "";
+
+        /* Show chips only for card 0 when it's active or resolved */
+        const showChips = index === 0 && (isActivating || isResolved);
+
+        return (
+          <article
+            key={card.title}
+            className={`orbit-service-card ${card.pos} ${stateClass}`}
+            style={{
+              "--slot-top": card.top,
+              "--start-rotation": card.pos === "left" ? "-84deg" : "84deg",
+            }}
+            onClick={() => setActiveCard(index)}
+          >
+            {/* Background image */}
+            <div
+              className="orbit-card-image"
+              style={{
+                backgroundImage: `linear-gradient(135deg, rgba(8,14,26,.15), rgba(8,14,26,.9)), url('/FINAL LOGO.jpeg')`,
+              }}
+            />
+
+            {/* Card text content */}
+            <div className="orbit-card-content">
+              <span>
+                {String(index + 1).padStart(2, "0")} / 08 · {card.cat}
+              </span>
+              <h2>{card.title.replace("\n", " ")}</h2>
+              <p>{card.desc}</p>
+
+              {index === 0 && (
+                <button
+                  type="button"
+                  className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setAgentModal(true); }}
+                >
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 1 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setEnterpriseModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 2 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setCrossIndustryModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 3 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setRealEstateTechnologyModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 4 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setDealStructuringModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 5 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setStrategicTransactionModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+              {index === 6 && (
+                <button type="button" className="orbit-explore"
+                  onClick={(e) => { e.stopPropagation(); setServicesAdvisoryModal(true); }}>
+                  Explore More <FiArrowUpRight />
+                </button>
+              )}
+            </div>
+
+            {/* Agent chips — only on card 0 */}
+            {index === 0 && (
+              <AgentChips visible={showChips} cardPos={card.pos} />
+            )}
+          </article>
+        );
+      })}
+
+      {/* Status ticker */}
+      <div className="constellation-status">
+        <span>{String(activeCard + 1).padStart(2, "00")}</span>
+        <i />
+        <b>07 SERVICES RESOLVING</b>
+      </div>
+
+      {/* Modals */}
+      <AgentPlatformModal
+        show={agentModal}
+        onHide={() => setAgentModal(false)}
+        groups={agentGroups}
+        theme={theme}
+      />
+      <EnterpriseAIModal
+        show={enterpriseModal}
+        onHide={() => setEnterpriseModal(false)}
+        variant="connected"
+        theme={theme}
+      />
+      <CrossIndustryModal
+        show={crossIndustryModal}
+        onHide={() => setCrossIndustryModal(false)}
+        solutions={crossIndustrySolutions}
+        theme={theme}
+      />
+      <RealEstateTechnologyModal
+        show={realEstateTechnologyModal}
+        onHide={() => setRealEstateTechnologyModal(false)}
+        theme={theme}
+      />
+      <DealStructuringCapitalAdvisoryModal
+        show={dealStructuringModal}
+        onHide={() => setDealStructuringModal(false)}
+        theme={theme}
+      />
+      <StrategicTransactionModal
+        show={strategicTransactionModal}
+        onHide={() => setStrategicTransactionModal(false)}
+        theme={theme}
+      />
+      <ServicesAdvisoryModal
+        show={servicesAdvisoryModal}
+        onHide={() => setServicesAdvisoryModal(false)}
+        theme={theme}
+      />
+    </div>
+  );
 }

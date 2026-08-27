@@ -1,5 +1,5 @@
 import { Badge, Button, Card, Modal } from "react-bootstrap";
-import { FiArrowRight, FiX } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 import {
   TbBrain,
   TbChartHistogram,
@@ -7,6 +7,7 @@ import {
   TbRobot,
 } from "react-icons/tb";
 import { useState } from "react";
+import { RightPanelModalHeader } from "./RightPanelModalHeader";
 
 const enterpriseSolutions = [
   {
@@ -38,9 +39,9 @@ const enterpriseSolutions = [
 export function EnterpriseAIModal({
   show,
   onHide,
-  eyebrow = "ENTERPRISE AI",
+  eyebrow = "02 / 07 · ENTERPRISE AI",
   title = "Intelligence built around your enterprise.",
-  subtitle = "For connected capabilities to streamline, automate and scale with your organization.",
+  subtitle = "Connected capabilities to streamline, automate and scale operations.",
   solutions = enterpriseSolutions,
   variant = "default",
   theme,
@@ -69,52 +70,25 @@ export function EnterpriseAIModal({
       centered
       size="xl"
       dialogClassName="enterprise-ai-dialog d4-right-panel-dialog"
-      contentClassName={`enterprise-ai-modal ${connected ? "enterprise-ai-modal-connected" : ""} ${isLight ? "light-mode" : "dark-mode"
-        }`}
+      contentClassName={`enterprise-ai-modal d4-right-panel-modal ${
+        connected ? "enterprise-ai-modal-connected" : ""
+      } ${isLight ? "light-mode" : "dark-mode"}`}
       backdropClassName="super-agent-backdrop d4-right-panel-backdrop"
     >
-      {/* =========================
-          HEADER
-      ========================== */}
-      <Modal.Header className="enterprise-ai-header">
-        <div className="enterprise-header-left-badge">
-          <span className="badge-text">{eyebrow}</span>
-          <span className="badge-circuit-line">
-            <i className="circuit-bar" />
-            <i className="circuit-node" />
-          </span>
-        </div>
+      <RightPanelModalHeader
+        eyebrow={eyebrow}
+        title={title}
+        subtitle={subtitle}
+        onHide={onHide}
+        ariaLabel="Close Enterprise AI"
+      />
 
-        <div className="enterprise-header-center">
-          <Modal.Title className="enterprise-title-hero">
-            Intelligence built around <span className="title-cyan-highlight">your enterprise.</span>
-          </Modal.Title>
-          <p className="enterprise-subtitle-hero">{subtitle}</p>
-        </div>
-
-        <Button
-          variant="link"
-          className="enterprise-ai-close"
-          onClick={onHide}
-          aria-label="Close Enterprise AI"
-        >
-          <FiX />
-        </Button>
-      </Modal.Header>
-
-      {/* =========================
-          CONNECTED VERSION
-      ========================== */}
       {connected ? (
-        <Modal.Body className="enterprise-ai-body enterprise-connected-body">
+        <Modal.Body className="enterprise-ai-body enterprise-connected-body d4-right-panel-body">
           <div className="enterprise-connected-layout">
-            {/* Background Cyber Grid / PCB Canvas */}
             <div className="enterprise-cyber-grid" aria-hidden="true" />
             <div className="enterprise-cyber-vignette" aria-hidden="true" />
 
-            {/* =========================
-                CIRCUIT TRACE NETWORK SVG (Thunder Electric Lines: Building <-> Cards)
-            ========================== */}
             <svg
               className="enterprise-network-svg"
               viewBox="0 0 1000 480"
@@ -122,7 +96,6 @@ export function EnterpriseAIModal({
               aria-hidden="true"
             >
               <defs>
-                {/* Brand Gradients */}
                 <linearGradient id="tealTraceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="#43a09b" />
                   <stop offset="50%" stopColor="#5cb8b2" />
@@ -134,7 +107,6 @@ export function EnterpriseAIModal({
                   <stop offset="100%" stopColor="#ffc4ad" />
                 </linearGradient>
 
-                {/* Thunder Glow Filters */}
                 <filter id="thunderGlowTeal" x="-30%" y="-30%" width="160%" height="160%">
                   <feGaussianBlur stdDeviation="3.5" result="blur1" />
                   <feGaussianBlur stdDeviation="7" result="blur2" />
@@ -155,67 +127,63 @@ export function EnterpriseAIModal({
                 </filter>
               </defs>
 
-              {/* ===================== PATH 1 (Top-Left: Building <-> Card 1, Coral) ===================== */}
-              <path className="thunder-aura trace-coral" d="M 430 200 H 370 V 110 H 295" />
+              {/* Path 1: Top-Left Card <-> Building */}
+              <path className="thunder-aura trace-coral" d="M 425 195 H 360 V 115 H 290" />
               <path
                 id="thunder-track-1"
                 className={`thunder-track trace-coral ${activeIndex === 0 ? "trace-active" : ""}`}
-                d="M 430 200 H 370 V 110 H 295"
+                d="M 425 195 H 360 V 115 H 290"
               />
-              <path className="thunder-bolt bolt-coral bolt-forward" d="M 430 200 H 370 V 110 H 295" />
-              <path className="thunder-bolt bolt-coral bolt-return" d="M 295 110 H 370 V 200 H 430" />
-              <circle className="circuit-node-dot building-node node-coral" cx="430" cy="200" r="5" />
-              <circle className="circuit-node-dot card-node node-coral" cx="295" cy="110" r="4.5" />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 425 195 H 360 V 115 H 290" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 290 115 H 360 V 195 H 425" />
+              <circle className="circuit-node-dot building-node node-coral" cx="425" cy="195" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="290" cy="115" r="4.5" />
 
-              {/* ===================== PATH 2 (Top-Right: Building <-> Card 2, Teal) ===================== */}
-              <path className="thunder-aura trace-teal" d="M 570 200 H 630 V 110 H 705" />
+              {/* Path 2: Top-Right Card <-> Building */}
+              <path className="thunder-aura trace-teal" d="M 575 195 H 640 V 115 H 710" />
               <path
                 id="thunder-track-2"
                 className={`thunder-track trace-teal ${activeIndex === 1 ? "trace-active" : ""}`}
-                d="M 570 200 H 630 V 110 H 705"
+                d="M 575 195 H 640 V 115 H 710"
               />
-              <path className="thunder-bolt bolt-teal bolt-forward" d="M 570 200 H 630 V 110 H 705" />
-              <path className="thunder-bolt bolt-teal bolt-return" d="M 705 110 H 630 V 200 H 570" />
-              <circle className="circuit-node-dot building-node node-teal" cx="570" cy="200" r="5" />
-              <circle className="circuit-node-dot card-node node-teal" cx="705" cy="110" r="4.5" />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 575 195 H 640 V 115 H 710" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 710 115 H 640 V 195 H 575" />
+              <circle className="circuit-node-dot building-node node-teal" cx="575" cy="195" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="710" cy="115" r="4.5" />
 
-              {/* ===================== PATH 3 (Bottom-Left: Building <-> Card 3, Teal) ===================== */}
-              <path className="thunder-aura trace-teal" d="M 430 280 H 370 V 370 H 295" />
+              {/* Path 3: Bottom-Left Card <-> Building */}
+              <path className="thunder-aura trace-teal" d="M 425 285 H 360 V 365 H 290" />
               <path
                 id="thunder-track-3"
                 className={`thunder-track trace-teal ${activeIndex === 2 ? "trace-active" : ""}`}
-                d="M 430 280 H 370 V 370 H 295"
+                d="M 425 285 H 360 V 365 H 290"
               />
-              <path className="thunder-bolt bolt-teal bolt-forward" d="M 430 280 H 370 V 370 H 295" />
-              <path className="thunder-bolt bolt-teal bolt-return" d="M 295 370 H 370 V 280 H 430" />
-              <circle className="circuit-node-dot building-node node-teal" cx="430" cy="280" r="5" />
-              <circle className="circuit-node-dot card-node node-teal" cx="295" cy="370" r="4.5" />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 425 285 H 360 V 365 H 290" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 290 365 H 360 V 285 H 425" />
+              <circle className="circuit-node-dot building-node node-teal" cx="425" cy="285" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="290" cy="365" r="4.5" />
 
-              {/* ===================== PATH 4 (Bottom-Right: Building <-> Card 4, Coral) ===================== */}
-              <path className="thunder-aura trace-coral" d="M 570 280 H 630 V 370 H 705" />
+              {/* Path 4: Bottom-Right Card <-> Building */}
+              <path className="thunder-aura trace-coral" d="M 575 285 H 640 V 365 H 710" />
               <path
                 id="thunder-track-4"
                 className={`thunder-track trace-coral ${activeIndex === 3 ? "trace-active" : ""}`}
-                d="M 570 280 H 630 V 370 H 705"
+                d="M 575 285 H 640 V 365 H 710"
               />
-              <path className="thunder-bolt bolt-coral bolt-forward" d="M 570 280 H 630 V 370 H 705" />
-              <path className="thunder-bolt bolt-coral bolt-return" d="M 705 370 H 630 V 280 H 570" />
-              <circle className="circuit-node-dot building-node node-coral" cx="570" cy="280" r="5" />
-              <circle className="circuit-node-dot card-node node-coral" cx="705" cy="370" r="4.5" />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 575 285 H 640 V 365 H 710" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 710 365 H 640 V 285 H 575" />
+              <circle className="circuit-node-dot building-node node-coral" cx="575" cy="285" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="710" cy="365" r="4.5" />
             </svg>
 
-            {/* =========================
-                CENTER BUILDING HUB
-            ========================== */}
+            {/* Center Building Hub */}
             <div className="enterprise-building-hub">
               <div className="building-image-wrap">
-                {/* Concentric Pedestal Glow & Rings at Base */}
                 <div className="building-pedestal-glow" />
                 <div className="building-pedestal-ring ring-outer" />
                 <div className="building-pedestal-ring ring-mid" />
                 <div className="building-pedestal-ring ring-inner" />
 
-                {/* Building Image */}
                 <img
                   className="enterprise-hub-building"
                   src={buildingImage}
@@ -224,9 +192,7 @@ export function EnterpriseAIModal({
               </div>
             </div>
 
-            {/* =========================
-                FOUR CONNECTED CARDS
-            ========================== */}
+            {/* 4 Connected Solution Cards */}
             {visibleSolutions.map((solution, index) => {
               const {
                 title,
@@ -253,7 +219,6 @@ export function EnterpriseAIModal({
                     }
                   }}
                 >
-                  {/* Connection Node Indicator on Card Edge */}
                   <span className={`card-edge-node node-${cardTheme}`} />
 
                   <Card.Body>
@@ -264,12 +229,18 @@ export function EnterpriseAIModal({
                         </span>
                       </span>
 
-                      <Card.Title className="enterprise-card-title">{title}</Card.Title>
+                      <div className="enterprise-card-title-group">
+                        <span className={`enterprise-card-num num-${cardTheme}`}>
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <Card.Title className="enterprise-card-title">{title}</Card.Title>
+                      </div>
                     </div>
 
                     <Card.Text className="enterprise-card-desc">{text}</Card.Text>
 
                     <div className="enterprise-card-action">
+                      <span className="enterprise-card-action-text">Explore</span>
                       <span className="enterprise-card-arrow-btn">
                         <FiArrowRight />
                       </span>
@@ -281,10 +252,7 @@ export function EnterpriseAIModal({
           </div>
         </Modal.Body>
       ) : (
-        /* =========================
-           DEFAULT VERSION
-        ========================== */
-        <Modal.Body className="enterprise-ai-body">
+        <Modal.Body className="enterprise-ai-body d4-right-panel-body">
           <div className="enterprise-default-grid">
             {solutions.map(({ title, text, icon: Icon }, index) => (
               <Card className="enterprise-solution-card h-100" key={title}>
@@ -315,4 +283,3 @@ export function EnterpriseAIModal({
     </Modal>
   );
 }
-

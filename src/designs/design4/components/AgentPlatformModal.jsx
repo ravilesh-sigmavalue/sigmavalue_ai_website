@@ -13,9 +13,9 @@ import {
   FiPieChart,
   FiPlay,
   FiPlayCircle,
-  FiX,
   FiZap,
 } from "react-icons/fi";
+import { RightPanelModalHeader } from "./RightPanelModalHeader";
 import { VideoPlayerModal } from "./VideoPlayerModal";
 
 const groupIcons = [FiHome, FiBarChart2, FiMap, FiGrid, FiCpu, FiPieChart, FiBriefcase, FiZap];
@@ -147,7 +147,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
 
   useEffect(() => {
     if (!show || paused) return undefined;
-    const timer = window.setInterval(nextGroup, 4500);
+    const timer = window.setInterval(nextGroup, 5000);
     return () => window.clearInterval(timer);
   }, [show, paused, nextGroup]);
 
@@ -171,23 +171,39 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
         centered
         size="xl"
         dialogClassName="super-agent-dialog d4-right-panel-dialog"
-        contentClassName={`super-agent-modal ${isLight ? "light-mode" : "dark-mode"}`}
+        contentClassName={`super-agent-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"}`}
         backdropClassName="super-agent-backdrop d4-right-panel-backdrop"
       >
-        <Modal.Header className="super-agent-header">
-          <div>
-            <span>AGENTIC AI PLATFORM</span>
-            <Modal.Title>Eight intelligence systems. One connected platform.</Modal.Title>
-            <p>Each intelligence agent revolves in 3D orbit around the central SigmaValue building.</p>
-          </div>
-          <div className="super-agent-close">
-            <Button variant="link" onClick={onHide} aria-label="Close">
-              <FiX />
-            </Button>
-          </div>
-        </Modal.Header>
+        <RightPanelModalHeader
+          eyebrow="01 / 07 · AGENTIC AI PLATFORM"
+          title="Eight intelligence systems. One connected platform."
+          subtitle="Autonomous AI agents orbiting a central real estate intelligence node."
+          onHide={onHide}
+          ariaLabel="Close Agentic AI Platform"
+        />
 
-        <Modal.Body className="super-agent-body">
+        <Modal.Body className="super-agent-body d4-right-panel-body">
+          {/* Quick-Switch System Tabs */}
+          {false && <nav className="super-system-tabs" aria-label="Select Intelligence System">
+            {groups.map((item, idx) => {
+              const TabIcon = groupIcons[idx] || FiZap;
+              const isActive = idx === groupIndex;
+              return (
+                <button
+                  key={item.name}
+                  type="button"
+                  className={`super-system-tab ${isActive ? "active" : ""}`}
+                  onClick={() => selectGroup(idx)}
+                  title={item.name}
+                >
+                  <span className="tab-num">{String(idx + 1).padStart(2, "0")}</span>
+                  <TabIcon className="tab-icon" />
+                  <span className="tab-name">{item.name.replace("Sigma", "")}</span>
+                </button>
+              );
+            })}
+          </nav>}
+
           <section
             className="super-agent-stage"
             onWheel={rotateWithWheel}
@@ -197,7 +213,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
             aria-label="Scroll to rotate the eight SigmaValue systems"
           >
             <div className="super-stage-heading">
-              <Badge>{String(groupIndex + 1).padStart(2, "0")} / 08</Badge>
+              <Badge>{String(groupIndex + 1).padStart(2, "0")} / {String(groups.length).padStart(2, "0")}</Badge>
               <div>
                 <h2>{group.name}</h2>
                 <p>{group.type}</p>
@@ -207,7 +223,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
             {/* 3D Planetary Orbit Stage */}
             <div className="super-orbit" style={{ "--agent-count": groups.length }}>
               {/* SVG Elliptical Planetary Orbit Rings */}
-              <svg className="super-orbit-svg" viewBox="0 0 900 480" aria-hidden="true">
+              <svg className="super-orbit-svg" viewBox="0 0 760 300" aria-hidden="true">
                 <defs>
                   <linearGradient id="orbitGlow" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stopColor="var(--brand-teal, #43a09b)" stopOpacity="0.6" />
@@ -215,12 +231,12 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                     <stop offset="100%" stopColor="var(--brand-seafoam, #5cb8b2)" stopOpacity="0.6" />
                   </linearGradient>
                 </defs>
-                <ellipse cx="450" cy="240" rx="410" ry="155" className="orbit-track-outer" />
-                <ellipse cx="450" cy="240" rx="350" ry="130" className="orbit-track-main" />
-                <ellipse cx="450" cy="240" rx="270" ry="98" className="orbit-track-inner" />
+                <ellipse cx="380" cy="150" rx="330" ry="105" className="orbit-track-outer" />
+                <ellipse cx="380" cy="150" rx="275" ry="85" className="orbit-track-main" />
+                <ellipse cx="380" cy="150" rx="210" ry="62" className="orbit-track-inner" />
               </svg>
 
-              {/* Orbit Floor Grid / Base Pedestal */}
+              {/* Orbit Floor Grid */}
               <div className="super-orbit-floor">
                 <i />
                 <i />
@@ -238,29 +254,25 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
               </div>
 
               <div className="super-central-node">
-                <FiZap /> Central intelligence node
+                <FiZap /> Central node
               </div>
 
-              {/* 8 Orbiting Agent Planets (3D Calculated Depth) */}
+              {/* 8 Orbiting Agent Planets (Proportionally Scaled 3D Depth) */}
               {groups.map((item, index) => {
-                // Calculate continuous angular position relative to active groupIndex
                 const offsetIndex = index - groupIndex;
-                const angleDeg = (360 / groups.length) * offsetIndex + 90;
+                // Advancing with wheel-down rotates the orbit clockwise;
+                // wheel-up selects the previous system and reverses direction.
+                const angleDeg = -(360 / groups.length) * offsetIndex + 90;
                 const angleRad = (angleDeg * Math.PI) / 180;
 
-                // 3D Elliptical Orbit Coordinates:
-                // X: -410px to +410px
-                // Y: -145px to +145px (with depth tilt)
-                // Z: -1 (back of building) to +1 (front of building)
                 const cosVal = Math.cos(angleRad);
                 const sinVal = Math.sin(angleRad);
 
-                // Depth 0 (far back) to 1 (near front)
                 const depth = (sinVal + 1) / 2;
                 const isFront = sinVal >= -0.15;
                 const zIndex = isFront ? Math.round(10 + depth * 10) : Math.round(2 + depth * 3);
-                const scale = 0.74 + depth * 0.32;
-                const opacity = 0.50 + depth * 0.50;
+                const scale = 0.76 + depth * 0.28;
+                const opacity = 0.55 + depth * 0.45;
 
                 const Icon = groupIcons[index] || FiZap;
                 const isActive = index === groupIndex;
@@ -273,8 +285,8 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                       isFront ? "in-front" : "in-back"
                     }`}
                     style={{
-                      "--pos-x": `${(cosVal * 390).toFixed(1)}px`,
-                      "--pos-y": `${(sinVal * 140).toFixed(1)}px`,
+                      "--pos-x": `${(cosVal * 280).toFixed(1)}px`,
+                      "--pos-y": `${(sinVal * 90).toFixed(1)}px`,
                       "--depth-scale": scale.toFixed(3),
                       "--depth-opacity": opacity.toFixed(3),
                       "--depth-z": zIndex,
@@ -290,10 +302,8 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                       <b>{item.name}</b>
                       <small>
                         {isActive
-                          ? "● ACTIVE ORBIT"
-                          : `● ${item.agents.length} AI AGENT${
-                              item.agents.length > 1 ? "S" : ""
-                            }`}
+                          ? "● ACTIVE"
+                          : `${item.agents.length} AGENT${item.agents.length > 1 ? "S" : ""}`}
                       </small>
                     </div>
                   </button>
@@ -301,6 +311,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
               })}
             </div>
 
+            <>
             <Button
               className="super-arrow previous"
               onClick={previousGroup}
@@ -311,24 +322,31 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
             <Button className="super-arrow next" onClick={nextGroup} aria-label="Next system">
               <FiArrowRight />
             </Button>
+            </>
 
             {/* Active System Focus Card */}
             <Card className="super-active-card" key={groupIndex}>
-              <Card.Header>
-                <span className="super-active-icon">
-                  <GroupIcon />
-                </span>
-                <div>
-                  <Card.Title>{group.name}</Card.Title>
-                  <small>{group.type} · SIGMAVALUE SYSTEM</small>
+              <Card.Header className="super-card-header">
+                <div className="super-card-title-group">
+                  <span className="super-active-icon">
+                    <GroupIcon />
+                  </span>
+                  <div>
+                    <div className="super-system-title-row">
+                      <Card.Title>{group.name}</Card.Title>
+                      <span className="super-system-tag">{group.type}</span>
+                    </div>
+                    <small className="super-system-sub">SIGMAVALUE INTELLIGENCE SYSTEM</small>
+                  </div>
                 </div>
-                <Badge>
-                  {groupIndex + 1} / {groups.length}
+                <Badge className="super-system-badge">
+                  {String(groupIndex + 1).padStart(2, "0")} / {String(groups.length).padStart(2, "0")}
                 </Badge>
               </Card.Header>
-              <Card.Body>
+
+              <Card.Body className="super-card-body">
                 {linkedGroups.has(groupIndex) ? (
-                  <div className="super-agent-details">
+                  <div className="super-agent-details-grid">
                     {group.agents.map(([name, description]) => {
                       const media = agentMedia[name];
                       const href = agentLinks[name];
@@ -336,7 +354,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
 
                       if (media) {
                         return (
-                          <div className="super-agent-detail" key={name}>
+                          <div className="super-agent-detail-item" key={name}>
                             <a
                               href={media.externalLink || href || "#"}
                               onClick={(e) => {
@@ -348,28 +366,13 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                             >
                               <div className="super-agent-detail-header">
                                 <span className="super-agent-detail-name">
-                                  <FiPlayCircle
-                                    style={{
-                                      color: "var(--brand-coral)",
-                                      fontSize: "14px",
-                                      flexShrink: 0,
-                                    }}
-                                  />
+                                  <FiPlayCircle className="media-play-icon" />
                                   {name}
                                 </span>
-                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                  <span className="super-agent-detail-visit">
-                                    {media.actionText || "PLAY VIDEO →"}
-                                  </span>
-                                  <span
-                                    className="super-agent-detail-arrow"
-                                    style={{
-                                      background: "rgba(232, 112, 66, 0.15)",
-                                      borderColor: "rgba(232, 112, 66, 0.4)",
-                                      color: "var(--brand-coral)",
-                                    }}
-                                  >
-                                    <FiPlay style={{ fontSize: "11px", marginLeft: "1px" }} />
+                                <div className="super-agent-action-badge media-action">
+                                  <span>{media.actionText || "PLAY VIDEO →"}</span>
+                                  <span className="super-agent-detail-arrow media-arrow">
+                                    <FiPlay />
                                   </span>
                                 </div>
                               </div>
@@ -380,13 +383,13 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                       }
 
                       return (
-                        <div className="super-agent-detail" key={name}>
+                        <div className="super-agent-detail-item" key={name}>
                           {hasLink ? (
                             <a href={href} target="_blank" rel="noreferrer">
                               <div className="super-agent-detail-header">
                                 <span className="super-agent-detail-name">{name}</span>
-                                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                                  <span className="super-agent-detail-visit">VISIT →</span>
+                                <div className="super-agent-action-badge visit-action">
+                                  <span>VISIT →</span>
                                   <span className="super-agent-detail-arrow">
                                     <FiArrowUpRight />
                                   </span>
@@ -418,10 +421,10 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                   </>
                 )}
               </Card.Body>
-              <Card.Footer>
+              <Card.Footer className="super-card-footer">
                 <span className="super-status">
                   <i /> {group.agents.length} CONNECTED AI AGENT
-                  {group.agents.length > 1 ? "S" : ""}
+                  {group.agents.length > 1 ? "S" : ""} READY
                 </span>
               </Card.Footer>
             </Card>

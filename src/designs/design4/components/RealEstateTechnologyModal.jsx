@@ -1,16 +1,15 @@
 import { Modal } from "react-bootstrap";
+import { RightPanelModalHeader } from "./RightPanelModalHeader";
 import "./RealEstateTechnologyModal.css";
 
 const capabilities = [
   {
-    // number: "01",
     title: "Real Estate Digital Transformation",
     description:
       "Digitize and automate real estate processes across acquisition, development, sales, leasing, property management and project management.",
     icon: "transform",
   },
   {
-    // number: "02",
     title: "Real Estate Data, AI & Intelligence",
     description:
       "Implement AI, automation, GIS, data platforms, analytics and decision intelligence to improve operational efficiency and business decisions.",
@@ -48,10 +47,6 @@ const benefits = [
   },
 ];
 
-/* =========================================================
-   CAPABILITY ICONS
-   ========================================================= */
-
 function CapabilityIcon({ type }) {
   if (type === "transform") {
     return (
@@ -80,10 +75,6 @@ function CapabilityIcon({ type }) {
     </svg>
   );
 }
-
-/* =========================================================
-   BENEFIT ICONS
-   ========================================================= */
 
 function BenefitIcon({ type }) {
   if (type === "city") {
@@ -122,54 +113,29 @@ function BenefitIcon({ type }) {
   );
 }
 
-/* =========================================================
-   CAPABILITY ROW
-   ========================================================= */
-
 function CapabilityRow({ item }) {
   return (
     <article className="re-capability">
-
-      {/* NUMBER
-      <div className="re-step">
-        <span>{item.number}</span>
-      </div> */}
-
-      {/* ICON */}
       <div className="re-capability-icon">
         <CapabilityIcon type={item.icon} />
       </div>
-
-      {/* CONTENT */}
       <div className="re-capability-copy">
-
         <h3>{item.title}</h3>
-
         <p>{item.description}</p>
-
         <button type="button" className="re-explore-button">
           <span>Explore capability</span>
         </button>
-
       </div>
-
-      {/* DOT GRID
-      <div className="re-row-grid" /> */}
-
-      {/* ARROW */}
-      <div className="re-row-arrow">
-        →
-      </div>
-
+      <div className="re-row-arrow">→</div>
     </article>
   );
 }
 
-/* =========================================================
-   MAIN COMPONENT
-   ========================================================= */
+export function RealEstateTechnologyModal({ show, onHide, theme }) {
+  const isLight =
+    theme === "light" ||
+    (typeof document !== "undefined" && document.documentElement.dataset.theme === "light");
 
-export function RealEstateTechnologyModal({ show, onHide }) {
   return (
     <Modal
       show={show}
@@ -177,155 +143,66 @@ export function RealEstateTechnologyModal({ show, onHide }) {
       centered
       size="xl"
       dialogClassName="re-dialog d4-right-panel-dialog"
-      contentClassName="re-modal"
+      contentClassName={`re-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"}`}
       backdropClassName="re-backdrop d4-right-panel-backdrop"
     >
-      <button type="button" className="re-close" onClick={onHide} aria-label="Close Real Estate Technology">×</button>
-      <section
-        className="re-section"
-        aria-labelledby="real-estate-title"
-      >
+      <RightPanelModalHeader
+        eyebrow="04 / 07 · REAL ESTATE TECHNOLOGY"
+        title="Transform every stage of real estate operations."
+        subtitle="Connected technology, intelligent data and modern platforms for the real estate lifecycle."
+        onHide={onHide}
+        ariaLabel="Close Real Estate Technology"
+      />
 
-        <div className="re-shell">
+      <Modal.Body className="d4-right-panel-body">
+        <section className="re-section" aria-labelledby="real-estate-title">
+          <div className="re-shell">
+            <div className="re-main-grid">
+              <div className="re-visual-column">
+                <div className="re-city-wrap">
+                  <div className="re-orbit orbit-one" />
+                  <div className="re-orbit orbit-two" />
+                  <div className="re-city-pin pin-one">⌁</div>
+                  <div className="re-city-pin pin-two">⌖</div>
+                  <div className="re-city-pin pin-three">◌</div>
 
-          {/* =================================================
-            MAIN CONTENT
-        ================================================= */}
+                  <img
+                    src="/realestate dark.png"
+                    alt="Futuristic smart real estate city"
+                    className="re-skyline-image re-skyline-dark"
+                  />
+                  <img
+                    src="/realestate light.png"
+                    alt="Futuristic smart real estate city"
+                    className="re-skyline-image re-skyline-light"
+                  />
+                </div>
 
-          <div className="re-main-grid">
-
-            {/* =================================================
-              LEFT VISUAL
-          ================================================= */}
-
-            <div className="re-visual-column">
-
-              <div className="re-heading-area">
-                <div className="re-eyebrow">REAL ESTATE TECHNOLOGY</div>
-                <h2 id="real-estate-title">
-                  Transform every stage of
-                  <br />
-                  real estate <span>operations.</span>
-                </h2>
-                <div className="re-accent-line" />
-                <p className="re-intro">
-                  Connected technology, intelligent data and modern
-                  platforms for the complete real estate lifecycle.
-                </p>
+                <div className="re-benefits">
+                  {benefits.map((item) => (
+                    <div className="re-benefit" key={item.title}>
+                      <div className="re-benefit-icon">
+                        <BenefitIcon type={item.icon} />
+                      </div>
+                      <div className="re-benefit-content">
+                        <strong>{item.title}</strong>
+                        <span>{item.subtitle}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <div className="re-city-wrap">
-
-                {/* Decorative orbital rings */}
-                <div className="re-orbit orbit-one" />
-                <div className="re-orbit orbit-two" />
-
-                {/* Decorative markers */}
-                <div className="re-city-pin pin-one">
-                  ⌁
-                </div>
-
-                <div className="re-city-pin pin-two">
-                  ⌖
-                </div>
-
-                <div className="re-city-pin pin-three">
-                  ◌
-                </div>
-
-
-                {/* =================================================
-                  DARK SKYLINE
-              ================================================= */}
-
-                <img
-                  src="/realestate dark.png"
-                  alt="Futuristic smart real estate city"
-                  className="re-skyline-image re-skyline-dark"
-                />
-
-
-                {/* =================================================
-                  LIGHT SKYLINE
-              ================================================= */}
-
-                <img
-                  src="/realestate light.png"
-                  alt="Futuristic smart real estate city"
-                  className="re-skyline-image re-skyline-light"
-                />
-
-              </div>
-
-
-              {/* =================================================
-                BENEFITS
-            ================================================= */}
-
-              <div className="re-benefits">
-
-                {benefits.map((item) => (
-
-                  <div
-                    className="re-benefit"
-                    key={item.title}
-                  >
-
-                    <div className="re-benefit-icon">
-                      <BenefitIcon
-                        type={item.icon}
-                      />
-                    </div>
-
-                    <div className="re-benefit-content">
-
-                      <strong>
-                        {item.title}
-                      </strong>
-
-                      <span>
-                        {item.subtitle}
-                      </span>
-
-                    </div>
-
-                  </div>
-
+              <div className="re-flow">
+                <div className="re-flow-line" aria-hidden="true" />
+                {capabilities.map((item) => (
+                  <CapabilityRow key={item.title} item={item} />
                 ))}
-
               </div>
-
             </div>
-
-
-            {/* =================================================
-              RIGHT CAPABILITY FLOW
-          ================================================= */}
-
-            <div className="re-flow">
-
-              {/* Connecting vertical line */}
-              <div
-                className="re-flow-line"
-                aria-hidden="true"
-              />
-
-              {capabilities.map((item) => (
-
-                <CapabilityRow
-                  key={item.number}
-                  item={item}
-                />
-
-              ))}
-
-            </div>
-
           </div>
-
-        </div>
-
-      </section>
+        </section>
+      </Modal.Body>
     </Modal>
   );
 }
