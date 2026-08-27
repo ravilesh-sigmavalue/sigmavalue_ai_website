@@ -11,6 +11,7 @@ import {
   FiPieChart,
   FiTarget,
   FiTrendingUp,
+  FiX,
   FiZap,
 } from "react-icons/fi";
 
@@ -331,6 +332,9 @@ export function DeveloperDetailPanel({ onBack }) {
 
   return (
     <div className="dev-detail-panel">
+      <button type="button" className="dev-detail-close" onClick={onBack} aria-label="Close Developer details">
+        <FiX />
+      </button>
       {/* ── HEADER ── */}
       <div className="dev-detail-topbar">
         <button type="button" className="btn-back-persona" onClick={onBack}>
@@ -374,18 +378,34 @@ export function DeveloperDetailPanel({ onBack }) {
           transition={{ duration: 0.25 }}
         >
           {/* LEFT — Illustration */}
-          <div
-            className="dev-illustration-box"
-            style={{ borderColor: `${tab.accentColor}30` }}
-          >
-            <div className="dev-illustration-inner">
-              <Illustration type={tab.id} accentColor={tab.accentColor} />
-            </div>
-            {/* Floating accent glow */}
+          <div className="dev-visual-column">
             <div
-              className="dev-illustration-glow"
-              style={{ background: `radial-gradient(circle at 50% 50%, ${tab.accentColor}22 0%, transparent 70%)` }}
-            />
+              className="dev-illustration-box"
+              style={{ borderColor: `${tab.accentColor}30` }}
+            >
+              <div className="dev-illustration-inner">
+                <Illustration type={tab.id} accentColor={tab.accentColor} />
+              </div>
+              {/* Floating accent glow */}
+              <div
+                className="dev-illustration-glow"
+                style={{ background: `radial-gradient(circle at 50% 50%, ${tab.accentColor}22 0%, transparent 70%)` }}
+              />
+            </div>
+
+            <div className="dev-image-actions" aria-label="Developer quick actions">
+              <div className="dev-image-action dev-image-action--orange">
+                <span className="dev-image-action-icon">G</span>
+                <span>Add new workspace user</span>
+              </div>
+              <div className="dev-image-action-dots" aria-hidden="true">
+                <i /><i /><i />
+              </div>
+              <div className="dev-image-action dev-image-action--teal">
+                <span className="dev-image-action-icon">↔</span>
+                <span>Create a contract</span>
+              </div>
+            </div>
           </div>
 
           {/* RIGHT — Description */}
@@ -411,51 +431,6 @@ export function DeveloperDetailPanel({ onBack }) {
       </AnimatePresence>
 
       {/* ── BENEFITS / OFFERINGS ── */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`benefits-${activeTab}`}
-          className="dev-benefits-section"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, delay: 0.1 }}
-        >
-          {/* Metrics strip */}
-          <div className="dev-metrics-strip">
-            {tab.benefits.map((b) => {
-              const BIcon = b.icon;
-              return (
-                <div
-                  key={b.label}
-                  className="dev-metric-tile"
-                  style={{ borderColor: `${tab.accentColor}25`, "--tile-accent": tab.accentColor }}
-                >
-                  <div className="dev-metric-icon-wrap">
-                    <BIcon />
-                  </div>
-                  <div className="dev-metric-text">
-                    <span className="dev-metric-label">{b.label}</span>
-                    <span className="dev-metric-value">{b.value}</span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Offerings list */}
-          <div className="dev-offerings-list">
-            <span className="dev-offerings-title">What we offer</span>
-            <div className="dev-offerings-chips">
-              {tab.offerings.map((o) => (
-                <div key={o} className="dev-offering-chip" style={{ borderColor: `${tab.accentColor}30` }}>
-                  <FiCheckCircle style={{ color: tab.accentColor, flexShrink: 0 }} />
-                  <span>{o}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
     </div>
   );
 }

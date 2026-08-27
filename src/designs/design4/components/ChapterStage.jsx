@@ -298,17 +298,6 @@ function ContactChapter({ show, title }) {
         <div className="who-you-are-card who-you-are-card--wide">
           <div className="who-you-are-matrix-bg" />
           <DeveloperDetailPanel onBack={() => setSelectedPersona(null)} />
-          <div className="contact-note" style={{ marginTop: "4px" }}>
-            <span>Official inquiry handled directly through SigmaValue secure enterprise routing.</span>
-          </div>
-          <div className="contact-links">
-            <a href="https://sigmavalue.ai/" target="_blank" rel="noreferrer">Main Website</a>
-            <span className="sep">•</span>
-            <a href="https://sigmavalue.ai/real-estate-consultancy/" target="_blank" rel="noreferrer">Consultancy</a>
-            <span className="sep">•</span>
-            <a href="https://os.sigmavalue.ai/" target="_blank" rel="noreferrer">SigmaValue OS</a>
-          </div>
-          <div className="foot">© 2025 Creasophere Tech Private Limited. All rights reserved.</div>
         </div>
       </motion.div>
     );
