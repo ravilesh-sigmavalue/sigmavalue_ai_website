@@ -221,7 +221,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
             </div>
 
             {/* 3D Planetary Orbit Stage */}
-            <div className="super-orbit" style={{ "--agent-count": groups.length }}>
+            <div className="super-orbit border border-card" style={{ "--agent-count": groups.length }}>
               {/* SVG Elliptical Planetary Orbit Rings */}
               <svg className="super-orbit-svg" viewBox="0 0 760 300" aria-hidden="true">
                 <defs>
@@ -237,7 +237,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
               </svg>
 
               {/* Orbit Floor Grid */}
-              <div className="super-orbit-floor">
+              <div className="super-orbit-floor ">
                 <i />
                 <i />
                 <i />
@@ -281,12 +281,15 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                   <button
                     key={item.name}
                     type="button"
-                    className={`super-orbit-agent ${isActive ? "active" : ""} ${
-                      isFront ? "in-front" : "in-back"
-                    }`}
+                    className={`super-orbit-agent ${isActive ? "active" : ""} ${isFront ? "in-front" : "in-back"
+                      }`}
                     style={{
                       "--pos-x": `${(cosVal * 280).toFixed(1)}px`,
                       "--pos-y": `${(sinVal * 90).toFixed(1)}px`,
+                      "--dock-pos-x": `${(cosVal * 120).toFixed(1)}px`,
+                      "--dock-pos-y": `${(sinVal * 112).toFixed(1)}px`,
+                      "--dock-wide-pos-x": `${(cosVal * 150).toFixed(1)}px`,
+                      "--dock-wide-pos-y": `${(sinVal * 118).toFixed(1)}px`,
                       "--depth-scale": scale.toFixed(3),
                       "--depth-opacity": opacity.toFixed(3),
                       "--depth-z": zIndex,
@@ -312,20 +315,20 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
             </div>
 
             <>
-            <Button
-              className="super-arrow previous"
-              onClick={previousGroup}
-              aria-label="Previous system"
-            >
-              <FiArrowLeft />
-            </Button>
-            <Button className="super-arrow next" onClick={nextGroup} aria-label="Next system">
-              <FiArrowRight />
-            </Button>
+              <Button
+                className="super-arrow previous"
+                onClick={previousGroup}
+                aria-label="Previous system"
+              >
+                <FiArrowLeft />
+              </Button>
+              <Button className="super-arrow next" onClick={nextGroup} aria-label="Next system">
+                <FiArrowRight />
+              </Button>
             </>
 
             {/* Active System Focus Card */}
-            <Card className="super-active-card" key={groupIndex}>
+            <Card className="super-active-card border border-card" key={groupIndex}>
               <Card.Header className="super-card-header">
                 <div className="super-card-title-group">
                   <span className="super-active-icon">
@@ -344,7 +347,7 @@ export function AgentPlatformModal({ show, onHide, groups, theme }) {
                 </Badge>
               </Card.Header>
 
-              <Card.Body className="super-card-body">
+              <Card.Body className="super-card-body border border-card">
                 {linkedGroups.has(groupIndex) ? (
                   <div className="super-agent-details-grid">
                     {group.agents.map(([name, description]) => {

@@ -1,7 +1,7 @@
 const SERVICES = [
   {
     title: "AGENTIC AI\nPLATFORM",
-    cat: "Agentic AI",
+    cat: "Agentic",
     loc: "Connected Intelligence",
     desc: "AI-native platform that connects intelligent agents, enterprise data, and workflows to automate complex business processes and decision-making.",
     icon: "facade",
@@ -11,7 +11,7 @@ const SERVICES = [
   },
   {
     title: "ENTERPRISE AI",
-    cat: "Enterprise AI",
+    cat: " Enterprise",
     loc: "Customized AI Solutions",
     desc: "Customized AI solutions that help enterprises improve productivity, automate operations, enhance analytics, and drive smarter decisions.",
     icon: "ridge",
@@ -31,7 +31,7 @@ const SERVICES = [
   },
   {
     title: "REAL ESTATE\nTECHNOLOGY & DIGITAL TRANSFORMATION SERVICES",
-    cat: "Real Estate",
+    cat: "PropTech",
     loc: "Digital Transformation Services",
     desc: "Technology-led transformation of real estate operations using AI, automation, GIS, data intelligence, and digital workflows.",
     icon: "house",
@@ -41,7 +41,7 @@ const SERVICES = [
   },
   {
     title: "DEAL STRUCTURING &\nCAPITAL ADVISORY",
-    cat: "Capital Advisory",
+    cat: "Capital",
     loc: "Commercial & Financial Outcomes",
     desc: "Advisory on transaction structuring, capital raising, financing, partnerships, and investment strategies to optimize commercial and financial outcomes.",
     icon: "city",
@@ -61,7 +61,7 @@ const SERVICES = [
   },
   {
     title: "SERVICES",
-    cat: "Transactions",
+    cat: "Offerings",
     loc: "Evaluation Through Execution",
     desc: "End-to-end advisory for acquisitions, divestments, joint ventures, partnerships, and other strategic transactions, from evaluation through execution.",
     icon: "facade",
