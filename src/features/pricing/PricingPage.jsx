@@ -1,6 +1,16 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FiArrowLeft, FiArrowRight, FiBriefcase, FiCheck, FiCreditCard, FiGlobe, FiMail, FiShield, FiZap } from "react-icons/fi";
+import { Link, useNavigate, } from "react-router-dom";
+import {
+  FiArrowRight,
+  FiBriefcase,
+  FiCheck,
+  FiCreditCard,
+  FiGlobe,
+  FiMail,
+  FiShield,
+  FiZap,
+} from "react-icons/fi";
+import { Header } from "../navigation/Header";
 import "./PricingPage.css";
 
 const FREE_FEATURES = ["10,000 tokens included at signup", "Full Valuation Agent access", "No approval required", "Tokens never expire"];
@@ -16,15 +26,32 @@ function TrustItem({ icon, title, description, tone = "teal" }) {
 }
 
 export default function PricingPage() {
+  const navigate = useNavigate();
   useEffect(() => { window.scrollTo(0, 0); }, []);
+  const handleGo = () => {
+    navigate("/");
+  };
+
+  const handleMenu = () => {
+    navigate("/");
+  };
+
+  const handleRequestDemo = () => {
+    navigate("/");
+  };
+
+  const handleAboutUs = () => {
+    navigate("/");
+  };
   return (
     <main className="pricing-page">
-      <div className="pricing-grid-overlay" /><div className="pricing-orb pricing-orb--left" /><div className="pricing-orb pricing-orb--right" /><div className="pricing-top-line" />
-      <header className="pricing-navbar"><div className="pricing-navbar-inner">
-        <Link to="/" className="pricing-brand" aria-label="SigmaValue home"><img src="/branding/logo-dark-transparent.png" alt="Sigma Value" /></Link>
-        <Link to="/" className="pricing-home-link"><FiArrowLeft /><span>Back to Home</span></Link>
-      </div></header>
-
+      <Header
+        go={handleGo}
+        onMenu={handleMenu}
+        onRequestDemo={handleRequestDemo}
+        onAboutUs={handleAboutUs}
+      />
+      <div className="pricing-grid-overlay" /><div className="pricing-orb pricing-orb--left" /><div className="pricing-orb pricing-orb--right" />
       <section className="pricing-content">
         <div className="pricing-hero">
           <div className="pricing-kicker"><span className="pricing-kicker-dot" />SIMPLE & TRANSPARENT PRICING</div>

@@ -28,20 +28,28 @@ const SOLUTION_GROUPS = [
   {
     id: "tech",
     label: "Technology & Transformation",
+    action: "technology-transformation",
     items: [
-      "Digital Transformation through AI Platforms",
-      "Agentic AI & Workflow Automation",
-      "Custom AI Solutions & Enterprise Integration",
-      "Intelligence & Decision-Making",
-      "Market & Data Intelligence",
-      "Geo-Spatial & Location Intelligence",
-      "Project Feasibility & Development Intelligence",
-      "Investment & Portfolio Intelligence",
-    ].map((title) => ({ title })),
+      { title: "Digital Transformation through AI Platforms" },
+      { title: "Agentic AI & Workflow Automation" },
+      { title: "Custom AI Solutions & Enterprise Integration" },
+    ],
+  },
+  {
+    id: "intelligence",
+    label: "Intelligence & Decision-Making",
+    action: "intelligence-decision-making",
+    items: [
+      { title: "Market & Data Intelligence" },
+      { title: "Geo-Spatial & Location Intelligence" },
+      { title: "Project Feasibility & Development Intelligence" },
+      { title: "Investment & Portfolio Intelligence" },
+    ],
   },
   {
     id: "advisory",
     label: "Strategic Advisory",
+    action: "strategic-advisory",
     items: [{ title: "Transaction, Capital & Strategic Advisory" }],
   },
 ];
@@ -53,12 +61,34 @@ const ABOUT_ITEMS = [
   ["partners", "Our Partners"],
 ];
 
-function DropdownGroup({ group, active, onToggle }) {
+function DropdownGroup({ group, active, onToggle, onAction, }) {
   return (
     <>
-      <button type="button" className={`offer-category-header ${active ? "active" : ""}`} onClick={onToggle}>
-        <span className="offer-cat-label">{group.label}</span>
-        <FiChevronDown className={`chevron ${active ? "rotate" : ""}`} />
+      <button
+        type="button"
+        className={`offer-category-header ${active ? "active" : ""}`}
+        onClick={() => {
+          if (group.action && onAction) {
+            onAction(group.action);
+            return;
+          }
+
+          onToggle();
+        }}
+      >
+        <span className="offer-cat-label">
+          {group.label}
+        </span>
+
+        {!group.action && (
+          <FiChevronDown
+            className={`chevron ${active ? "rotate" : ""}`}
+          />
+        )}
+
+        {group.action && (
+          <FiArrowUpRight className="chevron" />
+        )}
       </button>
       {active && (
         <div className="offer-sub-items">
@@ -76,7 +106,7 @@ function DropdownGroup({ group, active, onToggle }) {
   );
 }
 
-export function Header({ go, onMenu, onRequestDemo, onAboutUs }) {
+export function Header({ go, onMenu, onRequestDemo, onAboutUs, onTechnologyTransformation, onIntelligenceDecisionMaking,onStrategicAdvisory, }) {
   const headerRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(null);
   const [activeOffer, setActiveOffer] = useState(null);
@@ -111,12 +141,30 @@ export function Header({ go, onMenu, onRequestDemo, onAboutUs }) {
               <DropdownGroup
                 group={group}
                 active={(id === "offer" ? activeOffer : activeSolution) === group.id}
-                onToggle={() => id === "offer"
-                  ? setActiveOffer(activeOffer === group.id ? null : group.id)
-                  : setActiveSolution(activeSolution === group.id ? null : group.id)}
+                onToggle={() =>
+                  id === "offer"
+                    ? setActiveOffer(activeOffer === group.id ? null : group.id)
+                    : setActiveSolution(activeSolution === group.id ? null : group.id)
+                }
+                onAction={(action) => {
+                  closeAll();
+
+                  if (action === "technology-transformation") {
+                    onTechnologyTransformation?.();
+                    return;
+                  }
+
+                  if (action === "intelligence-decision-making") {
+                    onIntelligenceDecisionMaking?.();
+                  }
+
+                  if (action === "strategic-advisory") {
+                    onStrategicAdvisory?.();
+                  }
+                }}
               />
             </div>
-          ))}
+          ))}   
         </div>
       )}
     </div>

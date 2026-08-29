@@ -113,127 +113,6 @@
   background: rgba(217, 119, 77, 0.09);
 }
 
-.pricing-top-line {
-  position: absolute;
-
-  top: 72px;
-  left: 50%;
-
-  width: min(850px, 70%);
-  height: 1px;
-
-  transform: translateX(-50%);
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(67, 160, 155, 0.35),
-      rgba(217, 119, 77, 0.25),
-      transparent
-    );
-
-  z-index: 3;
-}
-
-/* ==========================================================
-   PRICING NAVBAR
-========================================================== */
-
-.pricing-navbar {
-  position: relative;
-
-  width: 100%;
-
-  min-height: 72px;
-
-  display: flex;
-  align-items: center;
-
-  z-index: 20;
-
-  border-bottom:
-    1px solid rgba(255, 255, 255, 0.05);
-
-  background:
-    rgba(5, 11, 19, 0.72);
-
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-}
-
-.pricing-navbar-inner {
-  width: min(1220px, calc(100% - 48px));
-
-  margin: 0 auto;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 24px;
-}
-
-.pricing-brand {
-  display: inline-flex;
-  align-items: center;
-
-  text-decoration: none;
-}
-
-.pricing-brand img {
-  display: block;
-
-  width: 150px;
-  max-height: 48px;
-
-  object-fit: contain;
-}
-
-.pricing-home-link {
-  min-height: 38px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  padding: 0 15px;
-
-  border:
-    1px solid rgba(92, 184, 178, 0.22);
-
-  border-radius: 9px;
-
-  color: #c8d8de;
-
-  background:
-    rgba(67, 160, 155, 0.055);
-
-  text-decoration: none;
-
-  font-size: 12px;
-  font-weight: 600;
-
-  transition:
-    transform 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease,
-    background 180ms ease;
-}
-
-.pricing-home-link:hover {
-  color: #ffffff;
-
-  border-color:
-    rgba(92, 184, 178, 0.45);
-
-  background:
-    rgba(67, 160, 155, 0.12);
-
-  transform: translateY(-1px);
-}
 
 /* ==========================================================
    MAIN CONTENT
@@ -1021,10 +900,6 @@
 
   .pricing-brand img {
     width: 125px;
-  }
-
-  .pricing-top-line {
-    top: 64px;
   }
 
   .pricing-home-link {
