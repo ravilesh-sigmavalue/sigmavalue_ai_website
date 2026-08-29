@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { CHAPTERS } from "./data/chapters";
 import { useChapterScroll } from "./hooks/useChapterScroll";
 import { WebGLBackground } from "../scene/WebGLBackground";
@@ -15,6 +16,7 @@ import { SiteDrawer } from "../navigation/SiteDrawer";
 import { MobileExperience } from "../mobile/MobileExperience";
 import { SceneSettingsPanel, DEFAULT_SCENE_SETTINGS } from "../scene/SceneSettingsPanel";
 import { RequestDemoModal } from "../request-demo/RequestDemoModal";
+import { AboutUsPage } from "../about/AboutUsPage";
 import "../../shared/components/modal/modal.css";
 
 function useMobileLayout() {
@@ -32,6 +34,8 @@ export function Experience() {
   const { active, goToChapter } = useChapterScroll(CHAPTERS.length);
   const [drawer, setDrawer] = useState(false);
   const [requestDemoOpen, setRequestDemoOpen] = useState(false);
+  const [aboutUsOpen, setAboutUsOpen] = useState(false);
+  const [aboutUsTab, setAboutUsTab] = useState("team");
   // Dark theme is the only active desktop/mobile theme for now.
   // Light-theme preference and switching remain disabled with the UI toggles.
   const theme = "dark";
@@ -44,6 +48,26 @@ export function Experience() {
   }, []);
   const chapter = CHAPTERS[active];
   if (mobile) return <MobileExperience theme={theme} onTheme={() => {}} />;
+  if (aboutUsOpen) {
+    return (
+      <AnimatePresence mode="wait">
+        <motion.div
+          key="about-us"
+          style={{ position: "fixed", inset: 0, zIndex: 999, overflow: "auto" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <AboutUsPage
+            initialTab={aboutUsTab}
+            onBack={() => setAboutUsOpen(false)}
+            onRequestDemo={() => setRequestDemoOpen(true)}
+          />
+          <RequestDemoModal open={requestDemoOpen} onClose={() => setRequestDemoOpen(false)} />
+        </motion.div>
+      </AnimatePresence>
+    );
+  }
   return (
     <>
       <Loader />
@@ -55,6 +79,10 @@ export function Experience() {
           go={goToChapter}
           onMenu={() => setDrawer(true)}
           onRequestDemo={() => setRequestDemoOpen(true)}
+          onAboutUs={(tab) => {
+            setAboutUsTab(tab);
+            setAboutUsOpen(true);
+          }}
           theme={theme}
           onTheme={() => {}}
         />
