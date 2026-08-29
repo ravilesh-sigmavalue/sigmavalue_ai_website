@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FiArrowUpRight, FiChevronDown, FiMenu } from "react-icons/fi";
 import { CHAPTERS } from "../experience/data/chapters";
 
@@ -76,13 +76,29 @@ function DropdownGroup({ group, active, onToggle }) {
 }
 
 export function Header({ go, onMenu, onRequestDemo, onAboutUs }) {
+  const headerRef = useRef(null);
   const [openMenu, setOpenMenu] = useState(null);
   const [activeOffer, setActiveOffer] = useState(null);
   const [activeSolution, setActiveSolution] = useState(null);
   const closeAll = () => { setOpenMenu(null); setActiveOffer(null); setActiveSolution(null); };
 
+  useEffect(() => {
+    const closeOnOutsideClick = (event) => {
+      if (!headerRef.current?.contains(event.target)) closeAll();
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") closeAll();
+    };
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, []);
+
   const dropdown = (id, label, groups) => (
-    <div className="dropdown-wrapper" onMouseEnter={() => setOpenMenu(id)} onMouseLeave={closeAll}>
+    <div className="dropdown-wrapper">
       <button className="dropdown-trigger" type="button" aria-expanded={openMenu === id} onClick={() => setOpenMenu(openMenu === id ? null : id)}>
         <span>{label}</span><FiChevronDown className={`chevron ${openMenu === id ? "rotate" : ""}`} />
       </button>
@@ -106,7 +122,7 @@ export function Header({ go, onMenu, onRequestDemo, onAboutUs }) {
   );
 
   return (
-    <header className="site-header">
+    <header className="site-header" ref={headerRef}>
       <div className="nav-container">
         <a href="#" className="brand-link" onClick={(event) => { event.preventDefault(); go(0); }}>
           <img src="/branding/logo-dark-transparent.png" alt="Sigma Value" className="brand-logo-img brand-logo-desktop" />
@@ -116,7 +132,7 @@ export function Header({ go, onMenu, onRequestDemo, onAboutUs }) {
           <a href="#" className="nav-link" onClick={(event) => { event.preventDefault(); go(0); }}>Home</a>
           {dropdown("offer", "What we offer", OFFER_GROUPS)}
           {dropdown("solutions", "Solutions", SOLUTION_GROUPS)}
-          <div className="dropdown-wrapper" onMouseEnter={() => setOpenMenu("about")} onMouseLeave={closeAll}>
+          <div className="dropdown-wrapper">
             <button className="dropdown-trigger" type="button" aria-expanded={openMenu === "about"} onClick={() => setOpenMenu(openMenu === "about" ? null : "about")}>
               <span>About Us</span><FiChevronDown className={`chevron ${openMenu === "about" ? "rotate" : ""}`} />
             </button>

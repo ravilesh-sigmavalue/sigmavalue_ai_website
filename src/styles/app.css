@@ -296,7 +296,7 @@ html[data-theme="dark"] body[data-design="design4"] .nav-container {
 
 .dropdown-panel {
   position: absolute;
-  top: calc(100% + 10px);
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 280px;
