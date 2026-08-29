@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { FiArrowUpRight, FiChevronDown, FiMenu } from "react-icons/fi";
 import { CHAPTERS } from "../experience/data/chapters";
 
