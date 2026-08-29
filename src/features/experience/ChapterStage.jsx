@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiMapPin, FiSearch } from "react-icons/fi";
+import { FiArrowUpRight, FiCheckCircle, FiCompass, FiExternalLink, FiMapPin, FiSearch, FiX } from "react-icons/fi";
 import { accentRgba, buildPhotoSvg } from "../../shared/utils/art";
+import { PersonaDetailPanel } from "../personas/PersonaDetailPanel";
+import { PersonaKeyBenefitsAndOfferings } from "../personas/PersonaKeyBenefitsAndOfferings";
+import { WhoYouAreCard } from "../personas/WhoYouAreCard";
 import { AgentPlatformModal } from "../services/modals/agent-platform/AgentPlatformModal";
 import { EnterpriseAIModal } from "../services/modals/enterprise-ai/EnterpriseAIModal";
 import { CrossIndustryModal } from "../services/modals/cross-industry/CrossIndustryModal";
@@ -283,8 +286,8 @@ function LegacyContactChapter({ show, title, onClose }) {
 
   if (!show) return null;
 
-  // If developer is selected, show the Developer Detail Panel fullscreen
-  if (selectedPersona === "developer") {
+  // If any persona is selected, show the Persona Detail Panel fullscreen
+  if (selectedPersona) {
     return (
       <motion.div
         id="contact"
@@ -296,7 +299,11 @@ function LegacyContactChapter({ show, title, onClose }) {
       >
         <div className="who-you-are-card who-you-are-card--wide">
           <div className="who-you-are-matrix-bg" />
-          <DeveloperDetailPanel onBack={() => setSelectedPersona(null)} />
+          <PersonaDetailPanel
+            personaId={selectedPersona}
+            onBack={() => setSelectedPersona(null)}
+            onSelectPersona={setSelectedPersona}
+          />
         </div>
       </motion.div>
     );
@@ -332,6 +339,9 @@ function LegacyContactChapter({ show, title, onClose }) {
         </div>
 
         <WhoYouAreCard selectedPersona={selectedPersona} onSelect={handleSelect} />
+
+        {/* ── KEY BENEFITS & WHAT WE OFFER ── */}
+        <PersonaKeyBenefitsAndOfferings />
 
         <div className="contact-note">
           <span>Official inquiry handled directly through SigmaValue secure enterprise routing.</span>

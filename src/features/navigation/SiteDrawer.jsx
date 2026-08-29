@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import {
   FiChevronDown,
@@ -175,16 +176,14 @@ function SiteDrawer({ open, setOpen, go, theme }) {
           </a>
 
           {/* Pricing */}
-          <a
+          <Link
             className="drawer-nav-item"
-            href="https://sigmavalue.ai/pricing/"
-            target="_blank"
-            rel="noreferrer"
+            to="/pricing"
             onClick={() => setOpen(false)}
           >
             <span>Pricing</span>
-            <FiExternalLink className="item-arrow" />
-          </a>
+            <FiChevronRight className="item-arrow" />
+          </Link>
 
           {/* Contact */}
           <button

@@ -1,5 +1,9 @@
 import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
+
 import { Experience } from "./features/experience/Experience";
+import PricingPage from "./features/pricing/PricingPage";
+
 import "./styles/app.css";
 
 export default function App() {
@@ -11,7 +15,14 @@ export default function App() {
 
   return (
     <div className="design-root design4">
-      <Experience />
+      <Routes>
+        <Route path="/" element={<Experience />} />
+
+        <Route
+          path="/pricing"
+          element={<PricingPage />}
+        />
+      </Routes>
     </div>
   );
 }

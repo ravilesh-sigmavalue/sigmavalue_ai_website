@@ -129,53 +129,53 @@ export function EnterpriseAIModal({
                 </filter>
               </defs>
 
-              {/* Path 1: Top-Left Card <-> Building */}
-              <path className="thunder-aura trace-coral" d="M 425 195 H 360 V 115 H 290" />
+              {/* Path 1: Card 01 (Top-Left) -> Building */}
+              <path className="thunder-aura trace-coral" d="M 340 115 H 675 V 160 H 760" />
               <path
                 id="thunder-track-1"
                 className={`thunder-track trace-coral ${activeIndex === 0 ? "trace-active" : ""}`}
-                d="M 425 195 H 360 V 115 H 290"
+                d="M 340 115 H 675 V 160 H 760"
               />
-              <path className="thunder-bolt bolt-coral bolt-forward" d="M 425 195 H 360 V 115 H 290" />
-              <path className="thunder-bolt bolt-coral bolt-return" d="M 290 115 H 360 V 195 H 425" />
-              <circle className="circuit-node-dot building-node node-coral" cx="425" cy="195" r="5" />
-              <circle className="circuit-node-dot card-node node-coral" cx="290" cy="115" r="4.5" />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 340 115 H 675 V 160 H 760" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 760 160 H 675 V 115 H 340" />
+              <circle className="circuit-node-dot building-node node-coral" cx="760" cy="160" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="340" cy="115" r="4.5" />
 
-              {/* Path 2: Top-Right Card <-> Building */}
-              <path className="thunder-aura trace-teal" d="M 575 195 H 640 V 115 H 710" />
+              {/* Path 2: Card 02 (Top-Right) -> Building */}
+              <path className="thunder-aura trace-teal" d="M 675 115 H 720 V 200 H 760" />
               <path
                 id="thunder-track-2"
                 className={`thunder-track trace-teal ${activeIndex === 1 ? "trace-active" : ""}`}
-                d="M 575 195 H 640 V 115 H 710"
+                d="M 675 115 H 720 V 200 H 760"
               />
-              <path className="thunder-bolt bolt-teal bolt-forward" d="M 575 195 H 640 V 115 H 710" />
-              <path className="thunder-bolt bolt-teal bolt-return" d="M 710 115 H 640 V 195 H 575" />
-              <circle className="circuit-node-dot building-node node-teal" cx="575" cy="195" r="5" />
-              <circle className="circuit-node-dot card-node node-teal" cx="710" cy="115" r="4.5" />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 675 115 H 720 V 200 H 760" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 760 200 H 720 V 115 H 675" />
+              <circle className="circuit-node-dot building-node node-teal" cx="760" cy="200" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="675" cy="115" r="4.5" />
 
-              {/* Path 3: Bottom-Left Card <-> Building */}
-              <path className="thunder-aura trace-teal" d="M 425 285 H 360 V 365 H 290" />
+              {/* Path 3: Card 03 (Bottom-Left) -> Building */}
+              <path className="thunder-aura trace-teal" d="M 340 365 H 675 V 320 H 760" />
               <path
                 id="thunder-track-3"
                 className={`thunder-track trace-teal ${activeIndex === 2 ? "trace-active" : ""}`}
-                d="M 425 285 H 360 V 365 H 290"
+                d="M 340 365 H 675 V 320 H 760"
               />
-              <path className="thunder-bolt bolt-teal bolt-forward" d="M 425 285 H 360 V 365 H 290" />
-              <path className="thunder-bolt bolt-teal bolt-return" d="M 290 365 H 360 V 285 H 425" />
-              <circle className="circuit-node-dot building-node node-teal" cx="425" cy="285" r="5" />
-              <circle className="circuit-node-dot card-node node-teal" cx="290" cy="365" r="4.5" />
+              <path className="thunder-bolt bolt-teal bolt-forward" d="M 340 365 H 675 V 320 H 760" />
+              <path className="thunder-bolt bolt-teal bolt-return" d="M 760 320 H 675 V 365 H 340" />
+              <circle className="circuit-node-dot building-node node-teal" cx="760" cy="320" r="5" />
+              <circle className="circuit-node-dot card-node node-teal" cx="340" cy="365" r="4.5" />
 
-              {/* Path 4: Bottom-Right Card <-> Building */}
-              <path className="thunder-aura trace-coral" d="M 575 285 H 640 V 365 H 710" />
+              {/* Path 4: Card 04 (Bottom-Right) -> Building */}
+              <path className="thunder-aura trace-coral" d="M 675 365 H 720 V 280 H 760" />
               <path
                 id="thunder-track-4"
                 className={`thunder-track trace-coral ${activeIndex === 3 ? "trace-active" : ""}`}
-                d="M 575 285 H 640 V 365 H 710"
+                d="M 675 365 H 720 V 280 H 760"
               />
-              <path className="thunder-bolt bolt-coral bolt-forward" d="M 575 285 H 640 V 365 H 710" />
-              <path className="thunder-bolt bolt-coral bolt-return" d="M 710 365 H 640 V 285 H 575" />
-              <circle className="circuit-node-dot building-node node-coral" cx="575" cy="285" r="5" />
-              <circle className="circuit-node-dot card-node node-coral" cx="710" cy="365" r="4.5" />
+              <path className="thunder-bolt bolt-coral bolt-forward" d="M 675 365 H 720 V 280 H 760" />
+              <path className="thunder-bolt bolt-coral bolt-return" d="M 760 280 H 720 V 365 H 675" />
+              <circle className="circuit-node-dot building-node node-coral" cx="760" cy="280" r="5" />
+              <circle className="circuit-node-dot card-node node-coral" cx="675" cy="365" r="4.5" />
             </svg>
 
             {/* Center Building Hub */}
