@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { FiArrowLeft, FiArrowUpRight, FiAward, FiCompass, FiGrid, FiHeart, FiStar, FiTarget, FiUsers, FiZap } from "react-icons/fi";
+import { FiArrowUpRight, FiAward, FiCompass, FiGrid, FiHeart, FiLinkedin, FiStar, FiTarget, FiUsers, FiZap } from "react-icons/fi";
 import "./about-us-page.css";
 
 const TABS = [
@@ -11,9 +11,9 @@ const TABS = [
 ];
 
 const TEAM = [
-  { name: "Yashdeep Jadon", education: "IIT Bombay Alumnus · IBBI Registered Valuer", role: "Founder & CEO", bullets: ["12+ years in real estate valuation, data analytics & statistical modelling.", "Visionary leader driving innovation and business growth."], accent: "teal" },
-  { name: "CA Pushpak Bogati", education: "Chartered Accountant · Author of RERA — Pillars of Progress", role: "Chief Operating Officer", bullets: ["16+ years as a CA professional in real estate lending.", "Operational backbone ensuring execution excellence."], accent: "coral" },
-  { name: "Sahana Ghosh Dastidar", education: "Ex Professor · PhD Fellow, Jadavpur University", role: "Strategy Head", bullets: ["8+ years in real estate strategy and market intelligence.", "Insight-driven strategist shaping growth and GTM success."], accent: "purple" },
+  { name: "Yashdeep Jadon", image: "/about_us/yashdeepsir.jpeg", education: "IIT Bombay Alumnus · IBBI Registered Valuer", role: "Founder & CEO", bullets: ["12+ years across real estate valuation, investment analysis and data-driven decision-making.", "Combines real estate expertise with AI, analytics and statistical modelling to build SigmaValue’s Agentic AI platform.", "Led valuation and advisory engagements for 372+ clients including banks, NBFCs, developers and other institutional clients."], accent: "teal" },
+  { name: "CA Pushpak Bogati", image: "/about_us/pushkarsir.jpeg", education: "Chartered Accountant · Author of RERA — Pillars of Progress", role: "Chief Operating Officer", bullets: ["16+ years as a CA professional in real estate lending.", "Operational backbone ensuring execution excellence."], accent: "coral" },
+  { name: "Sahana Ghosh Dastidar", image: "/about_us/sahanamam.jpeg", education: "Ex Professor · PhD Fellow, Jadavpur University", role: "Strategy Head", bullets: ["8+ years in real estate strategy and market intelligence.", "Insight-driven strategist shaping growth and GTM success."], accent: "purple" },
 ];
 
 const VALUES = [
@@ -39,7 +39,7 @@ const PARTNERS = [
 ];
 
 function TeamPanel() {
-  return <div className="aup-grid aup-team-grid">{TEAM.map((member, index) => <motion.article key={member.name} className={`aup-card aup-${member.accent}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .08 }}><div className="aup-avatar">{member.name.split(" ").map((word) => word[0]).join("").slice(0, 2)}</div><small>{member.education}</small><h3>{member.name}</h3><strong>{member.role}</strong><ul>{member.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul></motion.article>)}</div>;
+  return <div className="aup-grid aup-team-grid">{TEAM.map((member, index) => <motion.article key={member.name} className={`aup-card aup-team-card aup-${member.accent}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * .08 }}><div className="aup-photo-ring"><img className="aup-team-photo" src={member.image} alt={member.name} /></div><small>{member.education}</small><h3>{member.name}</h3><strong>{member.role}</strong><ul>{member.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul><a className="aup-social" href="https://www.linkedin.com/company/sigmavalue/" target="_blank" rel="noreferrer" aria-label={`${member.name} on LinkedIn`}><FiLinkedin /></a></motion.article>)}</div>;
 }
 
 function ValuesPanel() {
@@ -56,14 +56,15 @@ function PartnersPanel() {
 
 const PANELS = { team: <TeamPanel />, mission: <ValuesPanel />, awards: <AwardsPanel />, partners: <PartnersPanel /> };
 
-export function AboutUsPage({ initialTab = "team", onBack, onRequestDemo }) {
+export function AboutUsPage({ initialTab = "team", onRequestDemo, onExplore }) {
   const [activeTab, setActiveTab] = useState(initialTab);
   useEffect(() => setActiveTab(initialTab), [initialTab]);
   return <div className="aup-root">
-    <header className="aup-topnav"><button type="button" className="aup-logo" onClick={onBack}><img src="/branding/logo-dark-transparent.png" alt="Sigma Value" /></button><nav><span>About Us</span><a href="https://sigmavalue.ai/blogs/" target="_blank" rel="noreferrer">Blog</a><a href="https://sigmavalue.ai/pricing/" target="_blank" rel="noreferrer">Pricing</a></nav><div><button type="button" className="aup-back" onClick={onBack}><FiArrowLeft /> Back to Home</button><button type="button" className="aup-demo" onClick={onRequestDemo}>Request Demo <FiArrowUpRight /></button></div></header>
-    <main className="aup-main"><section className="aup-hero"><span>ABOUT SIGMAVALUE</span><h1>Built by experts. <em>Driven by intelligence.</em></h1><p>India's leading Agentic AI and real estate intelligence platform — combining deep domain expertise with cutting-edge AI to transform how markets are understood and decisions are made.</p><div className="aup-stats"><div><b>98.4%</b><span>Valuation Precision</span></div><div><b>10M+</b><span>Indexed Records</span></div><div><b>7+</b><span>Industry Awards</span></div><div><b>50+</b><span>Enterprise Partners</span></div></div></section>
-      <nav className="aup-tabs" aria-label="About Us sections">{TABS.map(({ id, label, icon: Icon }) => <button type="button" key={id} className={activeTab === id ? "active" : ""} onClick={() => setActiveTab(id)}><Icon />{label}</button>)}</nav>
-      <section className="aup-content"><AnimatePresence mode="wait"><motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>{PANELS[activeTab]}</motion.div></AnimatePresence></section>
+    <div className="aup-glow aup-glow-one" /><div className="aup-glow aup-glow-two" />
+    <main className="aup-main"><section className="aup-hero"><motion.div className="aup-hero-copy" initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }}><span>ABOUT SIGMAVALUE</span><h1>Built by experts.<em>Driven by intelligence.</em></h1><p>India's leading Agentic AI and real estate intelligence platform — combining deep domain expertise with cutting-edge AI to transform how markets are understood and decisions are made.</p><div className="aup-hero-actions"><button type="button" className="aup-primary" onClick={onRequestDemo}>Request a Demo <FiArrowUpRight /></button><button type="button" className="aup-secondary" onClick={onExplore}>Explore Solutions <FiArrowUpRight /></button></div></motion.div><motion.div className="aup-hero-visual" initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: .12 }}><img src="/about_us/about_us.png" alt="AI-powered real estate intelligence network" /></motion.div></section>
+      {/* <section className="aup-stats" aria-label="SigmaValue achievements"><div><b>98.4%</b><span>Valuation Precision</span></div><div><b>10M+</b><span>Indexed Records</span></div><div><b>7+</b><span>Industry Awards</span></div><div><b>50+</b><span>Enterprise Partners</span></div></section> */}
+      {/* <nav className="aup-tabs" aria-label="About Us sections">{TABS.map(({ id, label, icon: Icon }) => <button type="button" key={id} className={activeTab === id ? "active" : ""} onClick={() => setActiveTab(id)}><Icon />{label}</button>)}</nav> */}
+      <section className="aup-content">{activeTab === "team" && <div className="aup-section-heading"><span /><h2>Leadership Team</h2><span /></div>}<AnimatePresence mode="wait"><motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}>{PANELS[activeTab]}</motion.div></AnimatePresence></section>
     </main>
     <footer className="aup-footer"><span>© 2025 Creasophere Tech Private Limited. All rights reserved.</span><div><a href="https://sigmavalue.ai/" target="_blank" rel="noreferrer">Main Website</a><a href="https://os.sigmavalue.ai/" target="_blank" rel="noreferrer">SigmaValue OS</a><a href="https://sigmavalue.ai/real-estate-consultancy/" target="_blank" rel="noreferrer">Consultancy</a></div></footer>
   </div>;

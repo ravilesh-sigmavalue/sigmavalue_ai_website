@@ -4,7 +4,7 @@ import { CHAPTERS } from "./data/chapters";
 import { useChapterScroll } from "./hooks/useChapterScroll";
 import { WebGLBackground } from "../scene/WebGLBackground";
 import { ChapterStage } from "./ChapterStage";
-import { ContactChapter } from "./ContactChapter";
+import { TerrainContactChapter as ContactChapter } from "../contact/TerrainContactChapter";
 import { AskBar } from "../navigation/AskBar";
 import { FloatingDemoButton } from "../navigation/FloatingDemoButton";
 import { LeftCategoryNav } from "../navigation/LeftCategoryNav";
@@ -49,6 +49,10 @@ export function Experience() {
   const chapter = CHAPTERS[active];
   if (mobile) return <MobileExperience theme={theme} onTheme={() => {}} />;
   if (aboutUsOpen) {
+    const navigateFromAbout = (index) => {
+      setAboutUsOpen(false);
+      requestAnimationFrame(() => goToChapter(index));
+    };
     return (
       <AnimatePresence mode="wait">
         <motion.div
@@ -58,10 +62,18 @@ export function Experience() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
+          <Header
+            go={navigateFromAbout}
+            onMenu={() => setDrawer(true)}
+            onRequestDemo={() => setRequestDemoOpen(true)}
+            onAboutUs={(tab) => setAboutUsTab(tab)}
+            theme={theme}
+            onTheme={() => {}}
+          />
           <AboutUsPage
             initialTab={aboutUsTab}
-            onBack={() => setAboutUsOpen(false)}
             onRequestDemo={() => setRequestDemoOpen(true)}
+            onExplore={() => navigateFromAbout(1)}
           />
           <RequestDemoModal open={requestDemoOpen} onClose={() => setRequestDemoOpen(false)} />
         </motion.div>
