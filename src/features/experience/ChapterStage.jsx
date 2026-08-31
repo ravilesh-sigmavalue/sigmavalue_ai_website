@@ -243,6 +243,93 @@ function ChapterStage({ chapters, active, theme }) {
 
                 {card.desc && <p className="bcard-desc">{card.desc}</p>}
 
+                {idx === 1 && (
+                  <div className="bcard-visual" aria-hidden="true">
+                    <img
+                      src="/images/agentic-ai-platform.png"
+                      alt=""
+                      className="bcard-visual-image"
+                    />
+                  </div>
+                )}
+
+                {idx === 2 && (
+                  <div
+                    className="bcard-visual bcard-visual--enterprise"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/enterprise-ai-modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--enterprise"
+                    />
+                  </div>
+                )}
+
+                {idx === 3 && (
+                  <div
+                    className="bcard-visual bcard-visual--cross-industry"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/crossindustry-modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--cross-industry"
+                    />
+                  </div>
+                )}
+
+                {idx === 4 && (
+                  <div
+                    className="bcard-visual bcard-visual--real-estate"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/realestate_modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--real-estate"
+                    />
+                  </div>
+                )}
+
+                {idx === 5 && (
+                  <div
+                    className="bcard-visual bcard-visual--deal-structuring"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/deal-structuring-modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--deal-structuring"
+                    />
+                  </div>
+                )}
+
+                {idx === 6 && (
+                  <div
+                    className="bcard-visual bcard-visual--strategictransaction-modal"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/strategictransaction-modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--strategictransaction-modal"
+                    />
+                  </div>
+                )}
+
+                {idx === 7 && (
+                  <div
+                    className="bcard-visual bcard-visual--services-modal"
+                    aria-hidden="true"
+                  >
+                    <img
+                      src="/images/services-modal.png"
+                      alt=""
+                      className="bcard-visual-image bcard-visual-image--services-modal"
+                    />
+                  </div>
+                )}
 
                 {card.action && (
                   <div className="bcard-action-row">

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  
+
   --font-sans: 'Inter', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Space Grotesk', 'Manrope', sans-serif;
   --font-brand: 'Manrope', 'Space Grotesk', sans-serif;
@@ -27,7 +27,7 @@
   --border-focus: rgba(232, 112, 66, 0.6);
 
   --text-primary: #f8fafc;
-  
+
   --bg-bento: rgba(0, 0, 0, 0.28);
   --bg-highlight: rgba(255, 255, 255, 0.03);
   --border-highlight: rgba(255, 255, 255, 0.05);
@@ -311,7 +311,7 @@ html[data-theme="dark"] body[data-design="design4"] .nav-container {
   overscroll-behavior: contain;
 }
 
-.offer-panel > div {
+.offer-panel>div {
   width: 100%;
   flex: 0 0 auto;
 }
@@ -653,14 +653,18 @@ html[data-theme="dark"] body[data-design="design4"] .nav-container {
   overflow: hidden;
   background: var(--bg-card);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
 }
 
 .bcard.front {
   border-color: var(--brand-coral);
-  box-shadow: 0 0 35px rgba(232, 112, 66, 0.35), 0 24px 60px rgba(0, 0, 0, 0.75);
+  box-shadow:
+    0 0 35px rgba(232, 112, 66, 0.35),
+    0 24px 60px rgba(0, 0, 0, 0.75);
   pointer-events: auto;
 }
 
@@ -686,7 +690,9 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front {
   inset: 0;
   background-size: cover;
   background-position: center;
-  transition: opacity 0.4s ease, filter 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    filter 0.4s ease;
   opacity: 0.85;
 }
 
@@ -713,22 +719,27 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front .bphoto {
 .bsheen {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+  background:
+    linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 60%);
   pointer-events: none;
 }
 
 .bcard-overlay {
   position: absolute;
   inset: 0;
-  padding: 24px;
+  z-index: 3;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  z-index: 3;
+  gap: 8px;
   opacity: 0;
   transform: translateY(14px);
-  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  overflow-y: auto;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
   scrollbar-width: none;
 }
 
@@ -744,7 +755,8 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front .bphoto {
 .bcard-header {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
 .bcard-badge-row {
@@ -762,13 +774,286 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front .bphoto {
   letter-spacing: -0.2px;
   color: var(--text-primary);
   text-shadow: var(--title-shadow);
-  margin-top: 2px;
+  margin: 2px 0 0;
 }
 
 .bcard-desc {
+  flex-shrink: 0;
+  margin: 0;
   font-size: 12px;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--text-secondary);
+}
+
+.bcard-visual {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.bcard-visual-image {
+  display: block;
+  width: min(76%, 205px);
+  height: auto;
+  max-height: 142px;
+  object-fit: contain;
+  object-position: center;
+  filter:
+    drop-shadow(0 8px 18px rgba(232, 112, 66, 0.2)) drop-shadow(0 5px 14px rgba(83, 184, 174, 0.18));
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--enterprise {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 128px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: -3px 0 -2px;
+  overflow: hidden;
+}
+
+.bcard-visual-image--enterprise {
+  display: block;
+  width: 210px;
+  max-width: 70%;
+  height: 130px;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  transform: scale(1.28) translateY(1px);
+  transform-origin: center center;
+  filter:
+    drop-shadow(0 10px 22px rgba(0, 0, 0, 0.36)) drop-shadow(0 0 11px rgba(232, 112, 66, 0.14)) drop-shadow(0 0 11px rgba(83, 184, 174, 0.14));
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--enterprise::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 3px;
+  width: 180px;
+  height: 18px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse,
+      rgba(83, 184, 174, 0.14),
+      rgba(232, 112, 66, 0.06) 45%,
+      transparent 72%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.bcard-visual--cross-industry {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: -2px 0 -2px;
+
+  overflow: hidden;
+}
+
+.bcard-visual-image--cross-industry {
+  display: block;
+
+  width: 245px;
+  max-width: 92%;
+
+  height: 110px;
+  max-height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.12);
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(0 9px 18px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 10px rgba(232, 112, 66, 0.13))
+    drop-shadow(0 0 10px rgba(83, 184, 174, 0.13));
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--real-estate {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: -2px 0 -2px;
+
+  overflow: hidden;
+}
+
+.bcard-visual-image--real-estate {
+  display: block;
+
+  width: 245px;
+  max-width: 92%;
+
+  height: 110px;
+  max-height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.12);
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(0 9px 18px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 10px rgba(232, 112, 66, 0.13))
+    drop-shadow(0 0 10px rgba(83, 184, 174, 0.13));
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--deal-structuring {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: -2px 0 -2px;
+
+  overflow: hidden;
+}
+
+.bcard-visual-image--deal-structuring {
+  display: block;
+
+  width: 245px;
+  max-width: 92%;
+
+  height: 110px;
+  max-height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.12);
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(0 9px 18px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 10px rgba(232, 112, 66, 0.13))
+    drop-shadow(0 0 10px rgba(83, 184, 174, 0.13));
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--strategictransaction-modal {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: -2px 0 -2px;
+
+  overflow: hidden;
+}
+
+.bcard-visual-image--strategictransaction-modal  {
+  display: block;
+
+  width: 245px;
+  max-width: 92%;
+
+  height: 110px;
+  max-height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.12);
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(0 9px 18px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 10px rgba(232, 112, 66, 0.13))
+    drop-shadow(0 0 10px rgba(83, 184, 174, 0.13));
+
+  pointer-events: none;
+  user-select: none;
+}
+
+.bcard-visual--services-modal {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 125px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  margin: -2px 0 -2px;
+
+  overflow: hidden;
+}
+
+.bcard-visual-image--services-modal  {
+  display: block;
+
+  width: 245px;
+  max-width: 92%;
+
+  height: 110px;
+  max-height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  transform: scale(1.12);
+  transform-origin: center center;
+
+  filter:
+    drop-shadow(0 9px 18px rgba(0, 0, 0, 0.34))
+    drop-shadow(0 0 10px rgba(232, 112, 66, 0.13))
+    drop-shadow(0 0 10px rgba(83, 184, 174, 0.13));
+
+  pointer-events: none;
+  user-select: none;
 }
 
 .bcard-specs-grid {
@@ -844,16 +1129,25 @@ html[data-theme="light"] body[data-design="design4"] .bcard.front .bphoto {
 }
 
 .bcard-action-row {
+  flex-shrink: 0;
   margin-top: auto;
-  padding-top: 4px;
+  padding-top: 2px;
+  position: relative;
+  z-index: 5;
 }
 
 .bcard-action-btn {
   width: 100%;
+  min-height: 38px;
   justify-content: center;
   font-size: 12px;
   padding: 8px 14px;
+  border-radius: var(--radius-pill);
   box-shadow: 0 2px 12px rgba(232, 112, 66, 0.3);
+}
+
+.bcard-action-btn:hover {
+  box-shadow: 0 5px 18px rgba(232, 112, 66, 0.4);
 }
 
 .bcard-action-badge {
@@ -3585,6 +3879,27 @@ html[data-theme="dark"] body[data-design="design4"] .contact-card {
     pointer-events: auto;
   }
 
+  .bcard-visual {
+    min-height: 90px;
+  }
+
+  .bcard-visual-image {
+    width: min(72%, 180px);
+    max-height: 130px;
+  }
+
+  .bcard-visual--enterprise {
+    min-height: 120px;
+    margin: -2px 0;
+  }
+
+  .bcard-visual-image--enterprise {
+    width: 245px;
+    height: 160px;
+    max-width: 92%;
+    transform: scale(1.18) translateY(0);
+  }
+
   .bcard.front,
   .bcard.front .bcard-overlay,
   .bcard.front a,
@@ -3643,7 +3958,7 @@ html[data-theme="dark"] body[data-design="design4"] .contact-card {
   }
 
   #content {
-    
+
     padding: 0;
     align-items: flex-end;
     justify-content: center;
@@ -3651,7 +3966,7 @@ html[data-theme="dark"] body[data-design="design4"] .contact-card {
 
   .hero-stage-card,
   .textblock-panel {
-    
+
     position: fixed;
     bottom: 0;
     left: 0;
@@ -3669,7 +3984,7 @@ html[data-theme="dark"] body[data-design="design4"] .contact-card {
     border-bottom: none;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    
+
     background: var(--bg-card);
     backdrop-filter: blur(28px);
     -webkit-backdrop-filter: blur(28px);
@@ -3716,7 +4031,7 @@ html[data-theme="dark"] body[data-design="design4"] .contact-card {
   }
 
   #pager {
-    
+
     top: auto;
     right: 0;
     left: 0;
