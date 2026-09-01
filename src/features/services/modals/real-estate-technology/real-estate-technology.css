@@ -493,7 +493,7 @@ html[data-theme="light"] body[data-design="design4"] .re-section::before {
 
   bottom: 0;
 
-  width: 108%;
+  width: 125%;
 
   max-width: 650px;
 
@@ -504,8 +504,8 @@ html[data-theme="light"] body[data-design="design4"] .re-section::before {
   object-position:
     center bottom;
 
-  transform:
-    translateX(-50%) scale(0.94);
+  transform: translateX(-50%) scale(1.15);
+
 
   opacity: 0;
 
@@ -876,11 +876,8 @@ html[data-theme="light"] body[data-design="design4"] .re-skyline-light {
 
   display: grid;
 
-   grid-template-columns:
-    58px
-    46px
-    minmax(0, 1fr)
-    24px;
+  grid-template-columns:
+    58px 46px minmax(0, 1fr) 24px;
   gap: 8px;
   min-height: 94px;
   height: auto;
@@ -1226,23 +1223,23 @@ html[data-theme="light"] body[data-design="design4"] .re-capability {
 @media (min-width: 761px) {
   .re-main-grid {
     grid-template-columns:
-      minmax(300px, 0.82fr)
-      minmax(470px, 1.18fr);
+      minmax(300px, 0.82fr) minmax(470px, 1.18fr);
     gap: 24px;
   }
 }
-  .re-city-wrap {
 
-    height:
-      300px;
-  }
+.re-city-wrap {
+
+  height:
+    300px;
+}
 
 
-  .re-skyline-image {
+.re-skyline-image {
 
-    max-width:
-      600px;
-  }
+  max-width:
+    600px;
+}
 
 
 
@@ -1252,56 +1249,55 @@ html[data-theme="light"] body[data-design="design4"] .re-capability {
    ========================================================= */
 
 @media (max-width: 800px) {
-
-  .re-header {
-
-    display: block;
-  }
-
-
-  .re-theme-toggle {
-
-    margin-top:
-      20px;
-  }
-
-
-  .re-main-grid {
-
-    margin-top:
-      15px;
-  }
-
-
   .re-city-wrap {
-
-    height:
-      270px;
+    height: 300px;
   }
-
-
-  .re-benefits {
-
-    grid-template-columns:
-      repeat(2, 1fr);
-  }
-
-
-  .re-benefit:nth-child(3),
-  .re-benefit:nth-child(4) {
-
-    border-top:
-      1px solid var(--re-border);
-  }
-
-
-  .re-benefit:nth-child(3) {
-
-    border-left:
-      none;
-  }
-
 }
+
+
+.re-theme-toggle {
+
+  margin-top:
+    20px;
+}
+
+
+.re-main-grid {
+
+  margin-top:
+    15px;
+}
+
+
+.re-city-wrap {
+
+  height:
+    270px;
+}
+
+
+.re-benefits {
+
+  grid-template-columns:
+    repeat(2, 1fr);
+}
+
+
+.re-benefit:nth-child(3),
+.re-benefit:nth-child(4) {
+
+  border-top:
+    1px solid var(--re-border);
+}
+
+
+.re-benefit:nth-child(3) {
+
+  border-left:
+    none;
+}
+
+
 
 
 /* =========================================================
@@ -1746,6 +1742,40 @@ html[data-theme="light"] body[data-design="design4"] .re-capability {
   .re-explore-button {
     margin-top: 4px;
     font-size: 7px;
+  }
+}
+
+/* Final tablet override: keep this after the earlier responsive blocks so the
+   skyline sizing is not replaced by duplicate .re-city-wrap/image rules. */
+@media (min-width: 601px) and (max-width: 1100px) {
+  .re-city-wrap {
+    height: 300px;
+  }
+
+  .re-skyline-image {
+    width: 125%;
+    max-width: 700px;
+  }
+
+  .re-skyline-dark,
+  html[data-theme="light"] body[data-design="design4"] .re-skyline-light {
+    transform: translateX(-50%) scale(1.15);
+  }
+}
+
+/* Prevent the tablet layout from exceeding the modal width. Earlier rules use
+   fixed 300px/470px minimums, which clip the capability cards on the right. */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .re-main-grid {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    gap: 20px;
+    width: 100%;
+  }
+
+  .re-visual-column,
+  .re-flow,
+  .re-capability {
+    min-width: 0;
   }
 }
 

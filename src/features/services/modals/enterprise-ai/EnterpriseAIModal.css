@@ -1,0 +1,1175 @@
+/* =========================================================
+   ENTERPRISE AI
+========================================================= */
+
+.enterprise-hex-dialog {
+    width: min(1180px, calc(100vw - 32px)) !important;
+    max-width: none !important;
+    margin: 16px auto !important;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.enterprise-hex-modal {
+    --eh-bg: #06101a;
+    --eh-panel: #0a1622;
+
+    --eh-text: #f4f7f9;
+    --eh-muted: #9aa8b5;
+
+    --eh-teal: #43a09b;
+    --eh-teal-bright: #5bc8c0;
+
+    --eh-orange: #d9774d;
+    --eh-orange-bright: #ee8b61;
+
+    position: relative;
+
+    width: 100%;
+
+    height: min(780px, calc(100vh - 32px));
+    max-height: calc(100vh - 32px);
+
+    overflow: hidden !important;
+
+    color: var(--eh-text) !important;
+
+    border: 1px solid rgba(67, 160, 155, 0.28) !important;
+    border-radius: 24px !important;
+
+    background:
+        radial-gradient(circle at 18% 20%,
+            rgba(67, 160, 155, 0.08),
+            transparent 30%),
+        radial-gradient(circle at 78% 18%,
+            rgba(217, 119, 77, 0.075),
+            transparent 30%),
+        radial-gradient(circle at 55% 82%,
+            rgba(67, 160, 155, 0.05),
+            transparent 32%),
+        #06101a !important;
+
+    box-shadow:
+        0 35px 100px rgba(0, 0, 0, 0.72),
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   GRID BACKGROUND
+========================================================= */
+
+.enterprise-hex-modal::before {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    background-image:
+        linear-gradient(rgba(90, 130, 145, 0.07) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(90, 130, 145, 0.07) 1px,
+            transparent 1px);
+
+    background-size: 38px 38px;
+
+    mask-image:
+        linear-gradient(to bottom,
+            transparent 4%,
+            black 18%,
+            black 90%,
+            transparent 100%);
+
+    -webkit-mask-image:
+        linear-gradient(to bottom,
+            transparent 4%,
+            black 18%,
+            black 90%,
+            transparent 100%);
+}
+
+
+.enterprise-hex-modal::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(ellipse at center,
+            transparent 35%,
+            rgba(1, 7, 13, 0.28) 100%);
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+.enterprise-hex-body {
+    position: relative;
+    z-index: 2;
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden !important;
+
+    padding: 10px 18px 24px !important;
+
+    background: transparent !important;
+}
+
+
+/* =========================================================
+   HONEYCOMB LAYOUT
+========================================================= */
+
+.enterprise-hex-layout {
+    position: relative;
+
+    width: 100%;
+    max-width: 740px;
+
+    height: 510px;
+
+    margin: 0 auto;
+
+    flex: 0 0 auto;
+}
+
+
+/* =========================================================
+   COMMON TILE
+========================================================= */
+
+.enterprise-hex-tile {
+    --tile-color: var(--eh-teal-bright);
+    --tile-rgb: 67, 160, 155;
+
+    position: absolute;
+
+    z-index: 3;
+
+    width: 270px;
+    height: 260px;
+
+    isolation: isolate;
+
+    transition:
+        transform 0.28s ease,
+        filter 0.28s ease;
+}
+
+
+/* =========================================================
+   HONEYCOMB POSITIONING
+
+           01            02
+
+                03            04
+========================================================= */
+
+.enterprise-hex-tile.tile-1 {
+    left: 0;
+    top: 0;
+}
+
+.enterprise-hex-tile.tile-2 {
+    left: 270px;
+    top: 0;
+}
+
+.enterprise-hex-tile.tile-3 {
+    left: 135px;
+    top: 220px;
+}
+
+.enterprise-hex-tile.tile-4 {
+    left: 405px;
+    top: 220px;
+}
+
+
+/* =========================================================
+   TILE COLORS
+========================================================= */
+
+.enterprise-hex-tile.tone-teal {
+    --tile-color: #63ccc5;
+    --tile-rgb: 67, 160, 155;
+}
+
+
+.enterprise-hex-tile.tone-orange {
+    --tile-color: #ed8a61;
+    --tile-rgb: 217, 119, 77;
+}
+
+
+/* =========================================================
+   OUTER GLOW
+========================================================= */
+
+.enterprise-hex-glow {
+    position: absolute;
+
+    inset: -5px;
+
+    z-index: -1;
+
+    clip-path:
+        polygon(50% 0%,
+            94% 25%,
+            94% 75%,
+            50% 100%,
+            6% 75%,
+            6% 25%);
+
+    background:
+        rgba(var(--tile-rgb), 0.13);
+
+    filter: blur(13px);
+
+    opacity: 0.75;
+
+    transition:
+        opacity 0.3s ease,
+        filter 0.3s ease;
+}
+
+
+/* =========================================================
+   HEXAGON
+========================================================= */
+
+.enterprise-hex-shape {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    clip-path:
+        polygon(50% 0%,
+            94% 25%,
+            94% 75%,
+            50% 100%,
+            6% 75%,
+            6% 25%);
+
+    background:
+        linear-gradient(135deg,
+            rgba(var(--tile-rgb), 0.97),
+            rgba(var(--tile-rgb), 0.36) 36%,
+            rgba(var(--tile-rgb), 0.8) 100%);
+
+    filter:
+        drop-shadow(0 18px 24px rgba(0, 0, 0, 0.35));
+}
+
+
+/* =========================================================
+   HEX INNER SURFACE
+========================================================= */
+
+.enterprise-hex-shape::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 2px;
+
+    z-index: 0;
+
+    clip-path:
+        polygon(50% 0%,
+            94% 25%,
+            94% 75%,
+            50% 100%,
+            6% 75%,
+            6% 25%);
+
+    background:
+        radial-gradient(circle at 50% 10%,
+            rgba(var(--tile-rgb), 0.15),
+            transparent 40%),
+        linear-gradient(145deg,
+            rgba(18, 31, 43, 0.99),
+            rgba(7, 16, 26, 0.98));
+}
+
+
+/* =========================================================
+   INNER LIGHT EFFECT
+========================================================= */
+
+.enterprise-hex-shape::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 2px;
+
+    z-index: 1;
+
+    pointer-events: none;
+
+    clip-path:
+        polygon(50% 0%,
+            94% 25%,
+            94% 75%,
+            50% 100%,
+            6% 75%,
+            6% 25%);
+
+    background:
+        radial-gradient(circle at 28% 22%,
+            rgba(var(--tile-rgb), 0.12),
+            transparent 34%);
+}
+
+
+/* =========================================================
+   HEX CONTENT
+========================================================= */
+
+.enterprise-hex-inner {
+    position: relative;
+
+    z-index: 4;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 27px 38px 28px;
+}
+
+
+/* =========================================================
+   NUMBER BADGE
+========================================================= */
+
+.enterprise-hex-number {
+    position: absolute;
+
+    top: 17px;
+    left: 50%;
+
+    width: 38px;
+    height: 43px;
+
+    transform: translateX(-50%);
+
+    display: grid;
+    place-items: center;
+
+    clip-path:
+        polygon(
+            50% 0,
+            92% 22%,
+            92% 76%,
+            50% 100%,
+            8% 76%,
+            8% 22%
+        );
+
+    color: var(--tile-color);
+
+    background:
+        rgba(var(--tile-rgb), 0.12);
+
+    border:
+        1px solid rgba(var(--tile-rgb), 0.55);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    line-height: 1;
+
+    text-shadow:
+        0 0 12px rgba(var(--tile-rgb), 0.5);
+}
+
+
+/* =========================================================
+   CONTENT AREA
+========================================================= */
+
+.enterprise-hex-content {
+    width: 100%;
+
+    min-width: 0;
+    min-height: 0;
+
+    margin-top: 55px;
+
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+
+/* =========================================================
+   TITLE ROW
+========================================================= */
+
+.enterprise-hex-title-row {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+.enterprise-hex-icon {
+    width: 35px;
+    height: 35px;
+
+    flex: 0 0 35px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--tile-color);
+
+    border:
+        1px solid rgba(var(--tile-rgb), 0.48);
+
+    border-radius: 9px;
+
+    background:
+        rgba(var(--tile-rgb), 0.08);
+
+    box-shadow:
+        0 0 20px rgba(var(--tile-rgb), 0.08);
+}
+
+.enterprise-hex-icon svg {
+    width: 18px;
+    height: 18px;
+
+    stroke-width: 1.7;
+}
+
+.enterprise-hex-title-row h3 {
+    min-width: 0;
+
+    margin: 0;
+
+    color: #f5f8fa;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    letter-spacing: -0.025em;
+}
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.enterprise-hex-content p {
+    width: 100%;
+
+    margin: 0;
+
+    color: #c3ccd3;
+
+    font-size: 11.5px;
+
+    line-height: 1.48;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================================================
+   CENTER EXPLORE BUTTON
+========================================================= */
+
+.enterprise-hex-link {
+    width: fit-content;
+
+    display: inline-flex !important;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    /* pushes button to bottom */
+    margin-top: auto;
+
+    /* centers button horizontally */
+    align-self: center;
+
+    padding: 12px 8px 0 !important;
+
+    border: 0 !important;
+
+    color: var(--tile-color) !important;
+
+    background: transparent !important;
+
+    font-size: 10px !important;
+    font-weight: 800 !important;
+
+    line-height: 1;
+
+    letter-spacing: 0.06em;
+
+    text-transform: uppercase;
+    text-decoration: none !important;
+
+    white-space: nowrap;
+
+    box-shadow: none !important;
+}
+
+.enterprise-hex-link svg {
+    width: 13px;
+    height: 13px;
+
+    flex: 0 0 auto;
+
+    transition:
+        transform 0.2s ease;
+}
+
+.enterprise-hex-tile:hover .enterprise-hex-link svg {
+    transform: translateX(4px);
+}
+
+/* =========================================================
+   CONNECTION GLOW - TOP CARDS
+========================================================= */
+
+.enterprise-hex-layout::before {
+    content: "";
+
+    position: absolute;
+
+    left: 247px;
+    top: 123px;
+
+    width: 48px;
+    height: 13px;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(233, 255, 252, 0.92) 0%,
+            rgba(85, 208, 198, 0.5) 28%,
+            rgba(67, 160, 155, 0.2) 48%,
+            transparent 73%
+        );
+
+    filter: blur(5px);
+}
+
+.enterprise-hex-layout::after {
+    content: "";
+
+    position: absolute;
+
+    left: 379px;
+    top: 226px;
+
+    width: 60px;
+    height: 14px;
+
+    z-index: 2;
+
+    transform: rotate(24deg);
+
+    pointer-events: none;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255, 238, 218, 0.9) 0%,
+            rgba(225, 132, 88, 0.5) 28%,
+            rgba(217, 119, 77, 0.18) 48%,
+            transparent 73%
+        );
+
+    filter: blur(6px);
+}
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+.enterprise-hex-backdrop {
+    background:
+        rgba(1, 5, 9, 0.85) !important;
+
+    backdrop-filter:
+        blur(9px);
+
+    -webkit-backdrop-filter:
+        blur(9px);
+}
+
+
+.enterprise-hex-backdrop.show {
+    opacity:
+        0.86;
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+html[data-theme="light"] .enterprise-hex-modal,
+html[data-bs-theme="light"] .enterprise-hex-modal,
+.enterprise-hex-modal.light-mode {
+    --eh-text: #14232c;
+    --eh-muted: #536570;
+
+    background:
+        radial-gradient(circle at 18% 20%,
+            rgba(67, 160, 155, 0.1),
+            transparent 30%),
+        radial-gradient(circle at 78% 18%,
+            rgba(217, 119, 77, 0.07),
+            transparent 30%),
+        #f7fbfc !important;
+
+    border-color:
+        rgba(67, 160, 155, 0.3) !important;
+
+    box-shadow:
+        0 25px 80px rgba(21, 68, 75, 0.18);
+}
+
+
+/* =========================================================
+   LIGHT GRID
+========================================================= */
+
+html[data-theme="light"] .enterprise-hex-modal::before,
+html[data-bs-theme="light"] .enterprise-hex-modal::before,
+.enterprise-hex-modal.light-mode::before {
+    background-image:
+        linear-gradient(rgba(67, 160, 155, 0.06) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(67, 160, 155, 0.06) 1px,
+            transparent 1px);
+}
+
+
+/* =========================================================
+   LIGHT HEX SURFACE
+========================================================= */
+
+html[data-theme="light"] .enterprise-hex-shape::before,
+html[data-bs-theme="light"] .enterprise-hex-shape::before,
+.enterprise-hex-modal.light-mode .enterprise-hex-shape::before {
+    background:
+        radial-gradient(circle at 50% 10%,
+            rgba(var(--tile-rgb), 0.1),
+            transparent 40%),
+        linear-gradient(150deg,
+            rgba(255, 255, 255, 0.99),
+            rgba(240, 247, 248, 0.98));
+}
+
+
+/* =========================================================
+   LIGHT TITLE
+========================================================= */
+
+html[data-theme="light"] .enterprise-hex-title-row h3,
+html[data-bs-theme="light"] .enterprise-hex-title-row h3,
+.enterprise-hex-modal.light-mode .enterprise-hex-title-row h3 {
+    color:
+        #17262f;
+}
+
+
+/* =========================================================
+   LIGHT DESCRIPTION
+========================================================= */
+
+html[data-theme="light"] .enterprise-hex-content p,
+html[data-bs-theme="light"] .enterprise-hex-content p,
+.enterprise-hex-modal.light-mode .enterprise-hex-content p {
+    color:
+        #536570;
+}
+
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1101px) {
+    .enterprise-hex-layout {
+        transform:
+            translateX(0);
+    }
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (min-width: 901px) and (max-width: 1100px) {
+
+    .enterprise-hex-dialog {
+        width:
+            min(960px, calc(100vw - 24px)) !important;
+
+        margin:
+            12px auto !important;
+    }
+
+    .enterprise-hex-modal {
+        height:
+            min(700px, calc(100vh - 24px));
+
+        max-height:
+            calc(100vh - 24px);
+    }
+
+    .enterprise-hex-body {
+        padding:
+            8px 12px 22px !important;
+    }
+
+    .enterprise-hex-layout {
+        width: 740px;
+        max-width: 740px;
+
+        height: 510px;
+
+        transform:
+            scale(0.9);
+
+        transform-origin:
+            center center;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .enterprise-hex-dialog {
+        width:
+            calc(100vw - 20px) !important;
+
+        margin:
+            10px auto !important;
+    }
+
+
+    .enterprise-hex-modal {
+        height:
+            calc(100vh - 20px);
+
+        max-height:
+            calc(100vh - 20px);
+    }
+
+
+    .enterprise-hex-body {
+        align-items:
+            flex-start;
+
+        overflow-y:
+            auto !important;
+
+        overflow-x:
+            hidden !important;
+
+        padding:
+            24px 20px 32px !important;
+    }
+
+
+    .enterprise-hex-layout {
+        display:
+            grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        gap:
+            22px;
+
+        width:
+            100%;
+
+        max-width:
+            720px;
+
+        height:
+            auto;
+
+        transform:
+            none;
+    }
+
+
+    .enterprise-hex-tile,
+    .enterprise-hex-tile.tile-1,
+    .enterprise-hex-tile.tile-2,
+    .enterprise-hex-tile.tile-3,
+    .enterprise-hex-tile.tile-4 {
+        position:
+            relative;
+
+        left:
+            auto;
+
+        top:
+            auto;
+
+        width:
+            100%;
+
+        height:
+            300px;
+
+        margin:
+            0;
+    }
+
+
+    .enterprise-hex-layout::before,
+    .enterprise-hex-layout::after {
+        display:
+            none;
+    }
+
+    .enterprise-hex-inner {
+        padding:
+            31px 44px 34px;
+    }
+
+
+    .enterprise-hex-content {
+        margin-top:
+            62px;
+    }
+
+
+    .enterprise-hex-title-row h3 {
+        font-size:
+            16px;
+    }
+
+
+    .enterprise-hex-content p {
+        font-size:
+            12px;
+    }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 620px) {
+
+    .enterprise-hex-dialog {
+        width:
+            calc(100vw - 12px) !important;
+
+        margin:
+            6px auto !important;
+    }
+
+
+    .enterprise-hex-modal {
+        height:
+            calc(100vh - 12px);
+
+        max-height:
+            calc(100vh - 12px);
+
+        border-radius:
+            17px !important;
+    }
+
+
+    .enterprise-hex-body {
+        padding:
+            18px 12px 28px !important;
+    }
+
+
+    .enterprise-hex-layout {
+        grid-template-columns:
+            1fr;
+
+        gap:
+            18px;
+
+        max-width:
+            370px;
+    }
+
+
+    .enterprise-hex-tile,
+    .enterprise-hex-tile.tile-1,
+    .enterprise-hex-tile.tile-2,
+    .enterprise-hex-tile.tile-3,
+    .enterprise-hex-tile.tile-4 {
+        width:
+            100%;
+
+        max-width:
+            350px;
+
+        height:
+            320px;
+
+        margin:
+            0 auto;
+    }
+
+
+    .enterprise-hex-inner {
+        padding:
+            34px 48px 36px;
+    }
+
+
+    .enterprise-hex-number {
+        top:
+            22px;
+
+        width:
+            42px;
+
+        height:
+            47px;
+    }
+
+
+    .enterprise-hex-content {
+        margin-top:
+            65px;
+    }
+
+
+    .enterprise-hex-title-row {
+        gap:
+            11px;
+
+        margin-bottom:
+            15px;
+    }
+
+
+    .enterprise-hex-title-row h3 {
+        font-size:
+            17px;
+    }
+
+
+    .enterprise-hex-content p {
+        font-size:
+            12.5px;
+
+        line-height:
+            1.5;
+    }
+
+
+    .enterprise-hex-link {
+        font-size:
+            11px !important;
+
+        padding-top:
+            14px !important;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .enterprise-hex-layout {
+        max-width:
+            330px;
+    }
+
+
+    .enterprise-hex-tile,
+    .enterprise-hex-tile.tile-1,
+    .enterprise-hex-tile.tile-2,
+    .enterprise-hex-tile.tile-3,
+    .enterprise-hex-tile.tile-4 {
+        max-width:
+            320px;
+
+        height:
+            295px;
+    }
+
+
+    .enterprise-hex-inner {
+        padding:
+            31px 42px 32px;
+    }
+
+
+    .enterprise-hex-number {
+        top:
+            18px;
+
+        width:
+            39px;
+
+        height:
+            44px;
+
+        font-size:
+            11px;
+    }
+
+
+    .enterprise-hex-content {
+        margin-top:
+            57px;
+    }
+
+
+    .enterprise-hex-title-row {
+        gap:
+            9px;
+
+        margin-bottom:
+            12px;
+    }
+
+
+    .enterprise-hex-title-row h3 {
+        font-size:
+            15px;
+    }
+
+
+    .enterprise-hex-icon {
+        width:
+            34px;
+
+        height:
+            34px;
+
+        flex:
+            0 0 34px;
+    }
+
+
+    .enterprise-hex-icon svg {
+        width:
+            17px;
+
+        height:
+            17px;
+    }
+
+
+    .enterprise-hex-content p {
+        font-size:
+            11px;
+
+        line-height:
+            1.45;
+    }
+
+
+    .enterprise-hex-link {
+        font-size:
+            10px !important;
+
+        padding-top:
+            10px !important;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+.enterprise-hex-link:focus-visible {
+    outline:
+        2px solid var(--tile-color) !important;
+
+    outline-offset:
+        4px;
+
+    border-radius:
+        5px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .enterprise-hex-tile,
+    .enterprise-hex-link,
+    .enterprise-hex-link svg,
+    .enterprise-hex-glow {
+        transition:
+            none !important;
+    }
+
+
+    .enterprise-hex-tile:hover {
+        transform:
+            none;
+    }
+}

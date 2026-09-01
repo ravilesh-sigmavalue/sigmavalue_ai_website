@@ -167,15 +167,15 @@ export function RealEstateTechnologyModal({ show, onHide, theme }) {
                   <div className="re-city-pin pin-three">◌</div>
 
                   <img
-                    src="/illustrations/real-estate-dark.png"
+                    src="/images/building.png"
                     alt="Futuristic smart real estate city"
                     className="re-skyline-image re-skyline-dark"
                   />
-                  <img
-                    src="/illustrations/real-estate-light.png"
+                  {/* <img
+                    src="public\images\building-light.png"
                     alt="Futuristic smart real estate city"
                     className="re-skyline-image re-skyline-light"
-                  />
+                  /> */}
                 </div>
 
                 <div className="re-benefits">
