@@ -1,24 +1,26 @@
+/* =========================================================
+   CROSS-INDUSTRY AGENTIC AI MODAL
+
+   Responsive architecture:
+   1201px+     Full waterfall
+   901-1200px  Compact waterfall
+   621-900px   2 x 2 adaptive grid
+   <=620px     1-column fallback
+========================================================= */
+
 .cross-industry-dialog {
   width: min(1340px, calc(100vw - 32px)) !important;
   max-width: none !important;
   margin: 16px auto !important;
 }
 
-
-/* =========================================================
-   MODAL
-========================================================= */
-
 .cross-industry-modal {
   --ci-bg: #050b13;
   --ci-panel: #08111b;
-
   --ci-text: #f4f7fb;
   --ci-muted: #8f9baa;
-
   --ci-coral: #d9774d;
   --ci-mid: #b17f67;
-
   --ci-teal: #43a09b;
   --ci-teal-bright: #43d1ca;
 
@@ -29,14 +31,18 @@
       #43a09b 100%);
 
   position: relative;
-
   display: flex;
   flex-direction: column;
 
   width: 100%;
+  min-width: 0;
+  min-height: 0;
 
   height: min(640px, calc(100vh - 32px));
+  height: min(640px, calc(100dvh - 32px));
+
   max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
 
   overflow: hidden !important;
 
@@ -60,18 +66,13 @@
     0 28px 90px rgba(0, 0, 0, 0.68);
 }
 
-
-/* =========================================================
-   BACKGROUND GRID
-========================================================= */
-
 .cross-industry-modal::before {
   content: "";
 
   position: absolute;
-  z-index: 0;
-
   inset: 0;
+
+  z-index: 0;
 
   pointer-events: none;
 
@@ -92,15 +93,18 @@
       #000 10%,
       #000 88%,
       transparent);
+
+  -webkit-mask-image:
+    linear-gradient(90deg,
+      transparent,
+      #000 10%,
+      #000 88%,
+      transparent);
 }
-
-
-/* =========================================================
-   BODY
-========================================================= */
 
 .cross-industry-body {
   position: relative;
+
   z-index: 2;
 
   flex: 1 1 auto;
@@ -113,33 +117,32 @@
   align-items: flex-start;
   justify-content: flex-start;
 
-  padding:
-    14px 18px 18px !important;
+  padding: 18px 22px 20px !important;
 
-  overflow: hidden !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
 
   background: transparent !important;
 }
-
-/* =========================================================
-   LEFT BOTTOM CITY ILLUSTRATION
-========================================================= */
 
 .cross-industry-body::before {
   content: "";
 
   position: absolute;
+
+  left: 50%;
+  bottom: -18px;
+
   z-index: 0;
 
-  /* CENTER THE IMAGE */
-  left: 50%;
-  bottom: -12px;
+  width: min(590px, 52vw);
+  height: 270px;
 
   transform: translateX(-50%);
-
-  /* SLIGHTLY BIGGER + WIDER ON BOTH SIDES */
-  width: 590px;
-  height: 270px;
 
   background-image:
     url("/images/crossindustry.png");
@@ -152,128 +155,97 @@
   background-size:
     contain;
 
-  opacity: 0.62;
+  opacity: 0.5;
 
   pointer-events: none;
 
   filter:
-    drop-shadow(
-      0 0 24px
-      rgba(67, 160, 155, 0.12)
-    );
+    drop-shadow(0 0 24px rgba(67, 160, 155, 0.12));
 }
-
-/* =========================================================
-   WATERFALL CONTAINER
-   IMPORTANT:
-   Fixed compact area anchored to left.
-========================================================= */
 
 .cross-industry-waterfall {
   position: relative;
 
   z-index: 2;
 
-  display: block;
+  display: grid;
 
-  width: 620px;
-  max-width: 100%;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
 
-  height: 455px;
+  gap: 16px;
 
-  flex: 0 0 auto;
+  width: 100%;
+
+  max-width: none;
+
+  height: 430px;
+  min-height: 430px;
 
   margin: 0;
 
   overflow: visible;
 }
 
-
-/* =========================================================
-   COMMON WATERFALL STEP
-========================================================= */
-
 .cross-industry-waterfall-step {
-  position: absolute;
+  --step-accent: #43a09b;
+  --step-accent-rgb: 67, 160, 155;
+
+  position: relative;
+
   z-index: 4;
 
-  width: 140px;
-  min-width: 140px;
-  max-width: 140px;
+  width: 100%;
+
+  min-width: 0;
+  max-width: none;
 
   height: 280px;
+  min-height: 280px;
 
   transform: none;
 }
-
-
-/* =========================================================
-   STEP 01
-========================================================= */
 
 .waterfall-step-1 {
   --step-accent: #d9774d;
   --step-accent-rgb: 217, 119, 77;
 
-  left: 0;
-  top: 0;
+  transform: translateY(0);
 }
-
-
-/* =========================================================
-   STEP 02
-========================================================= */
 
 .waterfall-step-2 {
   --step-accent: #43a09b;
   --step-accent-rgb: 67, 160, 155;
 
-  left: 155px;
-  top: 52px;
+  transform: translateY(44px);
 }
-
-
-/* =========================================================
-   STEP 03
-========================================================= */
 
 .waterfall-step-3 {
-  --step-accent: #43a09b;
-  --step-accent-rgb: 67, 160, 155;
+  --step-accent: #d9774d;
+  --step-accent-rgb: 217, 119, 77;
 
-  left: 310px;
-  top: 104px;
+  transform: translateY(88px);
 }
-
-
-/* =========================================================
-   STEP 04
-========================================================= */
 
 .waterfall-step-4 {
   --step-accent: #43a09b;
   --step-accent-rgb: 67, 160, 155;
 
-  left: 465px;
-  top: 156px;
+  transform: translateY(132px);
 }
-
-
-/* =========================================================
-   WATERFALL CONNECTOR
-========================================================= */
 
 .cross-industry-waterfall-step:not(:last-child)::after {
   content: "";
 
   position: absolute;
-  z-index: 8;
 
   top: 72px;
-  right: -15px;
+  right: -16px;
 
-  width: 15px;
-  height: 52px;
+  z-index: 8;
+
+  width: 16px;
+  height: 44px;
 
   pointer-events: none;
 
@@ -288,23 +260,18 @@
   border-top-right-radius: 7px;
 
   filter:
-    drop-shadow(0 0 4px rgba(var(--step-accent-rgb),
-        0.45));
+    drop-shadow(0 0 4px rgba(var(--step-accent-rgb), 0.45));
 }
-
-
-/* =========================================================
-   WATERFALL CONNECTOR ARROW
-========================================================= */
 
 .cross-industry-waterfall-step:not(:last-child)::before {
   content: "";
 
   position: absolute;
-  z-index: 9;
 
-  top: 118px;
-  right: -18px;
+  top: 110px;
+  right: -19px;
+
+  z-index: 9;
 
   width: 7px;
   height: 7px;
@@ -320,23 +287,20 @@
   transform: rotate(45deg);
 
   filter:
-    drop-shadow(0 0 3px rgba(var(--step-accent-rgb),
-        0.65));
+    drop-shadow(0 0 3px rgba(var(--step-accent-rgb), 0.65));
 }
 
-
-/* =========================================================
-   CARD
-========================================================= */
-
-.cross-industry-card {
+.cross-industry-card,
+html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
+.cross-industry-modal.light-mode .cross-industry-card {
   position: relative;
 
   isolation: isolate;
 
-  width: 140px !important;
-  min-width: 140px !important;
-  max-width: 140px !important;
+  width: 100% !important;
+
+  min-width: 0 !important;
+  max-width: none !important;
 
   height: 280px !important;
   min-height: 280px !important;
@@ -355,20 +319,13 @@
   background-color:
     #08111b !important;
 
-  background-size:
-    112% auto !important;
-
-  background-position:
-    center bottom !important;
-
-  background-repeat:
-    no-repeat !important;
+  background-image:
+    none !important;
 
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.025),
     0 14px 30px rgba(0, 0, 0, 0.24),
-    0 0 16px rgba(var(--step-accent-rgb),
-      0.045) !important;
+    0 0 16px rgba(var(--step-accent-rgb), 0.045) !important;
 
   transition:
     transform 0.28s ease,
@@ -376,78 +333,64 @@
     box-shadow 0.28s ease;
 }
 
-
-/* =========================================================
-   DARK CARD OVERLAY
-========================================================= */
-
-.cross-industry-card::before {
+.cross-industry-card::before,
+html[data-theme="light"] body[data-design="design4"] .cross-industry-card::before,
+.cross-industry-modal.light-mode .cross-industry-card::before {
   content: "";
 
   position: absolute;
-  z-index: 1;
 
   inset: 0;
+
+  z-index: 1;
 
   pointer-events: none;
 
   background:
-    linear-gradient(180deg,
-      rgba(5, 11, 18, 0.99) 0%,
-      rgba(5, 11, 18, 0.97) 30%,
-      rgba(5, 11, 18, 0.87) 46%,
-      rgba(5, 11, 18, 0.62) 61%,
-      rgba(5, 11, 18, 0.28) 80%,
-      rgba(5, 11, 18, 0.12) 100%);
+    linear-gradient(135deg,
+      rgba(var(--step-accent-rgb), 0.075),
+      transparent 48%);
 }
-
-
-/* =========================================================
-   CARD COLOR WASH
-========================================================= */
 
 .cross-industry-card::after {
   content: "";
 
   position: absolute;
-  z-index: 1;
 
   inset: 0;
+
+  z-index: 1;
 
   pointer-events: none;
 
   background:
-    linear-gradient(180deg,
-      rgba(var(--step-accent-rgb),
-        0.05),
+    radial-gradient(circle at 100% 100%,
+      rgba(var(--step-accent-rgb), 0.06),
       transparent 42%);
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .cross-industry-card:hover {
+    transform: translateY(-3px);
 
-/* =========================================================
-   CARD HOVER
-========================================================= */
+    border-color:
+      rgba(var(--step-accent-rgb),
+        0.82) !important;
 
-.cross-industry-card:hover {
-  transform: translateY(-3px);
+    box-shadow:
+      0 18px 34px rgba(0, 0, 0, 0.3),
+      0 0 22px rgba(var(--step-accent-rgb), 0.1) !important;
+  }
 
-  border-color:
-    rgba(var(--step-accent-rgb),
-      0.82) !important;
-
-  box-shadow:
-    0 18px 34px rgba(0, 0, 0, 0.3),
-    0 0 22px rgba(var(--step-accent-rgb),
-      0.1) !important;
+  .cross-industry-card:hover .cross-industry-action svg {
+    transform:
+      translateX(3px);
+  }
 }
-
-
-/* =========================================================
-   CARD BODY
-========================================================= */
 
 .cross-industry-card .card-body {
   position: relative;
+
   z-index: 4;
 
   display: flex;
@@ -457,15 +400,11 @@
   height: 100%;
 
   min-width: 0;
+  min-height: 0;
 
   padding:
-    12px 11px 11px !important;
+    18px 20px 16px !important;
 }
-
-
-/* =========================================================
-   CARD TOP
-========================================================= */
 
 .cross-industry-card-top {
   display: flex;
@@ -475,21 +414,16 @@
 
   width: 100%;
 
-  min-height: 36px;
+  min-height: 42px;
 
-  margin-bottom: 10px;
+  margin-bottom: 13px;
 }
 
-
-/* =========================================================
-   NUMBER
-========================================================= */
-
 .cross-industry-step-number {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
 
-  flex: 0 0 34px;
+  flex: 0 0 40px;
 
   display: grid;
   place-items: center;
@@ -504,8 +438,7 @@
   border-radius: 50%;
 
   background:
-    rgba(var(--step-accent-rgb),
-      0.08);
+    rgba(var(--step-accent-rgb), 0.08);
 
   font-size: 11px;
   font-weight: 800;
@@ -513,22 +446,15 @@
   line-height: 1;
 
   box-shadow:
-    0 0 0 4px rgba(var(--step-accent-rgb),
-      0.03),
-    0 0 12px rgba(var(--step-accent-rgb),
-      0.13);
+    0 0 0 4px rgba(var(--step-accent-rgb), 0.03),
+    0 0 12px rgba(var(--step-accent-rgb), 0.13);
 }
 
-
-/* =========================================================
-   CARD ICON
-========================================================= */
-
 .cross-industry-icon {
-  width: 34px;
-  height: 34px;
+  width: 40px;
+  height: 40px;
 
-  flex: 0 0 34px;
+  flex: 0 0 40px;
 
   display: inline-flex;
 
@@ -545,37 +471,30 @@
   border-radius: 9px;
 
   background:
-    rgba(var(--step-accent-rgb),
-      0.05);
+    rgba(var(--step-accent-rgb), 0.05);
 
   transform:
     rotate(45deg);
 
   box-shadow:
-    0 0 10px rgba(var(--step-accent-rgb),
-      0.045);
+    0 0 10px rgba(var(--step-accent-rgb), 0.045);
 }
 
-
 .cross-industry-icon svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 
   transform:
     rotate(-45deg);
 }
 
-
-/* =========================================================
-   CARD TITLE
-========================================================= */
-
 .cross-industry-card .card-title {
   width: 100%;
+
   min-width: 0;
 
   margin:
-    0 0 7px !important;
+    0 0 9px !important;
 
   color:
     #f4f7fb !important;
@@ -584,13 +503,13 @@
     var(--font-brand);
 
   font-size:
-    12px !important;
+    clamp(14px, 1.25vw, 16px) !important;
 
   font-weight:
     700 !important;
 
   line-height:
-    1.16 !important;
+    1.2 !important;
 
   letter-spacing:
     -0.02em !important;
@@ -599,51 +518,56 @@
     normal !important;
 
   overflow-wrap:
-    normal !important;
+    anywhere !important;
 
   hyphens:
     none;
 }
 
-
-/* =========================================================
-   CARD DESCRIPTION
-========================================================= */
-
-.cross-industry-card .card-text {
+.cross-industry-card .card-text,
+body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
   width: 100%;
+
   min-width: 0;
 
-  margin: 0 !important;
+  margin:
+    0 !important;
 
   color:
     var(--ci-muted) !important;
 
   font-size:
-    7px !important;
+    clamp(9.5px, 0.8vw, 10.5px) !important;
 
   line-height:
-    1.4 !important;
-
-  overflow: hidden;
+    1.55 !important;
 
   display:
-    -webkit-box;
+    block !important;
+
+  overflow:
+    visible !important;
+
+  text-overflow:
+    clip !important;
+
+  white-space:
+    normal !important;
 
   -webkit-line-clamp:
-    4;
+    unset !important;
 
   -webkit-box-orient:
-    vertical;
+    initial !important;
+
+  overflow-wrap:
+    anywhere;
 }
-
-
-/* =========================================================
-   EXPLORE ACTION
-========================================================= */
 
 .cross-industry-action {
   width: 100%;
+
+  min-height: 34px;
 
   display:
     flex !important;
@@ -651,17 +575,17 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-top: auto;
+  margin-top:
+    auto;
 
   padding:
-    9px 0 0 !important;
+    11px 0 0 !important;
 
   border:
     0 !important;
 
   border-top:
-    1px solid rgba(var(--step-accent-rgb),
-      0.2) !important;
+    1px solid rgba(var(--step-accent-rgb), 0.2) !important;
 
   border-radius:
     0 !important;
@@ -676,7 +600,7 @@
     var(--font-sans);
 
   font-size:
-    7px !important;
+    9px !important;
 
   font-weight:
     800;
@@ -692,28 +616,20 @@
 
   text-transform:
     uppercase;
-}
 
+  box-shadow:
+    none !important;
+}
 
 .cross-industry-action svg {
   width: 13px;
   height: 13px;
 
+  flex: 0 0 auto;
+
   transition:
     transform 0.22s ease;
 }
-
-
-.cross-industry-card:hover .cross-industry-action svg {
-  transform:
-    translateX(3px);
-}
-
-
-
-/* =========================================================
-   BACKDROP
-========================================================= */
 
 .cross-industry-backdrop {
   background:
@@ -726,20 +642,12 @@
     blur(8px);
 }
 
-
 .cross-industry-backdrop.show {
-  opacity: 0.82;
+  opacity:
+    0.82;
 }
 
-
-/* =========================================================
-   =========================================================
-   LIGHT THEME
-   =========================================================
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-modal,
-
 .cross-industry-modal.light-mode {
   --ci-bg: #f7fbfc;
   --ci-panel: #ffffff;
@@ -747,11 +655,11 @@ html[data-theme="light"] body[data-design="design4"] .cross-industry-modal,
   --ci-text: #18242b;
   --ci-muted: #52636d;
 
-  border-color:
-    rgba(67, 160, 155, 0.28) !important;
-
   color:
     #18242b !important;
+
+  border-color:
+    rgba(67, 160, 155, 0.28) !important;
 
   background:
     radial-gradient(circle at 60% 45%,
@@ -766,13 +674,7 @@ html[data-theme="light"] body[data-design="design4"] .cross-industry-modal,
     0 25px 80px rgba(32, 75, 82, 0.18);
 }
 
-
-/* =========================================================
-   LIGHT BACKGROUND GRID
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-modal::before,
-
 .cross-industry-modal.light-mode::before {
   opacity: 0.4;
 
@@ -784,13 +686,7 @@ html[data-theme="light"] body[data-design="design4"] .cross-industry-modal::befo
       transparent 1px);
 }
 
-
-/* =========================================================
-   LIGHT CARD
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
-
 .cross-industry-modal.light-mode .cross-industry-card {
   color:
     #18242b !important;
@@ -800,35 +696,10 @@ html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
 
   box-shadow:
     0 12px 28px rgba(40, 79, 86, 0.08),
-    0 0 16px rgba(var(--step-accent-rgb),
-      0.04) !important;
+    0 0 16px rgba(var(--step-accent-rgb), 0.04) !important;
 }
-
-
-/* =========================================================
-   LIGHT CARD OVERLAY
-========================================================= */
-
-html[data-theme="light"] body[data-design="design4"] .cross-industry-card::before,
-
-.cross-industry-modal.light-mode .cross-industry-card::before {
-  background:
-    linear-gradient(180deg,
-      rgba(250, 253, 253, 0.99) 0%,
-      rgba(250, 253, 253, 0.96) 30%,
-      rgba(250, 253, 253, 0.84) 47%,
-      rgba(250, 253, 253, 0.6) 64%,
-      rgba(250, 253, 253, 0.27) 82%,
-      rgba(250, 253, 253, 0.1) 100%);
-}
-
-
-/* =========================================================
-   LIGHT CARD TITLE
-========================================================= */
 
 html[data-theme="light"] body[data-design="design4"] .cross-industry-card .card-title,
-
 .cross-industry-modal.light-mode .cross-industry-card .card-title {
   background:
     linear-gradient(90deg,
@@ -849,267 +720,271 @@ html[data-theme="light"] body[data-design="design4"] .cross-industry-card .card-
     transparent !important;
 }
 
-
-/* =========================================================
-   LIGHT DESCRIPTION
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-card .card-text,
-
 .cross-industry-modal.light-mode .cross-industry-card .card-text {
   color:
     #40545d !important;
 
-  font-weight: 500;
+  font-weight:
+    500;
 }
 
-
-/* =========================================================
-   LIGHT NUMBER
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-step-number,
-
 .cross-industry-modal.light-mode .cross-industry-step-number {
   background:
-    rgba(var(--step-accent-rgb),
-      0.06);
+    rgba(var(--step-accent-rgb), 0.06);
 
   box-shadow:
-    0 0 0 4px rgba(var(--step-accent-rgb),
-      0.025),
+    0 0 0 4px rgba(var(--step-accent-rgb), 0.025),
     0 5px 13px rgba(48, 80, 86, 0.08);
 }
 
-
-/* =========================================================
-   LIGHT ICON
-========================================================= */
-
 html[data-theme="light"] body[data-design="design4"] .cross-industry-icon,
-
 .cross-industry-modal.light-mode .cross-industry-icon {
   background:
-    rgba(var(--step-accent-rgb),
-      0.055);
+    rgba(var(--step-accent-rgb), 0.055);
 }
 
-
-/* =========================================================
-   LIGHT CARD IMAGES
-========================================================= */
-
-html[data-theme="light"] body[data-design="design4"] .waterfall-step-1 .cross-industry-card,
-
-.cross-industry-modal.light-mode .waterfall-step-1 .cross-industry-card {
-  background-image:
-    url("/images/card-1-light.png") !important;
-}
-
-
-html[data-theme="light"] body[data-design="design4"] .waterfall-step-2 .cross-industry-card,
-
-.cross-industry-modal.light-mode .waterfall-step-2 .cross-industry-card {
-  background-image:
-    url("/images/card-2-light.png") !important;
-}
-
-
-html[data-theme="light"] body[data-design="design4"] .waterfall-step-3 .cross-industry-card,
-
-.cross-industry-modal.light-mode .waterfall-step-3 .cross-industry-card {
-  background-image:
-    url("/images/card-3-light.png") !important;
-}
-
-
-html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-industry-card,
-
-.cross-industry-modal.light-mode .waterfall-step-4 .cross-industry-card {
-  background-image:
-    url("/images/card-4-light.png") !important;
-}
-
-
-/* =========================================================
-   MEDIUM DESKTOP / LAPTOP
-   Still keep waterfall layout.
-========================================================= */
-
-@media (min-width: 901px) and (max-width: 1150px) {
-
-  .cross-industry-body {
-    padding:
-      12px 14px 16px !important;
-  }
-
-
+@media (min-width: 1201px) {
   .cross-industry-waterfall {
-    width: 570px;
-    height: 420px;
-  }
-
-
-  .cross-industry-waterfall-step {
-    width: 128px;
-    min-width: 128px;
-    max-width: 128px;
-
-    height: 255px;
-  }
-
-
-  .waterfall-step-1 {
-    left: 0;
-    top: 0;
-  }
-
-
-  .waterfall-step-2 {
-    left: 142px;
-    top: 46px;
-  }
-
-
-  .waterfall-step-3 {
-    left: 284px;
-    top: 92px;
-  }
-
-
-  .waterfall-step-4 {
-    left: 426px;
-    top: 138px;
-  }
-
-
-  .cross-industry-card {
-    width: 128px !important;
-    min-width: 128px !important;
-    max-width: 128px !important;
-
-    height: 255px !important;
-    min-height: 255px !important;
-    max-height: 255px !important;
-  }
-
-
-  .cross-industry-waterfall-step:not(:last-child)::after {
-    top: 62px;
-    right: -14px;
-
-    width: 14px;
-    height: 46px;
-  }
-
-
-  .cross-industry-waterfall-step:not(:last-child)::before {
-    top: 103px;
-    right: -17px;
-  }
-
-
-  .cross-industry-card .card-body {
-    padding:
-      10px 9px 10px !important;
-  }
-
-
-  .cross-industry-card-top {
-    min-height: 32px;
-    margin-bottom: 8px;
-  }
-
-
-  .cross-industry-step-number,
-  .cross-industry-icon {
-    width: 31px;
-    height: 31px;
-
-    flex-basis: 31px;
-  }
-
-
-  .cross-industry-icon svg {
-    width: 15px;
-    height: 15px;
-  }
-
-
-  .cross-industry-card .card-title {
-    font-size:
-      10.5px !important;
-  }
-
-
-  .cross-industry-card .card-text {
-    font-size:
-      6.4px !important;
-
-    line-height:
-      1.35 !important;
-  }
-
-
-  .cross-industry-action {
-    font-size:
-      6.4px !important;
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
   }
 }
 
+@media (min-width: 901px) and (max-width: 1200px) {
+  .cross-industry-dialog {
+    width:
+      min(1040px, calc(100vw - 24px)) !important;
 
-/* =========================================================
-   TABLET
-   SWITCH TO 2 x 2 LAYOUT
-========================================================= */
-
-@media (max-width: 900px) {
+    margin:
+      12px auto !important;
+  }
 
   .cross-industry-modal {
     height:
-      calc(100vh - 24px);
+      min(620px, calc(100vh - 24px));
+
+    height:
+      min(620px, calc(100dvh - 24px));
 
     max-height:
       calc(100vh - 24px);
+
+    max-height:
+      calc(100dvh - 24px);
   }
 
+  .cross-industry-body {
+    padding:
+      16px 18px 20px !important;
+  }
+
+  .cross-industry-body::before {
+    width:
+      min(500px, 48vw);
+
+    height:
+      230px;
+
+    opacity:
+      0.42;
+  }
+
+  .cross-industry-waterfall {
+    gap:
+      12px;
+
+    height:
+      390px;
+
+    min-height:
+      390px;
+  }
+
+  .cross-industry-waterfall-step {
+    height:
+      250px;
+
+    min-height:
+      250px;
+  }
+
+  .waterfall-step-1 {
+    transform:
+      translateY(0);
+  }
+
+  .waterfall-step-2 {
+    transform:
+      translateY(36px);
+  }
+
+  .waterfall-step-3 {
+    transform:
+      translateY(72px);
+  }
+
+  .waterfall-step-4 {
+    transform:
+      translateY(108px);
+  }
+
+  .cross-industry-card,
+  html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
+  .cross-industry-modal.light-mode .cross-industry-card {
+    height:
+      250px !important;
+
+    min-height:
+      250px !important;
+
+    max-height:
+      250px !important;
+  }
+
+  .cross-industry-card .card-body {
+    padding:
+      14px 15px 13px !important;
+  }
+
+  .cross-industry-card-top {
+    min-height:
+      36px;
+
+    margin-bottom:
+      10px;
+  }
+
+  .cross-industry-step-number,
+  .cross-industry-icon {
+    width:
+      35px;
+
+    height:
+      35px;
+
+    flex-basis:
+      35px;
+  }
+
+  .cross-industry-icon svg {
+    width:
+      16px;
+
+    height:
+      16px;
+  }
+
+  .cross-industry-card .card-title {
+    font-size:
+      clamp(12px, 1.25vw, 14px) !important;
+  }
+
+  .cross-industry-card .card-text,
+  body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
+    font-size:
+      clamp(8.5px, 0.8vw, 9.5px) !important;
+
+    line-height:
+      1.48 !important;
+  }
+
+  .cross-industry-action {
+    min-height:
+      32px;
+
+    font-size:
+      8px !important;
+  }
+
+  .cross-industry-waterfall-step:not(:last-child)::after {
+    top:
+      64px;
+
+    right:
+      -12px;
+
+    width:
+      12px;
+
+    height:
+      38px;
+  }
+
+  .cross-industry-waterfall-step:not(:last-child)::before {
+    top:
+      97px;
+
+    right:
+      -15px;
+  }
+}
+
+@media (min-width: 621px) and (max-width: 900px) {
+  .cross-industry-dialog {
+    width:
+      calc(100vw - 20px) !important;
+
+    margin:
+      10px auto !important;
+  }
+
+  .cross-industry-modal {
+    height:
+      calc(100vh - 20px);
+
+    height:
+      calc(100dvh - 20px);
+
+    max-height:
+      calc(100vh - 20px);
+
+    max-height:
+      calc(100dvh - 20px);
+
+    border-radius:
+      18px !important;
+  }
 
   .cross-industry-body {
     align-items:
       flex-start;
 
     padding:
-      18px !important;
+      18px 16px 28px !important;
 
     overflow-y:
       auto !important;
   }
 
+  .cross-industry-body::before {
+    display:
+      none;
+  }
 
   .cross-industry-waterfall {
-    position:
-      relative;
-
     display:
       grid;
 
     grid-template-columns:
-      repeat(2,
-        minmax(0, 1fr));
+      repeat(2, minmax(0, 1fr));
 
     gap:
-      18px;
+      16px;
 
     width:
       100%;
 
-    max-width:
-      100%;
-
     height:
       auto;
-  }
 
+    min-height:
+      0;
+
+    overflow:
+      visible;
+  }
 
   .cross-industry-waterfall-step,
   .waterfall-step-1,
@@ -1118,12 +993,6 @@ html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-in
   .waterfall-step-4 {
     position:
       relative;
-
-    left:
-      auto;
-
-    top:
-      auto;
 
     width:
       100%;
@@ -1131,37 +1000,15 @@ html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-in
     min-width:
       0;
 
-    max-width:
-      none;
-
     height:
-      255px;
+      clamp(250px, 35vw, 285px);
+
+    min-height:
+      250px;
 
     transform:
       none;
   }
-
-
-  .cross-industry-card {
-    width:
-      100% !important;
-
-    min-width:
-      0 !important;
-
-    max-width:
-      none !important;
-
-    height:
-      255px !important;
-
-    min-height:
-      255px !important;
-
-    max-height:
-      255px !important;
-  }
-
 
   .cross-industry-waterfall-step::before,
   .cross-industry-waterfall-step::after {
@@ -1169,81 +1016,14 @@ html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-in
       none;
   }
 
-
-  .cross-industry-card .card-title {
-    font-size:
-      13px !important;
-  }
-
-
-  .cross-industry-card .card-text {
-    font-size:
-      8px !important;
-
-    -webkit-line-clamp:
-      5;
-  }
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 600px) {
-
-  .cross-industry-dialog {
-    width:
-      calc(100vw - 14px) !important;
-
-    margin:
-      7px auto !important;
-  }
-
-
-  .cross-industry-modal {
-    height:
-      calc(100vh - 14px);
-
-    max-height:
-      calc(100vh - 14px);
-
-    border-radius:
-      15px !important;
-  }
-
-
-  .cross-industry-body {
-    padding:
-      16px 12px 20px !important;
-  }
-
-
-  .cross-industry-waterfall {
-    grid-template-columns:
-      minmax(0, 1fr);
-
-    gap:
-      15px;
-  }
-
-
-  .cross-industry-waterfall-step,
-  .waterfall-step-1,
-  .waterfall-step-2,
-  .waterfall-step-3,
-  .waterfall-step-4 {
-    height:
-      auto;
-  }
-
-
-  .cross-industry-card {
+  .cross-industry-card,
+  html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
+  .cross-industry-modal.light-mode .cross-industry-card {
     width:
       100% !important;
 
     height:
-      auto !important;
+      100% !important;
 
     min-height:
       250px !important;
@@ -1252,41 +1032,227 @@ html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-in
       none !important;
   }
 
+  .cross-industry-card .card-body {
+    padding:
+      16px 17px 15px !important;
+  }
+
+  .cross-industry-card .card-title {
+    font-size:
+      clamp(13px, 2vw, 16px) !important;
+  }
+
+  .cross-industry-card .card-text,
+  body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
+    font-size:
+      clamp(9px, 1.35vw, 10.5px) !important;
+  }
+
+  .cross-industry-action {
+    min-height:
+      38px;
+
+    font-size:
+      9px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  .cross-industry-dialog {
+    width:
+      calc(100vw - 12px) !important;
+
+    margin:
+      6px auto !important;
+  }
+
+  .cross-industry-modal {
+    height:
+      calc(100vh - 12px);
+
+    height:
+      calc(100dvh - 12px);
+
+    max-height:
+      calc(100vh - 12px);
+
+    max-height:
+      calc(100dvh - 12px);
+
+    border-radius:
+      15px !important;
+  }
+
+  .cross-industry-body {
+    padding:
+      16px 12px 24px !important;
+
+    overflow-y:
+      auto !important;
+  }
+
+  .cross-industry-body::before {
+    display:
+      none;
+  }
+
+  .cross-industry-waterfall {
+    display:
+      grid;
+
+    grid-template-columns:
+      minmax(0, 1fr);
+
+    gap:
+      15px;
+
+    width:
+      100%;
+
+    height:
+      auto;
+
+    min-height:
+      0;
+  }
+
+  .cross-industry-waterfall-step,
+  .waterfall-step-1,
+  .waterfall-step-2,
+  .waterfall-step-3,
+  .waterfall-step-4 {
+    width:
+      100%;
+
+    height:
+      auto;
+
+    min-height:
+      0;
+
+    transform:
+      none;
+  }
+
+  .cross-industry-waterfall-step::before,
+  .cross-industry-waterfall-step::after {
+    display:
+      none;
+  }
+
+  .cross-industry-card,
+  html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
+  .cross-industry-modal.light-mode .cross-industry-card {
+    width:
+      100% !important;
+
+    height:
+      auto !important;
+
+    min-height:
+      230px !important;
+
+    max-height:
+      none !important;
+  }
 
   .cross-industry-card .card-body {
     padding:
-      14px !important;
+      15px !important;
   }
 
+  .cross-industry-card .card-title {
+    font-size:
+      15px !important;
+  }
+
+  .cross-industry-card .card-text,
+  body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
+    font-size:
+      10px !important;
+
+    line-height:
+      1.5 !important;
+  }
+
+  .cross-industry-action {
+    min-height:
+      40px;
+
+    font-size:
+      9px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .cross-industry-body {
+    padding:
+      14px 10px 22px !important;
+  }
+
+  .cross-industry-waterfall {
+    gap:
+      12px;
+  }
+
+  .cross-industry-card,
+  html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
+  .cross-industry-modal.light-mode .cross-industry-card {
+    min-height:
+      220px !important;
+  }
+
+  .cross-industry-card .card-body {
+    padding:
+      13px !important;
+  }
+
+  .cross-industry-step-number,
+  .cross-industry-icon {
+    width:
+      36px;
+
+    height:
+      36px;
+
+    flex-basis:
+      36px;
+  }
 
   .cross-industry-card .card-title {
     font-size:
       14px !important;
   }
 
-
-  .cross-industry-card .card-text {
+  .cross-industry-card .card-text,
+  body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
     font-size:
-      9px !important;
-
-    line-height:
-      1.45 !important;
-
-    -webkit-line-clamp:
-      unset;
-  }
-
-
-  .cross-industry-action {
-    font-size:
-      8px !important;
+      9.5px !important;
   }
 }
 
+@media (min-width: 621px) and (max-height: 680px) {
+  .cross-industry-modal {
+    height:
+      calc(100dvh - 16px);
 
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
+    max-height:
+      calc(100dvh - 16px);
+  }
+
+  .cross-industry-body {
+    overflow-y:
+      auto !important;
+  }
+}
+
+.cross-industry-action:focus-visible {
+  outline:
+    2px solid var(--step-accent) !important;
+
+  outline-offset:
+    3px;
+}
 
 @media (prefers-reduced-motion: reduce) {
 
@@ -1295,190 +1261,9 @@ html[data-theme="light"] body[data-design="design4"] .waterfall-step-4 .cross-in
     transition:
       none !important;
   }
-}
 
-/* =========================================================
-   IMAGE-FREE FULL-WIDTH WATERFALL
-   Keep this block last so it wins over the legacy fixed 140px layout.
-========================================================= */
-
-.cross-industry-body {
-  align-items: flex-start;
-  padding: 18px 22px 20px !important;
-  overflow-y: auto !important;
-}
-
-.cross-industry-waterfall {
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  width: 100%;
-  max-width: none;
-  height: 430px;
-  min-height: 430px;
-  margin: 0;
-  overflow: visible;
-}
-
-.cross-industry-waterfall-step {
-  position: relative;
-  inset: auto;
-  width: 100%;
-  min-width: 0;
-  max-width: none;
-  height: 280px;
-  min-height: 280px;
-}
-
-.waterfall-step-1 {
-  transform: translateY(0);
-}
-
-.waterfall-step-2 {
-  transform: translateY(44px);
-}
-
-.waterfall-step-3 {
-  transform: translateY(88px);
-}
-
-.waterfall-step-4 {
-  transform: translateY(132px);
-}
-
-.cross-industry-waterfall-step:not(:last-child)::after {
-  top: 72px;
-  right: -16px;
-  width: 16px;
-  height: 44px;
-}
-
-.cross-industry-waterfall-step:not(:last-child)::before {
-  top: 110px;
-  right: -19px;
-}
-
-.cross-industry-card,
-html[data-theme="light"] body[data-design="design4"] .cross-industry-card,
-.cross-industry-modal.light-mode .cross-industry-card {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  height: 280px !important;
-  min-height: 280px !important;
-  max-height: 280px !important;
-  background-image: none !important;
-  background-size: auto !important;
-}
-
-.cross-industry-card::before,
-html[data-theme="light"] body[data-design="design4"] .cross-industry-card::before,
-.cross-industry-modal.light-mode .cross-industry-card::before {
-  background: linear-gradient(135deg,
-      rgba(var(--step-accent-rgb), 0.075),
-      transparent 48%);
-}
-
-.cross-industry-card .card-body {
-  padding: 18px 20px 16px !important;
-}
-
-.cross-industry-card-top {
-  min-height: 42px;
-  margin-bottom: 13px;
-}
-
-.cross-industry-step-number,
-.cross-industry-icon {
-  width: 40px;
-  height: 40px;
-  flex-basis: 40px;
-}
-
-.cross-industry-icon svg {
-  width: 18px;
-  height: 18px;
-}
-
-.cross-industry-card .card-title {
-  margin-bottom: 9px !important;
-  font-size: 16px !important;
-  line-height: 1.2 !important;
-}
-
-.cross-industry-card .card-text {
-  font-size: 10px !important;
-  line-height: 1.55 !important;
-  display: block !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  white-space: normal !important;
-  -webkit-line-clamp: unset !important;
-  -webkit-box-orient: initial !important;
-}
-
-/* Override the shared Design 4 modal rule that clamps card text to 3 lines. */
-body[data-design="design4"] .cross-industry-modal .cross-industry-card .card-text {
-  display: block !important;
-  overflow: visible !important;
-  text-overflow: clip !important;
-  white-space: normal !important;
-  -webkit-line-clamp: unset !important;
-  -webkit-box-orient: initial !important;
-}
-
-.cross-industry-action {
-  padding-top: 11px !important;
-  font-size: 9px !important;
-}
-
-@media (min-width: 701px) and (max-width: 1000px) {
-  .cross-industry-waterfall {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    height: auto;
-    min-height: 590px;
-  }
-
-  .waterfall-step-1,
-  .waterfall-step-3 {
-    transform: translateY(0);
-  }
-
-  .waterfall-step-2,
-  .waterfall-step-4 {
-    transform: translateY(34px);
-  }
-
-  .cross-industry-waterfall-step:not(:last-child)::before,
-  .cross-industry-waterfall-step:not(:last-child)::after {
-    content: none;
-  }
-}
-
-@media (max-width: 700px) {
-  .cross-industry-body {
-    overflow-y: auto !important;
-  }
-
-  .cross-industry-waterfall {
-    grid-template-columns: 1fr;
-    grid-template-rows: none;
-    height: auto;
-  }
-
-  .cross-industry-waterfall-step {
-    height: auto;
-    transform: none;
-  }
-
-  .cross-industry-waterfall-step:not(:last-child)::before,
-  .cross-industry-waterfall-step:not(:last-child)::after {
-    content: none;
-  }
-
-  .cross-industry-card {
-    height: auto !important;
-    min-height: 210px !important;
+  .cross-industry-card:hover {
+    transform:
+      none;
   }
 }

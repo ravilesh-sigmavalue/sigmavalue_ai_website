@@ -44,19 +44,31 @@ import {
 
 import "../../shared/components/modal/modal.css";
 
+const MOBILE_EXPERIENCE_QUERY = "(max-width: 620px)";
 
 function useMobileLayout() {
-  const [mobile, setMobile] = useState(() =>
-    window.matchMedia("(max-width: 768px)").matches
-  );
+  const getInitialState = () => {
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    return window.matchMedia(MOBILE_EXPERIENCE_QUERY).matches;
+  };
+
+  const [mobile, setMobile] = useState(getInitialState);
 
   useEffect(() => {
-    const media = window.matchMedia("(max-width: 768px)");
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const media = window.matchMedia(MOBILE_EXPERIENCE_QUERY);
 
     const sync = () => {
       setMobile(media.matches);
     };
 
+    sync();
     media.addEventListener("change", sync);
 
     return () => {
@@ -66,7 +78,6 @@ function useMobileLayout() {
 
   return mobile;
 }
-
 
 export function Experience() {
   const [
@@ -84,61 +95,97 @@ export function Experience() {
     setStrategicAdvisoryOpen,
   ] = useState(false);
 
-  const [
-    drawer,
-    setDrawer,
-  ] = useState(false);
+  const [drawer, setDrawer] = useState(false);
+  const [requestDemoOpen, setRequestDemoOpen] = useState(false);
+  const [aboutUsOpen, setAboutUsOpen] = useState(false);
+  const [aboutUsTab, setAboutUsTab] = useState("team");
 
-  const [
-    requestDemoOpen,
-    setRequestDemoOpen,
-  ] = useState(false);
-
-  const [
-    aboutUsOpen,
-    setAboutUsOpen,
-  ] = useState(false);
-
-  const [
-    aboutUsTab,
-    setAboutUsTab,
-  ] = useState("team");
-
-  const {
-    active,
-    goToChapter,
-  } = useChapterScroll(CHAPTERS.length);
+  const { active, goToChapter } = useChapterScroll(CHAPTERS.length);
 
   const theme = "dark";
-
-  const mobile = useMobileLayout();
+  const useDedicatedMobileExperience = useMobileLayout();
 
   const settingsRef = useRef({
     ...DEFAULT_SCENE_SETTINGS,
   });
-
 
   useEffect(() => {
     document.documentElement.dataset.theme = "dark";
     localStorage.setItem("sv-theme", "dark");
   }, []);
 
+  useEffect(() => {
+    if (!useDedicatedMobileExperience) {
+      return;
+    }
+
+    setDrawer(false);
+    setRequestDemoOpen(false);
+    setAboutUsOpen(false);
+    setTechnologyTransformationOpen(false);
+    setIntelligenceDecisionMakingOpen(false);
+    setStrategicAdvisoryOpen(false);
+  }, [useDedicatedMobileExperience]);
 
   const chapter = CHAPTERS[active];
 
+  const openDrawer = () => {
+    setDrawer(true);
+  };
 
-  if (mobile) {
-    return (
-      <MobileExperience
-        theme={theme}
-        onTheme={() => { }}
-      />
-    );
+  const closeDrawer = () => {
+    setDrawer(false);
+  };
+
+  const closeSolutionScreens = () => {
+    setTechnologyTransformationOpen(false);
+    setIntelligenceDecisionMakingOpen(false);
+    setStrategicAdvisoryOpen(false);
+  };
+
+  const openTechnologyTransformation = () => {
+    closeDrawer();
+    setAboutUsOpen(false);
+    setIntelligenceDecisionMakingOpen(false);
+    setStrategicAdvisoryOpen(false);
+    setTechnologyTransformationOpen(true);
+  };
+
+  const openIntelligenceDecisionMaking = () => {
+    closeDrawer();
+    setAboutUsOpen(false);
+    setTechnologyTransformationOpen(false);
+    setStrategicAdvisoryOpen(false);
+    setIntelligenceDecisionMakingOpen(true);
+  };
+
+  const openStrategicAdvisory = () => {
+    closeDrawer();
+    setAboutUsOpen(false);
+    setTechnologyTransformationOpen(false);
+    setIntelligenceDecisionMakingOpen(false);
+    setStrategicAdvisoryOpen(true);
+  };
+
+  const openAboutUs = (tab = "team") => {
+    closeDrawer();
+    closeSolutionScreens();
+    setAboutUsTab(tab);
+    setAboutUsOpen(true);
+  };
+
+  const openRequestDemo = () => {
+    closeDrawer();
+    setRequestDemoOpen(true);
+  };
+
+  if (useDedicatedMobileExperience) {
+    return <MobileExperience theme={theme} onTheme={() => { }} />;
   }
-
 
   if (technologyTransformationOpen) {
     const navigateFromTechnology = (index) => {
+      closeDrawer();
       setTechnologyTransformationOpen(false);
 
       requestAnimationFrame(() => {
@@ -146,80 +193,58 @@ export function Experience() {
       });
     };
 
-
     return (
       <AnimatePresence mode="wait">
         <motion.div
           key="technology-transformation"
-          className="technology-transformation-screen"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 1100,
-            overflow: "hidden",
-          }}
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          className="experience-overlay-screen technology-transformation-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
           <Header
             go={navigateFromTechnology}
-
-            onMenu={() => {
-              setDrawer(true);
-            }}
-
+            onMenu={openDrawer}
             onRequestDemo={() => {
               setTechnologyTransformationOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
-
-            onAboutUs={(tab) => {
-              setTechnologyTransformationOpen(false);
-
-              setAboutUsTab(tab);
-              setAboutUsOpen(true);
-            }}
-
-            onTechnologyTransformation={() => { }}
-
-            onIntelligenceDecisionMaking={() => {
-              setTechnologyTransformationOpen(false);
-              setIntelligenceDecisionMakingOpen(true);
-            }}
-
-            onStrategicAdvisory={() => {
-              setTechnologyTransformationOpen(false);
-              setStrategicAdvisoryOpen(true);
-            }}
-
-            theme={theme}
-            onTheme={() => { }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={closeDrawer}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={openStrategicAdvisory}
           />
-
 
           <TechnologyTransformationModal
             show={true}
-
             onRequestDemo={() => {
               setTechnologyTransformationOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
+          />
+
+          <SiteDrawer
+            open={drawer}
+            setOpen={setDrawer}
+            go={navigateFromTechnology}
+            theme={theme}
+            onRequestDemo={() => {
+              setTechnologyTransformationOpen(false);
+              openRequestDemo();
+            }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={closeDrawer}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={openStrategicAdvisory}
           />
         </motion.div>
       </AnimatePresence>
     );
   }
 
-
   if (intelligenceDecisionMakingOpen) {
     const navigateFromIntelligence = (index) => {
+      closeDrawer();
       setIntelligenceDecisionMakingOpen(false);
 
       requestAnimationFrame(() => {
@@ -227,80 +252,58 @@ export function Experience() {
       });
     };
 
-
     return (
       <AnimatePresence mode="wait">
         <motion.div
           key="intelligence-decision-making"
-          className="intelligence-decision-screen"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 1100,
-            overflow: "hidden",
-          }}
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          className="experience-overlay-screen intelligence-decision-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
           <Header
             go={navigateFromIntelligence}
-
-            onMenu={() => {
-              setDrawer(true);
-            }}
-
+            onMenu={openDrawer}
             onRequestDemo={() => {
               setIntelligenceDecisionMakingOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
-
-            onAboutUs={(tab) => {
-              setIntelligenceDecisionMakingOpen(false);
-
-              setAboutUsTab(tab);
-              setAboutUsOpen(true);
-            }}
-
-            onTechnologyTransformation={() => {
-              setIntelligenceDecisionMakingOpen(false);
-              setTechnologyTransformationOpen(true);
-            }}
-
-            onIntelligenceDecisionMaking={() => { }}
-
-            onStrategicAdvisory={() => {
-              setIntelligenceDecisionMakingOpen(false);
-              setStrategicAdvisoryOpen(true);
-            }}
-
-            theme={theme}
-            onTheme={() => { }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={closeDrawer}
+            onStrategicAdvisory={openStrategicAdvisory}
           />
-
 
           <IntelligenceDecisionMakingModal
             show={true}
-
             onRequestDemo={() => {
               setIntelligenceDecisionMakingOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
+          />
+
+          <SiteDrawer
+            open={drawer}
+            setOpen={setDrawer}
+            go={navigateFromIntelligence}
+            theme={theme}
+            onRequestDemo={() => {
+              setIntelligenceDecisionMakingOpen(false);
+              openRequestDemo();
+            }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={closeDrawer}
+            onStrategicAdvisory={openStrategicAdvisory}
           />
         </motion.div>
       </AnimatePresence>
     );
   }
 
-
   if (strategicAdvisoryOpen) {
     const navigateFromStrategicAdvisory = (index) => {
+      closeDrawer();
       setStrategicAdvisoryOpen(false);
 
       requestAnimationFrame(() => {
@@ -308,80 +311,58 @@ export function Experience() {
       });
     };
 
-
     return (
       <AnimatePresence mode="wait">
         <motion.div
           key="strategic-advisory"
-          className="strategic-advisory-screen"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 1100,
-            overflow: "hidden",
-          }}
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          className="experience-overlay-screen strategic-advisory-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
           <Header
             go={navigateFromStrategicAdvisory}
-
-            onMenu={() => {
-              setDrawer(true);
-            }}
-
+            onMenu={openDrawer}
             onRequestDemo={() => {
               setStrategicAdvisoryOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
-
-            onAboutUs={(tab) => {
-              setStrategicAdvisoryOpen(false);
-
-              setAboutUsTab(tab);
-              setAboutUsOpen(true);
-            }}
-
-            onTechnologyTransformation={() => {
-              setStrategicAdvisoryOpen(false);
-              setTechnologyTransformationOpen(true);
-            }}
-
-            onIntelligenceDecisionMaking={() => {
-              setStrategicAdvisoryOpen(false);
-              setIntelligenceDecisionMakingOpen(true);
-            }}
-
-            onStrategicAdvisory={() => { }}
-
-            theme={theme}
-            onTheme={() => { }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={closeDrawer}
           />
-
 
           <StrategicAdvisoryModal
             show={true}
-
             onRequestDemo={() => {
               setStrategicAdvisoryOpen(false);
-              setRequestDemoOpen(true);
+              openRequestDemo();
             }}
+          />
+
+          <SiteDrawer
+            open={drawer}
+            setOpen={setDrawer}
+            go={navigateFromStrategicAdvisory}
+            theme={theme}
+            onRequestDemo={() => {
+              setStrategicAdvisoryOpen(false);
+              openRequestDemo();
+            }}
+            onAboutUs={openAboutUs}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={closeDrawer}
           />
         </motion.div>
       </AnimatePresence>
     );
   }
 
-
   if (aboutUsOpen) {
     const navigateFromAbout = (index) => {
+      closeDrawer();
       setAboutUsOpen(false);
 
       requestAnimationFrame(() => {
@@ -389,78 +370,52 @@ export function Experience() {
       });
     };
 
-
     return (
       <AnimatePresence mode="wait">
         <motion.div
           key="about-us"
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 999,
-            overflow: "auto",
-          }}
-          initial={{
-            opacity: 0,
-          }}
-          animate={{
-            opacity: 1,
-          }}
-          exit={{
-            opacity: 0,
-          }}
+          className="experience-overlay-screen experience-overlay-scroll about-us-screen"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
         >
           <Header
             go={navigateFromAbout}
-
-            onMenu={() => {
-              setDrawer(true);
-            }}
-
-            onRequestDemo={() => {
-              setRequestDemoOpen(true);
-            }}
-
+            onMenu={openDrawer}
+            onRequestDemo={openRequestDemo}
             onAboutUs={(tab) => {
               setAboutUsTab(tab);
             }}
-
-            onTechnologyTransformation={() => {
-              setAboutUsOpen(false);
-              setTechnologyTransformationOpen(true);
-            }}
-
-            onIntelligenceDecisionMaking={() => {
-              setAboutUsOpen(false);
-              setIntelligenceDecisionMakingOpen(true);
-            }}
-
-            onStrategicAdvisory={() => {
-              setAboutUsOpen(false);
-              setStrategicAdvisoryOpen(true);
-            }}
-
-            theme={theme}
-            onTheme={() => { }}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={openStrategicAdvisory}
           />
-
 
           <AboutUsPage
             initialTab={aboutUsTab}
-
-            onRequestDemo={() => {
-              setRequestDemoOpen(true);
-            }}
-
+            onRequestDemo={openRequestDemo}
             onExplore={() => {
               navigateFromAbout(1);
             }}
           />
 
+          <SiteDrawer
+            open={drawer}
+            setOpen={setDrawer}
+            go={navigateFromAbout}
+            theme={theme}
+            onRequestDemo={openRequestDemo}
+            onAboutUs={(tab) => {
+              setAboutUsTab(tab);
+              closeDrawer();
+            }}
+            onTechnologyTransformation={openTechnologyTransformation}
+            onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+            onStrategicAdvisory={openStrategicAdvisory}
+          />
 
           <RequestDemoModal
             open={requestDemoOpen}
-
             onClose={() => {
               setRequestDemoOpen(false);
             }}
@@ -470,11 +425,9 @@ export function Experience() {
     );
   }
 
-
   return (
     <>
       <Loader />
-
 
       <div
         id="scroll-spacer"
@@ -482,7 +435,6 @@ export function Experience() {
           height: `${CHAPTERS.length * 100}vh`,
         }}
       />
-
 
       <div id="stage">
         <WebGLBackground
@@ -492,53 +444,21 @@ export function Experience() {
           settingsRef={settingsRef}
         />
 
-
         <LiveSiteBadge />
-
 
         <Header
           go={goToChapter}
-
-          onMenu={() => {
-            setDrawer(true);
-          }}
-
-          onRequestDemo={() => {
-            setRequestDemoOpen(true);
-          }}
-
-          onAboutUs={(tab) => {
-            setAboutUsTab(tab);
-            setAboutUsOpen(true);
-          }}
-
-          onTechnologyTransformation={() => {
-            setTechnologyTransformationOpen(true);
-          }}
-
-          onIntelligenceDecisionMaking={() => {
-            setIntelligenceDecisionMakingOpen(true);
-          }}
-
-          onStrategicAdvisory={() => {
-            setStrategicAdvisoryOpen(true);
-          }}
-
-          theme={theme}
-          onTheme={() => { }}
+          onMenu={openDrawer}
+          onRequestDemo={openRequestDemo}
+          onAboutUs={openAboutUs}
+          onTechnologyTransformation={openTechnologyTransformation}
+          onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+          onStrategicAdvisory={openStrategicAdvisory}
         />
 
+        <LeftCategoryNav active={active} go={goToChapter} />
 
-        <LeftCategoryNav
-          active={active}
-          go={goToChapter}
-        />
-
-
-        <AskBar
-          show={active > 0}
-        />
-
+        <AskBar show={active > 0} />
 
         <ChapterStage
           chapters={CHAPTERS}
@@ -546,44 +466,35 @@ export function Experience() {
           theme={theme}
         />
 
-
         <ContactChapter
-          show={chapter.key === "contact"}
-          title={chapter.title}
-
+          show={chapter?.key === "contact"}
+          title={chapter?.title}
           onClose={() => {
             goToChapter(0);
           }}
         />
 
-
-        <FloatingDemoButton
-          go={goToChapter}
-        />
-
+        <FloatingDemoButton go={goToChapter} />
 
         <SiteDrawer
           open={drawer}
           setOpen={setDrawer}
           go={goToChapter}
           theme={theme}
+          onRequestDemo={openRequestDemo}
+          onAboutUs={openAboutUs}
+          onTechnologyTransformation={openTechnologyTransformation}
+          onIntelligenceDecisionMaking={openIntelligenceDecisionMaking}
+          onStrategicAdvisory={openStrategicAdvisory}
         />
 
+        <ScrollCue show={active === 0} />
 
-        <ScrollCue
-          show={active === 0}
-        />
-
-
-        <SceneSettingsPanel
-          settingsRef={settingsRef}
-        />
+        <SceneSettingsPanel settingsRef={settingsRef} />
       </div>
-
 
       <RequestDemoModal
         open={requestDemoOpen}
-
         onClose={() => {
           setRequestDemoOpen(false);
         }}

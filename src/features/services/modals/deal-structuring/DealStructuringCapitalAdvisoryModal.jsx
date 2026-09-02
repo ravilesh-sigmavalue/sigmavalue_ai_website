@@ -1,10 +1,20 @@
 import { Modal } from "react-bootstrap";
-import { FiArrowRight, FiBarChart2, FiPieChart, FiShield, FiTarget, FiTrendingUp, FiUsers } from "react-icons/fi";
+import {
+  FiArrowRight,
+  FiBarChart2,
+  FiPieChart,
+  FiShield,
+  FiTarget,
+  FiTrendingUp,
+  FiUsers,
+} from "react-icons/fi";
+
 import { RightPanelModalHeader } from "../../../../shared/components/modal/RightPanelModalHeader";
 import "./deal-structuring.css";
 
 const capabilities = [
   {
+    number: "01",
     tone: "cyan",
     title: "Transaction & Deal Structuring",
     description:
@@ -17,6 +27,7 @@ const capabilities = [
     ],
   },
   {
+    number: "02",
     tone: "orange",
     title: "Capital Raising & Financing Advisory",
     description:
@@ -29,7 +40,8 @@ const capabilities = [
     ],
   },
   {
-    tone: "blue",
+    number: "03",
+    tone: "cyan",
     title: "Investment & Financial Strategy",
     description:
       "Develop investment strategies, financial models, return analysis and capital allocation strategies to optimize project economics and overall investment outcomes.",
@@ -43,24 +55,47 @@ const capabilities = [
 ];
 
 function WorldMap() {
+  const nodes = [
+    [78, 95],
+    [119, 55],
+    [160, 126],
+    [325, 116],
+    [411, 97],
+    [461, 137],
+    [502, 76],
+    [548, 89],
+  ];
+
   return (
-    <svg className="dsca-world" viewBox="0 0 620 220" aria-hidden="true">
+    <svg
+      className="dsca-world"
+      viewBox="0 0 620 220"
+      aria-hidden="true"
+    >
       <defs>
-        <pattern id="dsca-dots" width="7" height="7" patternUnits="userSpaceOnUse">
+        <pattern
+          id="dsca-dots"
+          width="7"
+          height="7"
+          patternUnits="userSpaceOnUse"
+        >
           <circle cx="2" cy="2" r="1.25" />
         </pattern>
       </defs>
+
       <path d="M36 75 63 45l48-13 31 18 21-8 24 19-16 25-29 3-21 28-36-8-20-24zm171-31 50-20 62 7 31-13 76 12 28 27-20 19-45-8-29 17-37-7-22 19-32-22-38-3-24-18zm130 70 43-17 35 12 9 30-31 31-43-7-25-24zm116-34 36-12 55 15 29 26-22 16-39-12-34 8-22-19z" />
+
       <g className="dsca-routes">
         <path d="M78 95Q205 10 325 116T548 89" />
         <path d="M119 55Q280 195 502 76" />
         <path d="M160 126Q311 37 461 137" />
       </g>
-      {[78, 119, 160, 325, 411, 461, 502, 548].map((x, i) => (
+
+      {nodes.map(([cx, cy], index) => (
         <circle
-          key={x}
-          cx={x}
-          cy={[95, 55, 126, 116, 97, 137, 76, 89][i]}
+          key={`${cx}-${cy}-${index}`}
+          cx={cx}
+          cy={cy}
           r="3"
           className="dsca-node"
         />
@@ -70,19 +105,26 @@ function WorldMap() {
 }
 
 function CapabilityArt({ type }) {
-  if (type === "capital")
+  if (type === "capital") {
     return (
-      <div className="dsca-art dsca-capital-art">
+      <div
+        className="dsca-art dsca-capital-art"
+        aria-hidden="true"
+      >
         <span className="dsca-dollar">$</span>
         <i />
         <i />
         <i />
-        <b />
       </div>
     );
-  if (type === "strategy")
+  }
+
+  if (type === "strategy") {
     return (
-      <div className="dsca-art dsca-strategy-art">
+      <div
+        className="dsca-art dsca-strategy-art"
+        aria-hidden="true"
+      >
         <span className="dsca-pie" />
         <i />
         <i />
@@ -90,12 +132,18 @@ function CapabilityArt({ type }) {
         <i />
       </div>
     );
+  }
+
   return (
-    <div className="dsca-art dsca-block-art">
+    <div
+      className="dsca-art dsca-block-art"
+      aria-hidden="true"
+    >
       <i />
       <i />
       <i />
       <i />
+
       <span>
         <FiTrendingUp />
       </span>
@@ -104,7 +152,11 @@ function CapabilityArt({ type }) {
 }
 
 function PulsePanel() {
-  const bars = [18, 30, 12, 38, 25, 47, 16, 36, 28, 52, 31, 43, 25, 58];
+  const bars = [
+    18, 30, 12, 38, 25, 47, 16,
+    36, 28, 52, 31, 43, 25, 58,
+  ];
+
   return (
     <div className="dsca-pulse">
       <div className="dsca-pulse-head">
@@ -112,73 +164,135 @@ function PulsePanel() {
           <span>LIVE INTELLIGENCE</span>
           <strong>Global Capital Pulse</strong>
         </div>
-        <FiTrendingUp />
+
+        <FiTrendingUp aria-hidden="true" />
       </div>
+
       <div className="dsca-pulse-stats">
         <span>
-          Active Deals<b>1,245</b>
+          Active Deals
+          <b>1,245</b>
         </span>
+
         <span>
-          Capital Deployed<b>$ 8.64B</b>
+          Capital Deployed
+          <b>$ 8.64B</b>
         </span>
+
         <span>
-          Success Rate<b>85%</b>
+          Success Rate
+          <b>85%</b>
         </span>
       </div>
-      <div className="dsca-bars">
-        {bars.map((height, i) => (
-          <i key={i} style={{ height }} className={i > 10 ? "hot" : ""} />
+
+      <div
+        className="dsca-bars"
+        aria-hidden="true"
+      >
+        {bars.map((height, index) => (
+          <i
+            key={`${height}-${index}`}
+            style={{ height }}
+            className={
+              index > 10
+                ? "hot"
+                : ""
+            }
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function CapabilityCard({ item }) {
+function CapabilityCard({
+  item,
+  index,
+  onExplore,
+}) {
   return (
-    <article className={`dsca-card dsca-${item.tone}`}>
+    <article
+      className={`dsca-card dsca-${item.tone}`}
+    >
+      <div className="dsca-number">
+        {item.number || String(index + 1).padStart(2, "0")}
+      </div>
+
       <div className="dsca-card-main">
         <CapabilityArt type={item.icon} />
+
         <div className="dsca-card-copy">
           <h3>{item.title}</h3>
-          <span className="dsca-rule" />
+
+          <span
+            className="dsca-rule"
+            aria-hidden="true"
+          />
+
           <p>{item.description}</p>
         </div>
       </div>
 
-      <div className="dsca-metrics">
+      <div
+        className="dsca-metrics"
+        aria-label={`${item.title} metrics`}
+      >
         {item.metrics.map(([Icon, label, value]) => (
-          <div className="dsca-metric" key={label}>
+          <div
+            className="dsca-metric"
+            key={label}
+          >
             <span className="dsca-metric-label">
-              <Icon />
+              <Icon aria-hidden="true" />
               {label}
             </span>
+
             <strong>{value}</strong>
           </div>
         ))}
       </div>
 
-      <button type="button" className="dsca-explore">
+      <button
+        type="button"
+        className="dsca-explore"
+        aria-label={`Explore ${item.title}`}
+        onClick={() =>
+          onExplore?.(
+            item,
+            index
+          )
+        }
+      >
         <span>Explore capability</span>
-        <FiArrowRight />
+        <FiArrowRight aria-hidden="true" />
       </button>
     </article>
   );
 }
 
-export function DealStructuringCapitalAdvisoryModal({ show, onHide, theme }) {
+export function DealStructuringCapitalAdvisoryModal({
+  show,
+  onHide,
+  theme,
+  onExplore,
+}) {
   const isLight =
     theme === "light" ||
-    (typeof document !== "undefined" && document.documentElement.dataset.theme === "light");
+    (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.theme === "light"
+    );
 
   return (
     <Modal
       show={show}
       onHide={onHide}
       centered
-      size="xl"
+      keyboard
+      restoreFocus
       dialogClassName="dsca-dialog d4-right-panel-dialog"
-      contentClassName={`dsca-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"}`}
+      contentClassName={`dsca-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"
+        }`}
       backdropClassName="dsca-backdrop d4-right-panel-backdrop"
     >
       <RightPanelModalHeader
@@ -189,15 +303,24 @@ export function DealStructuringCapitalAdvisoryModal({ show, onHide, theme }) {
         ariaLabel="Close Deal Structuring & Capital Advisory"
       />
 
-      <Modal.Body className="d4-right-panel-body">
-        <section className="dsca-section" aria-labelledby="dsca-title">
+      <Modal.Body className="dsca-body d4-right-panel-body">
+        <section
+          className="dsca-section"
+          aria-label="Deal Structuring and Capital Advisory capabilities"
+        >
           <div className="dsca-top">
             <WorldMap />
             <PulsePanel />
           </div>
+
           <div className="dsca-grid">
-            {capabilities.map((item) => (
-              <CapabilityCard key={item.title} item={item} />
+            {capabilities.map((item, index) => (
+              <CapabilityCard
+                key={item.title}
+                item={item}
+                index={index}
+                onExplore={onExplore}
+              />
             ))}
           </div>
         </section>

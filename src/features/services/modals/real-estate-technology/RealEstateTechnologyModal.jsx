@@ -1,15 +1,18 @@
 import { Modal } from "react-bootstrap";
+
 import { RightPanelModalHeader } from "../../../../shared/components/modal/RightPanelModalHeader";
 import "./real-estate-technology.css";
 
 const capabilities = [
   {
+    number: "01",
     title: "Real Estate Digital Transformation",
     description:
       "Digitize and automate real estate processes across acquisition, development, sales, leasing, property management and project management.",
     icon: "transform",
   },
   {
+    number: "02",
     title: "Real Estate Data, AI & Intelligence",
     description:
       "Implement AI, automation, GIS, data platforms, analytics and decision intelligence to improve operational efficiency and business decisions.",
@@ -113,37 +116,86 @@ function BenefitIcon({ type }) {
   );
 }
 
-function CapabilityRow({ item }) {
+function CapabilityRow({
+  item,
+  index,
+  onExplore,
+}) {
   return (
     <article className="re-capability">
-      <div className="re-capability-icon">
+      <div
+        className="re-capability-index"
+        aria-hidden="true"
+      >
+        {item.number || String(index + 1).padStart(2, "0")}
+      </div>
+
+      <div
+        className="re-capability-icon"
+        aria-hidden="true"
+      >
         <CapabilityIcon type={item.icon} />
       </div>
+
       <div className="re-capability-copy">
         <h3>{item.title}</h3>
+
         <p>{item.description}</p>
-        <button type="button" className="re-explore-button">
+
+        <button
+          type="button"
+          className="re-explore-button"
+          aria-label={`Explore ${item.title}`}
+          onClick={() =>
+            onExplore?.(
+              item,
+              index
+            )
+          }
+        >
           <span>Explore capability</span>
+          <span
+            className="re-explore-arrow"
+            aria-hidden="true"
+          >
+            →
+          </span>
         </button>
       </div>
-      <div className="re-row-arrow">→</div>
+
+      <span
+        className="re-row-arrow"
+        aria-hidden="true"
+      >
+        →
+      </span>
     </article>
   );
 }
 
-export function RealEstateTechnologyModal({ show, onHide, theme }) {
+export function RealEstateTechnologyModal({
+  show,
+  onHide,
+  theme,
+  onExplore,
+}) {
   const isLight =
     theme === "light" ||
-    (typeof document !== "undefined" && document.documentElement.dataset.theme === "light");
+    (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.theme === "light"
+    );
 
   return (
     <Modal
       show={show}
       onHide={onHide}
       centered
-      size="xl"
+      keyboard
+      restoreFocus
       dialogClassName="re-dialog d4-right-panel-dialog"
-      contentClassName={`re-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"}`}
+      contentClassName={`re-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"
+        }`}
       backdropClassName="re-backdrop d4-right-panel-backdrop"
     >
       <RightPanelModalHeader
@@ -154,36 +206,56 @@ export function RealEstateTechnologyModal({ show, onHide, theme }) {
         ariaLabel="Close Real Estate Technology"
       />
 
-      <Modal.Body className="d4-right-panel-body">
-        <section className="re-section" aria-labelledby="real-estate-title">
+      <Modal.Body className="re-body d4-right-panel-body">
+        <section
+          className="re-section"
+          aria-label="Real Estate Technology capabilities"
+        >
           <div className="re-shell">
             <div className="re-main-grid">
               <div className="re-visual-column">
-                <div className="re-city-wrap">
+                <div
+                  className="re-city-wrap"
+                  aria-hidden="true"
+                >
                   <div className="re-orbit orbit-one" />
                   <div className="re-orbit orbit-two" />
-                  <div className="re-city-pin pin-one">⌁</div>
-                  <div className="re-city-pin pin-two">⌖</div>
-                  <div className="re-city-pin pin-three">◌</div>
+
+                  <div className="re-city-pin pin-one">
+                    ⌁
+                  </div>
+
+                  <div className="re-city-pin pin-two">
+                    ⌖
+                  </div>
+
+                  <div className="re-city-pin pin-three">
+                    ◌
+                  </div>
 
                   <img
                     src="/images/building.png"
-                    alt="Futuristic smart real estate city"
-                    className="re-skyline-image re-skyline-dark"
+                    alt=""
+                    className="re-skyline-image"
                   />
-                  {/* <img
-                    src="public\images\building-light.png"
-                    alt="Futuristic smart real estate city"
-                    className="re-skyline-image re-skyline-light"
-                  /> */}
                 </div>
 
-                <div className="re-benefits">
+                <div
+                  className="re-benefits"
+                  aria-label="Real Estate Technology benefits"
+                >
                   {benefits.map((item) => (
-                    <div className="re-benefit" key={item.title}>
-                      <div className="re-benefit-icon">
+                    <div
+                      className="re-benefit"
+                      key={`${item.title}-${item.subtitle}`}
+                    >
+                      <div
+                        className="re-benefit-icon"
+                        aria-hidden="true"
+                      >
                         <BenefitIcon type={item.icon} />
                       </div>
+
                       <div className="re-benefit-content">
                         <strong>{item.title}</strong>
                         <span>{item.subtitle}</span>
@@ -194,9 +266,18 @@ export function RealEstateTechnologyModal({ show, onHide, theme }) {
               </div>
 
               <div className="re-flow">
-                <div className="re-flow-line" aria-hidden="true" />
-                {capabilities.map((item) => (
-                  <CapabilityRow key={item.title} item={item} />
+                <div
+                  className="re-flow-line"
+                  aria-hidden="true"
+                />
+
+                {capabilities.map((item, index) => (
+                  <CapabilityRow
+                    key={item.title}
+                    item={item}
+                    index={index}
+                    onExplore={onExplore}
+                  />
                 ))}
               </div>
             </div>

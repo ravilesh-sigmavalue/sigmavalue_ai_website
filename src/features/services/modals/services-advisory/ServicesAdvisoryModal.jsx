@@ -9,6 +9,7 @@ import {
   FiShield,
   FiTrendingUp,
 } from "react-icons/fi";
+
 import { RightPanelModalHeader } from "../../../../shared/components/modal/RightPanelModalHeader";
 import "./services-advisory.css";
 import serviceAdvisoryIllustration from "../../../../assets/service-advisory-illustration.png";
@@ -81,17 +82,23 @@ const values = [
 
 function SmartCityVisual() {
   return (
-    <div className="sa-hero-visual" aria-hidden="true">
+    <div
+      className="sa-hero-visual"
+      aria-hidden="true"
+    >
       <div className="sa-hero-glow" />
+
       <img
         src={serviceAdvisoryIllustration}
-        alt="Service Advisory Smart City"
+        alt=""
         className="sa-smart-city-image"
       />
+
       <span className="sa-hero-dot hero-dot-1" />
       <span className="sa-hero-dot hero-dot-2" />
       <span className="sa-hero-dot hero-dot-3" />
       <span className="sa-hero-dot hero-dot-4" />
+
       <div className="sa-hero-orbit orbit-1" />
       <div className="sa-hero-orbit orbit-2" />
     </div>
@@ -100,14 +107,21 @@ function SmartCityVisual() {
 
 function ServiceVisual({ service }) {
   const Icon = service.icon;
+
   return (
-    <div className={`sa-service-visual sa-visual-${service.tone}`}>
+    <div
+      className={`sa-service-visual sa-visual-${service.tone}`}
+      aria-hidden="true"
+    >
       <div className="sa-visual-glow" />
+
       <div className="sa-visual-circle">
         <Icon />
       </div>
+
       <div className="sa-visual-ring ring-1" />
       <div className="sa-visual-ring ring-2" />
+
       <span className="sa-mini-dot mini-1" />
       <span className="sa-mini-dot mini-2" />
       <span className="sa-mini-dot mini-3" />
@@ -116,45 +130,66 @@ function ServiceVisual({ service }) {
 }
 
 function ServiceItem({ service }) {
-  const ServiceElement = service.href ? "a" : "button";
-
   return (
-    <ServiceElement
-      {...(service.href ? { href: service.href, target: "_blank", rel: "noreferrer" } : { type: "button" })}
+    <a
+      href={service.href}
+      target="_blank"
+      rel="noreferrer"
       className={`sa-service sa-${service.tone}`}
+      aria-label={`Explore ${service.title}`}
     >
-      <div className="sa-service-number">{service.number}</div>
+      <div className="sa-service-number">
+        {service.number}
+      </div>
+
       <ServiceVisual service={service} />
+
       <div className="sa-service-content">
         <div className="sa-service-title-row">
           <h3>{service.title}</h3>
-          <span className="sa-service-arrow">
+
+          <span
+            className="sa-service-arrow"
+            aria-hidden="true"
+          >
             <FiArrowRight />
           </span>
         </div>
+
         <p>{service.description}</p>
+
         <span className="sa-explore">
           Explore capability
-          <FiArrowRight />
+          <FiArrowRight aria-hidden="true" />
         </span>
       </div>
-    </ServiceElement>
+    </a>
   );
 }
 
-export function ServicesAdvisoryModal({ show, onHide, theme }) {
+export function ServicesAdvisoryModal({
+  show,
+  onHide,
+  theme,
+}) {
   const isLight =
     theme === "light" ||
-    (typeof document !== "undefined" && document.documentElement.dataset.theme === "light");
+    (
+      typeof document !== "undefined" &&
+      document.documentElement.dataset.theme === "light"
+    );
 
   return (
     <Modal
       show={show}
       onHide={onHide}
       centered
-      size="xl"
+      keyboard
+      restoreFocus
       dialogClassName="sa-dialog d4-right-panel-dialog"
-      contentClassName={`sa-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"}`}
+      contentClassName={`sa-modal d4-right-panel-modal ${
+        isLight ? "light-mode" : "dark-mode"
+      }`}
       backdropClassName="sa-backdrop d4-right-panel-backdrop"
     >
       <RightPanelModalHeader
@@ -165,38 +200,64 @@ export function ServicesAdvisoryModal({ show, onHide, theme }) {
         ariaLabel="Close Service Advisory"
       />
 
-      <Modal.Body className="d4-right-panel-body">
-        <section className="sa-section" aria-labelledby="sa-title">
+      <Modal.Body className="sa-body d4-right-panel-body">
+        <section
+          className="sa-section"
+          aria-label="Services Advisory capabilities"
+        >
           <div className="sa-top-visual">
             <SmartCityVisual />
           </div>
 
           <div className="sa-service-area">
-            <div className="sa-flow-line" />
-            <div className="sa-core">
+            <div
+              className="sa-flow-line"
+              aria-hidden="true"
+            />
+
+            <div
+              className="sa-core"
+              aria-hidden="true"
+            >
               <div className="sa-core-ring" />
+
               <div className="sa-core-icon">
                 <FiBarChart2 />
               </div>
+
               <strong>OUR CORE</strong>
               <span>SERVICES</span>
             </div>
 
             <div className="sa-services">
               {services.map((service) => (
-                <ServiceItem key={service.title} service={service} />
+                <ServiceItem
+                  key={service.title}
+                  service={service}
+                />
               ))}
             </div>
           </div>
 
-          <footer className="sa-values">
+          <footer
+            className="sa-values"
+            aria-label="Services Advisory value"
+          >
             {values.map((value) => {
               const Icon = value.icon;
+
               return (
-                <div className={`sa-value sa-value-${value.tone}`} key={value.title}>
-                  <div className="sa-value-icon">
+                <div
+                  className={`sa-value sa-value-${value.tone}`}
+                  key={value.title}
+                >
+                  <div
+                    className="sa-value-icon"
+                    aria-hidden="true"
+                  >
                     <Icon />
                   </div>
+
                   <div className="sa-value-content">
                     <strong>{value.title}</strong>
                     <small>{value.text}</small>

@@ -45,6 +45,16 @@ const defaultCapabilities = [
   },
 ];
 
+function normalizeTone(value, index) {
+  if (value === "teal" || value === "orange") {
+    return value;
+  }
+
+  return index === 0 || index === 3
+    ? "teal"
+    : "orange";
+}
+
 export function EnterpriseAIModal({
   show,
   onHide,
@@ -67,13 +77,20 @@ export function EnterpriseAIModal({
     (typeof document !== "undefined" &&
       document.documentElement.dataset.theme === "light");
 
-  const visibleSolutions = solutions.slice(0, 4);
+  const sourceSolutions =
+    Array.isArray(solutions) && solutions.length > 0
+      ? solutions
+      : defaultCapabilities;
+
+  const visibleSolutions = sourceSolutions.slice(0, 4);
 
   return (
     <Modal
       show={show}
       onHide={onHide}
       centered
+      keyboard
+      restoreFocus
       dialogClassName="enterprise-hex-dialog d4-right-panel-dialog"
       contentClassName={`enterprise-hex-modal d4-right-panel-modal ${isLight ? "light-mode" : "dark-mode"
         }`}
@@ -88,28 +105,41 @@ export function EnterpriseAIModal({
       />
 
       <Modal.Body className="enterprise-hex-body d4-right-panel-body">
-        <div className="enterprise-hex-layout">
+        <div
+          className="enterprise-hex-layout"
+          aria-label="Enterprise AI capabilities"
+        >
           {visibleSolutions.map((item, index) => {
             const Icon = item.icon;
 
             const number =
-              item.number || String(index + 1).padStart(2, "0");
+              item.number ||
+              String(index + 1).padStart(2, "0");
+
+            const itemTitle =
+              item.title ||
+              `Enterprise AI capability ${index + 1}`;
 
             const description =
-              item.description || item.text || "";
+              item.description ||
+              item.text ||
+              "";
 
-            const tone =
-              item.tone ||
-              item.theme ||
-              (index === 0 || index === 3 ? "teal" : "orange");
+            const tone = normalizeTone(
+              item.tone || item.theme,
+              index
+            );
 
             return (
               <article
-                key={`${number}-${item.title}`}
+                key={`${number}-${itemTitle}-${index}`}
                 className={`enterprise-hex-tile tile-${index + 1
                   } tone-${tone}`}
               >
-                <div className="enterprise-hex-glow" />
+                <div
+                  className="enterprise-hex-glow"
+                  aria-hidden="true"
+                />
 
                 <div className="enterprise-hex-shape">
                   <div className="enterprise-hex-inner">
@@ -119,23 +149,30 @@ export function EnterpriseAIModal({
 
                     <div className="enterprise-hex-content">
                       <div className="enterprise-hex-title-row">
-                        <span className="enterprise-hex-icon">
+                        <span
+                          className="enterprise-hex-icon"
+                          aria-hidden="true"
+                        >
                           {Icon && <Icon />}
                         </span>
 
-                        <h3>{item.title}</h3>
+                        <h3>{itemTitle}</h3>
                       </div>
 
-                      <p>{description}</p>
+                      {description && (
+                        <p>{description}</p>
+                      )}
 
                       <Button
                         type="button"
                         variant="link"
                         className="enterprise-hex-link"
+                        aria-label={`Explore ${itemTitle}`}
                         onClick={() =>
                           onExplore?.(
                             {
                               ...item,
+                              title: itemTitle,
                               description,
                               tone,
                             },
@@ -144,7 +181,7 @@ export function EnterpriseAIModal({
                         }
                       >
                         <span>Explore</span>
-                        <FiArrowRight />
+                        <FiArrowRight aria-hidden="true" />
                       </Button>
                     </div>
                   </div>
@@ -152,8 +189,6 @@ export function EnterpriseAIModal({
               </article>
             );
           })}
-
-      
         </div>
       </Modal.Body>
     </Modal>

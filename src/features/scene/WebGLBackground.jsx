@@ -1,20 +1,72 @@
 import { useEffect, useRef } from "react";
+import * as THREE from "three";
 import { DEFAULT_SCENE_SETTINGS } from "./SceneSettingsPanel";
 
-// Returns counts, honouring settingsRef overrides with mobile-safe caps
-function getNatureInstanceCounts(width, settingsRef) {
-  const s = settingsRef?.current ?? {};
-  let maxTrees, maxGrass;
-  if (width < 760) { maxTrees = 6; maxGrass = 8; }
-  else if (width < 1100) { maxTrees = 9; maxGrass = 12; }
-  else { maxTrees = 12; maxGrass = 18; }
+function getSceneProfile(width) {
+  if (width <= 900) {
+    return {
+      particleCount: 260,
+      maxPixelRatio: 1.25,
+      targetFps: 45,
+      cameraTopY: 5.2,
+      cameraBottomY: -4.75,
+    };
+  }
 
-  const defTrees = width < 760 ? 5 : width < 1100 ? 7 : 9;
-  const defGrass = width < 760 ? 6 : width < 1100 ? 10 : 14;
+  if (width <= 1200) {
+    return {
+      particleCount: 420,
+      maxPixelRatio: 1.5,
+      targetFps: 55,
+      cameraTopY: 4.65,
+      cameraBottomY: -5.0,
+    };
+  }
 
   return {
-    trees: Math.min(Math.max(s.treeCount ?? defTrees, 2), maxTrees),
-    grass: Math.min(Math.max(s.grassCount ?? defGrass, 2), maxGrass),
+    particleCount: 650,
+    maxPixelRatio: 2,
+    targetFps: 60,
+    cameraTopY: 4.2,
+    cameraBottomY: -5.08,
+  };
+}
+
+// Returns counts, honouring settingsRef overrides with tablet/laptop-safe caps
+function getNatureInstanceCounts(width, settingsRef) {
+  const s = settingsRef?.current ?? {};
+
+  let maxTrees;
+  let maxGrass;
+  let defTrees;
+  let defGrass;
+
+  if (width <= 900) {
+    maxTrees = 6;
+    maxGrass = 8;
+    defTrees = 4;
+    defGrass = 6;
+  } else if (width <= 1200) {
+    maxTrees = 9;
+    maxGrass = 12;
+    defTrees = 7;
+    defGrass = 10;
+  } else {
+    maxTrees = 12;
+    maxGrass = 18;
+    defTrees = 9;
+    defGrass = 14;
+  }
+
+  return {
+    trees: Math.min(
+      Math.max(s.treeCount ?? defTrees, 2),
+      maxTrees
+    ),
+    grass: Math.min(
+      Math.max(s.grassCount ?? defGrass, 2),
+      maxGrass
+    ),
   };
 }
 
@@ -64,8 +116,6 @@ function createNatureElements(THREE, width, settingsRef) {
 
   const treeData = [];
   const grassData = [];
-  const dummy = new THREE.Object3D();
-
   // Generate compact, ultra-crisp Trees with grass and stones at their base
   for (let i = 0; i < counts.trees; i++) {
     const angle = (i / counts.trees) * Math.PI * 2 + 0.18;
@@ -100,8 +150,17 @@ function createNatureElements(THREE, width, settingsRef) {
   }
 
   // Generate additional surrounding Grass & Stone clusters along the perimeter
-  for (let i = 0; i < counts.grass - counts.trees; i++) {
-    const angle = (i / (counts.grass - counts.trees)) * Math.PI * 2 + 0.45;
+  const extraGrassCount = Math.max(
+    0,
+    counts.grass - counts.trees
+  );
+
+  for (let i = 0; i < extraGrassCount; i++) {
+    const angle =
+      (i / Math.max(extraGrassCount, 1)) *
+        Math.PI *
+        2 +
+      0.45;
     const radius = 3.35 + (i % 3) * 0.55;
     const gScale = 0.52 + (i % 3) * 0.12;
     const x = Math.cos(angle) * radius;
@@ -112,7 +171,15 @@ function createNatureElements(THREE, width, settingsRef) {
     const grassSprite = new THREE.Sprite(gMat);
     grassSprite.position.set(x, gBaseY, z);
     grassSprite.scale.set(gScale * 1.18, gScale * 0.95, 1);
-    grassData.push({ sprite: grassSprite, x, z, baseY: gBaseY, phase: (i + counts.trees) * 0.82 });
+    group.add(grassSprite);
+
+    grassData.push({
+      sprite: grassSprite,
+      x,
+      z,
+      baseY: gBaseY,
+      phase: (i + counts.trees) * 0.82,
+    });
   }
 
   group.userData = { treeData, grassData };
@@ -136,8 +203,6 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
 
   useEffect(() => {
     activeRef.current = active;
-    const THREE = window.THREE;
-    if (!THREE) return;
     if (!accentRef.current) {
       accentRef.current = new THREE.Color(...(chapters[active]?.accent || [0.91, 0.44, 0.26]));
     } else if (chapters[active]?.accent) {
@@ -147,14 +212,44 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const THREE = window.THREE;
-    if (!canvas || !THREE) return;
+    if (!canvas) return;
+
+    canvas.hidden = false;
 
     let dark = themeRef.current !== "light";
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const initialProfile = getSceneProfile(
+      window.innerWidth
+    );
+
+    let renderer;
+
+    try {
+      renderer = new THREE.WebGLRenderer({
+        canvas,
+        antialias: true,
+        alpha: true,
+      });
+    } catch (error) {
+      canvas.hidden = true;
+      console.warn(
+        "The 3D background could not start. The page will continue without it.",
+        error
+      );
+      return undefined;
+    }
+
+    renderer.setPixelRatio(
+      Math.min(
+        window.devicePixelRatio || 1,
+        initialProfile.maxPixelRatio
+      )
+    );
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = dark ? 1.15 : 1.40;
@@ -167,30 +262,116 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
     natureKeyLight.position.set(5, 9, 4);
     scene.add(hemisphereLight, natureKeyLight);
 
-    let natureGroup = createNatureElements(THREE, window.innerWidth, settingsRef);
-    natureGroup.visible = !dark;
+    const initialNatureCounts =
+      getNatureInstanceCounts(
+        window.innerWidth,
+        settingsRef
+      );
+
+    let lastTreeCount =
+      settingsRef.current.treeCount ??
+      initialNatureCounts.trees;
+
+    let lastGrassCount =
+      settingsRef.current.grassCount ??
+      initialNatureCounts.grass;
+
+    let natureGroup = new THREE.Group();
+    natureGroup.name = "light-theme-nature-placeholder";
+    natureGroup.visible = false;
     scene.add(natureGroup);
 
-    // Track last counts so we know when to rebuild
-    let lastTreeCount = settingsRef.current.treeCount ?? (window.innerWidth < 760 ? 5 : window.innerWidth < 1100 ? 7 : 9);
-    let lastGrassCount = settingsRef.current.grassCount ?? (window.innerWidth < 760 ? 6 : window.innerWidth < 1100 ? 10 : 14);
+    let natureReady = false;
 
-    // Debounced rebuild when tree/grass counts change
+    const disposeObjectMaterial = (material) => {
+      if (!material) {
+        return;
+      }
+
+      Object.values(material).forEach((value) => {
+        if (value?.isTexture) {
+          value.dispose();
+        }
+      });
+
+      material.dispose?.();
+    };
+
+    const disposeNatureGroup = (group) => {
+      group?.traverse((obj) => {
+        obj.geometry?.dispose();
+
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach(disposeObjectMaterial);
+        } else {
+          disposeObjectMaterial(obj.material);
+        }
+      });
+    };
+
+    const ensureNatureGroup = () => {
+      if (natureReady) {
+        natureGroup.visible = !dark;
+        return;
+      }
+
+      scene.remove(natureGroup);
+
+      natureGroup = createNatureElements(
+        THREE,
+        window.innerWidth,
+        settingsRef
+      );
+
+      natureGroup.visible = !dark;
+      scene.add(natureGroup);
+      natureReady = true;
+
+      const currentCounts =
+        getNatureInstanceCounts(
+          window.innerWidth,
+          settingsRef
+        );
+
+      lastTreeCount = currentCounts.trees;
+      lastGrassCount = currentCounts.grass;
+    };
+
+    if (!dark) {
+      ensureNatureGroup();
+    }
+
+    // Debounced rebuild when tree/grass counts change.
     let rebuildTimer = null;
+
     function scheduleNatureRebuild() {
+      if (!natureReady) {
+        return;
+      }
+
       clearTimeout(rebuildTimer);
+
       rebuildTimer = setTimeout(() => {
         scene.remove(natureGroup);
-        natureGroup.traverse((obj) => {
-          obj.geometry?.dispose();
-          if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
-          else obj.material?.dispose();
-        });
-        natureGroup = createNatureElements(THREE, window.innerWidth, settingsRef);
+        disposeNatureGroup(natureGroup);
+
+        natureGroup = createNatureElements(
+          THREE,
+          window.innerWidth,
+          settingsRef
+        );
+
         natureGroup.visible = !dark;
         scene.add(natureGroup);
-        lastTreeCount = settingsRef.current.treeCount ?? lastTreeCount;
-        lastGrassCount = settingsRef.current.grassCount ?? lastGrassCount;
+
+        const currentCounts =
+          getNatureInstanceCounts(
+            window.innerWidth,
+            settingsRef
+          );
+
+        lastTreeCount = currentCounts.trees;
+        lastGrassCount = currentCounts.grass;
       }, 300);
     }
 
@@ -577,7 +758,14 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
 
     applyThemeRef.current = (nextTheme) => {
       dark = nextTheme !== "light";
-      natureGroup.visible = !dark;
+
+      if (!dark) {
+        ensureNatureGroup();
+      }
+
+      natureGroup.visible =
+        natureReady && !dark;
+
       renderer.toneMappingExposure = dark ? 1.15 : 1.40;
       scene.fog.color.setHex(dark ? 0x050605 : 0xdaeef5);
       scene.fog.density = dark ? 0.012 : 0.007;
@@ -587,7 +775,7 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
     };
 
     /* ── Ambient Particle Field ── */
-    const PCOUNT = window.innerWidth < 760 ? 260 : 650;
+    const PCOUNT = initialProfile.particleCount;
     const pGeo = new THREE.BufferGeometry();
     const positions = new Float32Array(PCOUNT * 3);
     const colors = new Float32Array(PCOUNT * 3);
@@ -629,20 +817,82 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
     scene.add(points);
 
     /* ── Mouse Parallax ── */
-    let mouseX = 0, mouseY = 0, camPX = 0, camPY = 0;
-    const onMouseMove = (e) => {
-      mouseX = e.clientX / window.innerWidth - 0.5;
-      mouseY = e.clientY / window.innerHeight - 0.5;
+    let mouseX = 0;
+    let mouseY = 0;
+    let camPX = 0;
+    let camPY = 0;
+
+    const finePointerQuery =
+      window.matchMedia("(pointer: fine)");
+
+    const parallaxEnabled =
+      finePointerQuery.matches &&
+      window.innerWidth > 900;
+
+    const onMouseMove = (event) => {
+      mouseX =
+        event.clientX / window.innerWidth -
+        0.5;
+
+      mouseY =
+        event.clientY / window.innerHeight -
+        0.5;
     };
-    window.addEventListener("mousemove", onMouseMove);
+
+    if (parallaxEnabled) {
+      window.addEventListener(
+        "mousemove",
+        onMouseMove,
+        { passive: true }
+      );
+    }
 
     /* ── Resize ── */
+    let resizeRaf = 0;
+
     const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      window.cancelAnimationFrame(
+        resizeRaf
+      );
+
+      resizeRaf =
+        window.requestAnimationFrame(() => {
+          const width =
+            window.innerWidth;
+
+          const height =
+            Math.max(
+              window.innerHeight,
+              1
+            );
+
+          const profile =
+            getSceneProfile(width);
+
+          camera.aspect =
+            width / height;
+
+          camera.updateProjectionMatrix();
+
+          renderer.setPixelRatio(
+            Math.min(
+              window.devicePixelRatio || 1,
+              profile.maxPixelRatio
+            )
+          );
+
+          renderer.setSize(
+            width,
+            height
+          );
+        });
     };
-    window.addEventListener("resize", onResize);
+
+    window.addEventListener(
+      "resize",
+      onResize,
+      { passive: true }
+    );
 
     /* ── Smooth Orbit Animation Loop ── */
     const ANGLE_STEP = 0.72;
@@ -653,16 +903,54 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
     const totalScrollSteps = Math.max(1, chapters.length - 1);
     let scrollRawSmooth = 0;
     let sceneOpacity = 1;
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const reducedMotionQuery =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+    let reduceMotion =
+      reducedMotionQuery.matches;
+
+    const onReducedMotionChange = (event) => {
+      reduceMotion = event.matches;
+    };
+
+    reducedMotionQuery.addEventListener?.(
+      "change",
+      onReducedMotionChange
+    );
 
     const curA = new THREE.Color(...initAccent);
     const targetA = new THREE.Color(...initAccent);
 
     let raf = 0;
     let previousFrame = 0;
+    let previousRenderFrame = 0;
     let windTime = 0;
+
+    const frameInterval =
+      1000 /
+      initialProfile.targetFps;
+
     const animate = (t) => {
       raf = requestAnimationFrame(animate);
+
+      if (document.hidden) {
+        previousFrame = t;
+        return;
+      }
+
+      if (
+        previousRenderFrame &&
+        t - previousRenderFrame <
+          frameInterval
+      ) {
+        return;
+      }
+
+      previousRenderFrame = t;
+
       const elapsed = t * 0.001;
       const deltaTime = previousFrame ? Math.min((t - previousFrame) * 0.001, 0.05) : 0;
       previousFrame = t;
@@ -677,9 +965,25 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
       const particleMult = S.particleSize ?? DEFAULT_SCENE_SETTINGS.particleSize;
 
       // Trigger nature rebuild when count changes
-      const curTrees = S.treeCount ?? lastTreeCount;
-      const curGrass = S.grassCount ?? lastGrassCount;
-      if (curTrees !== lastTreeCount || curGrass !== lastGrassCount) {
+      const requestedCounts =
+        getNatureInstanceCounts(
+          window.innerWidth,
+          settingsRef
+        );
+
+      const curTrees =
+        requestedCounts.trees;
+
+      const curGrass =
+        requestedCounts.grass;
+
+      if (
+        natureReady &&
+        (
+          curTrees !== lastTreeCount ||
+          curGrass !== lastGrassCount
+        )
+      ) {
         scheduleNatureRebuild();
       }
 
@@ -741,12 +1045,6 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
       //                 1 = card N-1 (contact/demo, camera at earth ground level)
       const scrollProgress = Math.min(Math.max(scrollRawSmooth / totalScrollSteps, 0), 1);
 
-      // Keep the building below the hero card on the opening section, then
-      // smoothly restore its original position as the chapter scroll begins.
-      const heroBuildingOffset = -2.1 * (1 - Math.min(scrollRawSmooth, 1));
-      building.position.y = heroBuildingOffset;
-      logoGroup.position.y = 6.05 + heroBuildingOffset;
-
       const contactStageActive = chapters[activeRef.current]?.key === "contact";
       sceneOpacity += ((contactStageActive ? 0.85 : 1) - sceneOpacity) * 0.08;
       canvas.style.opacity = String(sceneOpacity);
@@ -755,12 +1053,37 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
       const orbitRadius = ORBIT_RADIUS + Math.sin(scrollRawSmooth * 0.4) * 0.25;
       // card 0 (hero): camera at building crown top
       // card N-1 (contact/demo): camera exactly at earth/ground level
-      const camTopY = window.innerWidth < 760 ? 6.6 : 4.2;
-      const camBottomY = window.innerWidth < 760 ? -4.5 : -5.08;
-      const totalDescent = camTopY - camBottomY;
+      const currentProfile =
+        getSceneProfile(
+          window.innerWidth
+        );
 
-      camPX += (mouseX * 0.4 - camPX) * 0.04;
-      camPY += (-mouseY * 0.28 - camPY) * 0.04;
+      const camTopY =
+        currentProfile.cameraTopY;
+
+      const camBottomY =
+        currentProfile.cameraBottomY;
+
+      const totalDescent =
+        camTopY - camBottomY;
+
+      const parallaxTargetX =
+        parallaxEnabled
+          ? mouseX * 0.4
+          : 0;
+
+      const parallaxTargetY =
+        parallaxEnabled
+          ? -mouseY * 0.28
+          : 0;
+
+      camPX +=
+        (parallaxTargetX - camPX) *
+        0.04;
+
+      camPY +=
+        (parallaxTargetY - camPY) *
+        0.04;
 
       camera.position.x = Math.sin(orbitAngle) * orbitRadius + camPX;
       camera.position.z = Math.cos(orbitAngle) * orbitRadius;
@@ -777,14 +1100,58 @@ function WebGLBackground({ chapters, active, theme, settingsRef: externalSetting
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("mousemove", onMouseMove);
-      window.removeEventListener("resize", onResize);
+      cancelAnimationFrame(resizeRaf);
+      clearTimeout(rebuildTimer);
+
+      if (parallaxEnabled) {
+        window.removeEventListener(
+          "mousemove",
+          onMouseMove
+        );
+      }
+
+      window.removeEventListener(
+        "resize",
+        onResize
+      );
+
+      reducedMotionQuery.removeEventListener?.(
+        "change",
+        onReducedMotionChange
+      );
+
       applyThemeRef.current = null;
+
       scene.traverse((obj) => {
         obj.geometry?.dispose();
-        if (Array.isArray(obj.material)) obj.material.forEach((m) => m.dispose());
-        else obj.material?.dispose();
+
+        const disposeMaterial = (material) => {
+          if (!material) {
+            return;
+          }
+
+          Object.values(material).forEach(
+            (value) => {
+              if (value?.isTexture) {
+                value.dispose();
+              }
+            }
+          );
+
+          material.dispose?.();
+        };
+
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach(
+            disposeMaterial
+          );
+        } else {
+          disposeMaterial(
+            obj.material
+          );
+        }
       });
+
       renderer.dispose();
     };
   }, [chapters]);
